@@ -5,20 +5,19 @@ v event manageri bude mozne vytvorit viacero eventov
 event:
 - slug
 - datum zaciatku registracie
-- info v SK/EN
-- email template v SK/EN
+- info v SK/EN [v templatoch]
+- email template v SK/EN [ v templatoch]
 - miesta_konania
-- text_registration_overview
-- organizer_emails
+- organizer_emails 
 
 miesto_konania:
-- datum konca registracie
+- datum konca registracie 
 - datum konania event
 - informacie_o_mieste SK/EN
 - kapacita
-- kapacita_prekrocena_text SK/EN
-- text_notification SK/EN
-- date_notification_treshold ?? (IMHO blbost)
+- kapacita_prekrocena_text SK/EN [template]
+- text_notification SK/EN [template]
+- date_notification_treshold
 
 registracia:
 - meno/priezvisko
@@ -27,10 +26,12 @@ registracia:
 - registracne cislo (vygenerovane)
 - miesto_konania
 
-mailinglist:
+mailinglist: [rovno sa pridavat]
 - email
 - meno/priezvisko
 - datum pridania
+- jazyk
+
 
 
 ----------------------------------------
