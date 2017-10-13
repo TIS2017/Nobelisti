@@ -2,7 +2,7 @@
 
 ## Instalation
 
-0. Ensure you have installed (docker)[https://docs.docker.com/engine/installation/] and (docker-compose)[https://docs.docker.com/compose/install/]
+0. Ensure you have installed [docker](https://docs.docker.com/engine/installation/) and [docker-compose](https://docs.docker.com/compose/install/)
 ```
 $ docker --version
 Docker version 17.06.2-ce, build cec0b72
@@ -21,8 +21,15 @@ docker-compose up --build
 ```
 
 3. Get docker's IP and save it to /etc/hosts
+
+Linux:
 ```
 echo $(docker network inspect bridge | grep Gateway | grep -o -E '[0-9\.]+')
+```
+
+MAC/Windows:
+```
+docker-machine ip default
 ```
 
 Open `/etc/hosts` and append `IP.ADDRESS.FROM.ECHO    symfony.dev`.
