@@ -61,7 +61,3 @@ You registraion number is {{registration.number}}.
 - rozoslat testovacie emaily
 - vyrenderovat jednotlive texty pre kontrolu
 
-
-# INE OTAZKY
-- kto bude email provider gmail/aws/univerzita?
-
