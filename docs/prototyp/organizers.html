@@ -67,25 +67,45 @@
       <th scope="row">1</th>
       <td>zoli@example.com</td>
       <td><a href="admins_edit.html">Edit</a></td>
-      <td><a href="#">Delete</td>
+      <td><a href="#" data-toggle="modal" data-target="#deleteModal">Delete</a></td>
     </tr>
     <tr>
       <th scope="row">2</th>
       <td>saska@example.com</td>
       <td><a href="admins_edit.html">Edit</a></td>
-      <td><a href="#">Delete</td>
+      <td><a href="#" data-toggle="modal" data-target="#deleteModal">Delete</a></td>
     </tr>
     <tr>
       <th scope="row">3</th>
       <td>viki@example.com</td>
       <td><a href="admins_edit.html">Edit</a></td>
-      <td><a href="#">Delete</td>
+      <td><a href="#" data-toggle="modal" data-target="#deleteModal">Delete</a></td>
     </tr>
   </tbody>
 </table>
 
     </main><!-- /.container -->
 
+<!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete object</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete it?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
