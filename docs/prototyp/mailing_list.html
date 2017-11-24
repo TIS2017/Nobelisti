@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Nobelists</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="custom.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#">Event Manager</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Events</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="organizers.html">Organizers</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="languages.html">Languages</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="mailing_list.html">Mailing list</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="admins.html">Admins</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="#">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="container">
+
+
+    <h1>Mailing list</h1>
+    <hr>
+
+    <form>
+  <div class="form-row">
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Search by Name/E-mail">
+    </div>
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Filter by event">
+    </div>
+    <div class="col">
+      <label class="form-check-label">
+        <input class="form-check-input" type="checkbox"> Only subscribed
+      </label>
+    </div>
+    <div class="col">
+      <a href="#" class="btn btn-primary">Search</a>
+    </div>
+  </div>
+</form>
+
+<hr>
+
+
+
+<table class="table table-bordered">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First name</th>
+      <th scope="col">Last name</th>
+      <th scope="col">E-mail</th>
+      <th scope="col">Language</th>
+      <th scope="col">Subscribed</th>
+      <th scope="col">Events</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Zoltan</td>
+      <td>Onody</td>
+      <td>zoli@example.com</td>
+      <td>Slovak</td>
+      <td>Yes</td>
+      <td><a href="#">event_slug</a>, <a href="#">event2</a></td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Alexandra</td>
+      <td>Nyitraiova</td>
+      <td>saska@example.com</td>
+      <td>English</td>
+      <td>No</td>
+      <td><a href="#">event1</a></td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>Viktoria</td>
+      <td>Simsikova</td>
+      <td>viki@example.com</td>
+      <td>English</td>
+      <td>Yes</td>
+      <td><a href="#">event1</a>, <a href="#">event2</a>, <a href="#">event3</a>, <a href="#">event4</a>, <a href="#">event5</a>, <a href="#">event6</a>, <a href="#">event7</a>, <a href="#">event8</a>, <a href="#">event9</a>, <a href="#">event10</a>, <a href="#">event11</a>, <a href="#">event12</a>, <a href="#">event13</a>, <a href="#">event14</a>, <a href="#">event15</a>, <a href="#">event16</a></td>
+    </tr>
+    <tr>
+      <th scope="row">4</th>
+      <td>Radovan</td>
+      <td>Balog</td>
+      <td>rado@example.com</td>
+      <td>Slovak</td>
+      <td>No</td>
+      <td><a href="#">slug</a>, <a href="#">other-slug</a></td>
+    </tr>
+    <tr>
+      <th scope="row">5</th>
+        <td colspan="6">
+        ...16 or 46 more rows in the table....
+        </td>
+    </tr>
+
+  </tbody>
+</table>
+
+<nav aria-label="...">
+  <ul class="pagination">
+    <li class="page-item disabled">
+      <span class="page-link">Previous</span>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item active">
+      <span class="page-link">
+        2
+        <span class="sr-only">(current)</span>
+      </span>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
+
+    </main><!-- /.container -->
+
+  <!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete object</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete it?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-3.2.1.slim.min.js"><\/script>')</script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
