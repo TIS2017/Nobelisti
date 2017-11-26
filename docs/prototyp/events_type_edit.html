@@ -41,7 +41,7 @@
         </ul>
         <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link" href="#">Logout</a>
+            <a class="nav-link" href="login.html">Logout</a>
           </li>
         </ul>
       </div>
@@ -85,7 +85,7 @@
       <th scope="col">Place</th>
       <th scope="col">Time</th>
       <th scope="col">Edit</th>
-      <th scope="col">Delete</th>
+      <th scope="col">Unassign</th>
     </tr>
   </thead>
   <tbody>
@@ -123,17 +123,17 @@
       <th scope="row">1</th>
       <td>Slovak</td>
       <td>sk_SK</td>
-      <td><a href="#" data-toggle="modal" data-target="#deleteModal">Delete</a></td>
+      <td><a href="#" data-toggle="modal" data-target="#unassignModal">Unassign</a></td>
     </tr>
     <tr>
       <th scope="row">2</th>
       <td>English</td>
       <td>en_US</td>
-      <td><a href="#" data-toggle="modal" data-target="#deleteModal">Delete</a></td>
+      <td><a href="#" data-toggle="modal" data-target="#unassignModal">Unassign</a></td>
     </tr>
   </tbody>
 </table>
-<a class='btn btn-primary' href="event_add.html">Assign language</a>
+<a class='btn btn-primary' href="#" data-toggle="modal" data-target="#assignModal">Assign language</a>
         </div>
 
     </div>
@@ -156,6 +156,37 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Assign language [or anything else]</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label">Search</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" value="Sl">
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action">Slavey</a>
+            <a href="#" class="list-group-item list-group-item-action">Slovak</a>
+            <a href="#" class="list-group-item list-group-item-action">Slovene</a>
+          </div>
         </div>
       </div>
     </div>
