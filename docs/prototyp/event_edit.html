@@ -41,156 +41,181 @@
       </div>
     </nav>
     <main role="main" class="container">
-      <h2>Edit event</h2>
-      <hr>
-      <div class="row">
-        <div class="col-md-6 offset-md-3">
-          <form>
-            <div class="form-group row">
-              <label class="col-sm-4 col-form-label">Date/Time</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="2099-12-31 23:59:59">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label class="col-sm-4 col-form-label">Notification threshold</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="24h">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label class="col-sm-4 col-form-label">Address</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="The Spot, SNP 21, Bratislava">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label class="col-sm-4 col-form-label">Capacity</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="12">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label class="col-sm-4 col-form-label">Registration end</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="21.3.2017">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label class="col-sm-4 col-form-label">Template</label>
-              <div class="col-sm-8">
-                <select class="custom-select form-control">
-                  <option selected>template-name</option>
-                  <option value="1">nice-template-name</option>
-                  <option value="2">ugly-template-name</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group row">
-              <div class="col-sm-8 offset-sm-4">
-                <button type="submit" class="btn btn-primary">Save</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="col-md-6 offset-sm-5">
-          <h4 >Test templates</h4>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label">Email</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="exmaple@gmail.com">
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-sm-8 offset-sm-4">
-              <button type="submit" class="btn btn-primary">Test mail template</button>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <ul class="list-group">
-            <li class="list-group-item">
-              <a href="#">https://getbootstrap.com/docs/4.0/layout/overview/</a>
-            </li>
-            <li class="list-group-item">
-              <a href="#">https://getbootstrap.com/docs/4.0/layout/overview/</a>
-            </li>
-            <li class="list-group-item">
-              <a href="#">https://getbootstrap.com/docs/4.0/layout/overview/</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="col-md-6">
-          <table class="table table-bordered">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Email</th>
-                <th scope="col">Unassign</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>tatrabanka@gmail.com</td>
-                <td><a href="#">Unassign</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>primabanka@gmail.com</td>
-                <td><a href="#">Unassign</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="form-group row">
-            <div class="col-sm-12">
-              <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#assignModal">Assign organizer</button>
+              <h2>Edit event</h2>
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Edit</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Test</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Data</a>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+          <div class="row">
+            <div class="col-md-6 offset-md-3">
+              <form>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Date</label>
+                  <div class="col-sm-8">
+                    <input type="date" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Time</label>
+                  <div class="col-sm-8">
+                    <input type="time" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Notification threshold</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="24h">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Address</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="The Spot, SNP 21, Bratislava">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Capacity</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="12">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Registration end</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="21.3.2017">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Template</label>
+                  <div class="col-sm-8">
+                    <select class="custom-select form-control">
+                      <option selected>template-name</option>
+                      <option value="1">nice-template-name</option>
+                      <option value="2">ugly-template-name</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-8 offset-sm-4">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <table class="table table-bordered">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Language</th>
-                <th scope="col">Unassign</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>English</td>
-                <td><a href="#">Unassign</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Slovak</td>
-                <td><a href="#">Unassign</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>French</td>
-                <td><a href="#">Unassign</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="form-group row">
-            <div class="col-sm-12">
-              <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#assignModal">Assign language</button>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+          <div class="row">
+            <div class="col-md-6">
+            <form>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Email</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" placeholder="exmaple@gmail.com">
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-8 offset-sm-4">
+                  <button type="submit" class="btn btn-primary">Test mail template</button>
+                </div>
+              </div>
+              </form>
+            </div>
+            <div class="col-md-6">
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <a href="#">/test/event_slug?state=registration_not_started&lang=sk_SK</a>
+                </li>
+                <li class="list-group-item">
+                  <a href="#">/test/event_slug?state=registration_open&lang=sk_SK</a>
+                </li>
+                <li class="list-group-item">
+                  <a href="#">/test/event_slug?state=registration_finished&lang=sk_SK</a>
+                </li>
+                <li class="list-group-item">
+                  <a href="#">/test/event_slug?state=registration_no_capacity&lang=sk_SK</a>
+                </li>
+
+              </ul>
             </div>
           </div>
         </div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+          <div class="row">
+            <div class="col-md-6">
+              <table class="table table-bordered">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Unassign</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>tatrabanka@gmail.com</td>
+                    <td><a href="#">Unassign</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>primabanka@gmail.com</td>
+                    <td><a href="#">Unassign</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="form-group row">
+                <div class="col-sm-12">
+                  <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#assignModal">Assign organizer</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <table class="table table-bordered">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Language</th>
+                    <th scope="col">Unassign</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>English</td>
+                    <td><a href="#">Unassign</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>Slovak</td>
+                    <td><a href="#">Unassign</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>French</td>
+                    <td><a href="#">Unassign</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="form-group row">
+                <div class="col-sm-12">
+                  <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#assignModal">Assign language</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
       </div>
       </main><!-- /.container -->
       <!-- Modal -->
