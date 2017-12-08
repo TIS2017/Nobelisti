@@ -20,34 +20,19 @@ git clone git@github.com:TIS2017/Nobelisti.git
 docker-compose up --build
 ```
 
-3. Get docker's IP and save it to /etc/hosts
-
-Linux:
-```
-echo $(docker network inspect bridge | grep Gateway | grep -o -E '[0-9\.]+')
-```
-
-MAC/Windows:
-```
-docker-machine ip default
-```
-
-Open `/etc/hosts` and append `IP.ADDRESS.FROM.ECHO    symfony.dev`.
-
-
-4. Change permissions so symfony can save cache, logs & sessions.
-```
-sudo chmod -R 777 src/var/cache src/var/logs src/var/sessions
-```
-
-5. Composer install & create database
+3. Composer install & create database
 ```
 docker-compose exec php bash
 composer install
 sf3 doctrine:schema:update --force
 ```
 
-6. Check the app at [symfony.dev/app_dev.php](http://symfony.dev/app_dev.php).
+4. Change permissions so symfony can save cache, logs & sessions.
+```
+sudo chmod -R 777 src/var/cache src/var/logs src/var/sessions
+```
+
+5. Check the app at [localhost/app_dev.php](http://localhost/app_dev.php).
 
 
 ## Running the tests
