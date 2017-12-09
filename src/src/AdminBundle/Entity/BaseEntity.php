@@ -7,7 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /** 
  * @ORM\MappedSuperclass 
- * @Gedmo\SoftDeleteable(fieldName="deleted", timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deleted", timeAware=true)
  */
 class BaseEntity {
     /**
