@@ -12,7 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Admin extends BaseEntity
 {
-    /**
+
+	public function __construct()
+	{
+		$this->salt = base64_encode(random_bytes(48));
+	}
+
+	/**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
