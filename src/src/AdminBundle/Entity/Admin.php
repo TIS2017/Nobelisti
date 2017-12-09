@@ -39,54 +39,54 @@ class Admin extends BaseEntity
         return $this->id;
     }
 
-	/**
-	 * @ORM\Column(name="email", type="string", length=100)
-	 */
+    /**
+     * @ORM\Column(name="email", type="string", length=100)
+     */
     private $email;
 
-	/**
-	 * Get email
-	 *
-	 * @return string
-	 */
-	public function getEmail() {
-		return $this->email;
-	}
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail() {
+        return $this->email;
+    }
 
-	public function setEmail($mail) {
-		$this->email = $mail;
-	}
+    public function setEmail($mail) {
+        $this->email = $mail;
+    }
 
-	/**
-	 * @ORM\Column(name="password", type="string", length=100)
-	 */
-	private $password;
+    /**
+     * @ORM\Column(name="password", type="string", length=100)
+     */
+    private $password;
 
-	/**
-	 * Get password
-	 *
-	 * @return string
-	 */
-	public function getPassword() {
-		return $this->password;
-	}
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword() {
+        return $this->password;
+    }
 
-	public function setPassword($password) {
-		$this->password = $password;
-	}
+    public function setPassword($password){
+        $this->password = $password;
+    }
 
-	/**
-	 * @ORM\Column(name="salt", type="string", length=100)
-	 */
-	private $salt;
+    /**
+     * @ORM\Column(name="salt", type="string", length=100)
+     */
+    private $salt;
 
-	/**
-	 * Get salt
-	 *
-	 * @return string
-	 */
-	public function getSalt() {
-		return $this->salt;
-	}
+    /**
+     * Get salt
+     *
+     * @return string
+     */
+    public function getSalt() {
+        return $this->salt;
+    }
 }
 
