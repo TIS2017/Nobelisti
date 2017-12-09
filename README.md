@@ -15,9 +15,9 @@ docker-compose version 1.16.1, build 6d1ac21
 git clone git@github.com:TIS2017/Nobelisti.git
 ```
 
-2. Build and run the container
+2. Build and run the container as daemon
 ```
-docker-compose up --build
+docker-compose up --build -d
 ```
 
 3. Composer install & create database
@@ -34,6 +34,10 @@ sudo chmod -R 777 src/var/cache src/var/logs src/var/sessions
 
 5. Check the app at [localhost/app_dev.php](http://localhost/app_dev.php).
 
+6. Stop the container politely
+```
+docker-compose stop
+```
 
 ## Running the tests
 ```
@@ -54,3 +58,13 @@ RuntimeException
 Unable to write in the cache directory (/var/www/symfony/var/cache/dev)
 ```
 Do step 4 again.
+
+
+```
+ClassNotFoundException
+
+```
+1. Ensure you ran ```docker-compose up -d``` -> as daemon
+2. Connect to the virtual machine
+3. Run ```composer dumpautoload``` in the root directory
+4. Take a look at: https://stackoverflow.com/questions/44946911/symfony3-classnotfoundexception-after-bundle-creation
