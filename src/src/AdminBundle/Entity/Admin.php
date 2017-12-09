@@ -13,8 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
 class Admin extends BaseEntity
 {
 
-	public function __construct()
+	public function __construct($email, $password)
 	{
+		$this->email = $email;
+		$this->password = $password;
 		$this->salt = base64_encode(random_bytes(48));
 	}
 
