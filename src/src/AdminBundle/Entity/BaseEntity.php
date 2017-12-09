@@ -5,7 +5,10 @@ namespace AdminBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/** @ORM\MappedSuperclass */
+/** 
+ * @ORM\MappedSuperclass 
+ * @Gedmo\SoftDeleteable(fieldName="deleted", timeAware=false)
+ */
 class BaseEntity {
     /**
      * @var \DateTime $created
@@ -19,15 +22,14 @@ class BaseEntity {
      * @var \DateTime $updated
      *
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     protected $updated;
 
     /**
      * @var \DateTime $deleted
      *
-     * @Gedmo\Timestampable(on="delete")
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="deleted", type="datetime", nullable=true)
      */
     protected $deleted;
 }
