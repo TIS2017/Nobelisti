@@ -3,7 +3,7 @@
 {% block content %}
 <h1>
     <span>Admin manager</span>
-    <a class='btn btn-primary float-sm-right' href="{{ path('create') }}">Add new admin</a>
+    <a class='btn btn-primary float-sm-right' href="{{ path('admins_create') }}">Add new admin</a>
 </h1>
 <table class="table table-bordered">
     <thead class="thead-light">
@@ -19,8 +19,8 @@
         <tr>
             <th scope="row">{{ loop.index }}</th>
             <td>{{ admin.email }}</td>
-            <td><a href="#">Edit</a></td>
-            <td><a href="#" data-toggle="modal" data-target="#deleteModal">Delete</a></td>
+            <td><a href="{{ path('admins_edit', {'id': admin.id}) }}">Edit</a></td>
+            <td><a href="{{ path('admins_delete') }}" data-toggle="modal" data-target="#deleteModal">Delete</a></td>
         </tr>
     {% endfor %}
     </tbody>
