@@ -3,6 +3,7 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -27,6 +28,7 @@ class Organizer extends BaseEntity
      * @var string $email
      *
      * @ORM\Column(name="email", type="string", length=254, unique=true)
+     * @Assert\NotBlank()
      */
     private $email;
 
