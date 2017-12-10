@@ -154,7 +154,7 @@ class AdminController extends Controller {
 
         $admin = $repo->find(Admin::class, $adminId);
         if (!$admin) {
-            throw $this->createNotFoundException('Such admin does not exist');
+            throw $this->createNotFoundException('Admin does not exist');
         }
 
         $formForFields = $this->getEditAdminFormForFields($request, $admin);
@@ -174,8 +174,8 @@ class AdminController extends Controller {
         $repo = $this->getDoctrine()->getManager();
         $adminId = $request->get('id');
         $admin = $repo->find(Admin::class, $adminId);
-        if (!$admin) { //aj tu to kontrolovat??
-            throw $this->createNotFoundException('Such admin does not exist');
+        if (!$admin) {
+            throw $this->createNotFoundException('Admin does not exist');
         }
 
         $formForFields = $this->getEditAdminFormForFields($request, $admin);
@@ -224,12 +224,11 @@ class AdminController extends Controller {
      * @Route("admins/delete/{id}", name="admins_delete", methods={"POST"})
      */
     public function deleteAdmin(Request $request) {
-        //pridat do readme migracie
         $repo = $this->getDoctrine()->getManager();
         $adminId = $request->get('id');
         $admin = $repo->find(Admin::class, $adminId);
-        if (!$admin) { //aj tu to kontrolovat??
-            throw $this->createNotFoundException('Such admin does not exist');
+        if (!$admin) {
+            throw $this->createNotFoundException('Admin does not exist.');
         }
 
         $repo->remove($admin);
