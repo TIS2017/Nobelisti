@@ -35,31 +35,33 @@
                   <th scope="row">{{ loop.index }}</th>
                   <td>{{ organizer.email }}</td>
                   <td><a href="{{ path('edit_organizer',{'id':organizer.id} ) }}">Edit</a></td>
-                  <td><a href="#" data-toggle="modal" data-target="#deleteModal">Delete</a></td>
+                  <td><a href="#" data-toggle="modal" data-target="#deleteModal{{organizer.id}}">Delete</a></td>
                 </tr>
+                <!-- Modal -->
+                <div class="modal fade" id="deleteModal{{organizer.id}}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Delete object</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to delete it?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <form method="post" action="{{ path('delete_organizer', {'id':organizer.id}) }}">
+                          <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             {% endfor %}
           </tbody>
         </table>
       {% endif %}
       </main>
-      <!-- Modal -->
-      <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteModalLabel">Delete object</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              Are you sure you want to delete it?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-danger">Delete</button>
-            </div>
-          </div>
-        </div>
-      </div>
 {% endblock %}

@@ -29,7 +29,7 @@ class OrganizerController extends Controller
         $form->handleRequest($request);
 
         $organizers = [];
-        $repository =$this->getDoctrine()->getRepository(Organizer::class);
+        $repository = $this->getDoctrine()->getRepository(Organizer::class);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -107,5 +107,26 @@ class OrganizerController extends Controller
             ->setMethod('POST')
             ->getForm();
      }
+
+    /**
+     * @Route("/organizers/delete/{id}", name="delete_organizer")
+     * @Method("POST")
+     */
+    public function deleteOrganizer($id, Request $request){
+
+        $em = $this->getDoctrine()->getManager();
+        $organizer = $em->getRepository(Organizer::class)->findOneBy(array('id' => $id));
+
+        if (!$organizer) {
+            throw $this->createNotFoundException(
+                'No organizer found for id '.$id
+            );
+        }
+
+        $em->remove($organizer);
+        $em->flush();
+
+        return $this->redirectToRoute('organizers');
+     }     
 
 }
