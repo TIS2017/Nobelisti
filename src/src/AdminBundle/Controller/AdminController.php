@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller {
 
@@ -63,12 +64,35 @@ class AdminController extends Controller {
 
             $admin = new Admin($email, $password);
             $this->hashPassword($admin, $password);
+
+            //validate
+            $validator = $this->get('validator');
+            $errors = $validator->validate($admin);
+            if (count($errors) > 0) {
+                /*
+                 * Uses a __toString method on the $errors variable which is a
+                 * ConstraintViolationList object. This gives us a nice string
+                 * for debugging.
+                 */
+                $errorsString = (string) $errors;
+
+//                return new Response($errorsString);
+                return $this->render('AdminBundle:Admin:create.html.twig', array(
+                    'form' => $form->createView(),
+                    'errors' => $errorsString
+                ));
+            }
+
+
             $repo = $this->getDoctrine()->getManager();
             $repo->persist($admin);
             $repo->flush();
             return $this->redirectToRoute('admins');
         }
-        return $this->render('AdminBundle:Admin:create.html.twig', array('form' => $form->createView()));
+        return $this->render('AdminBundle:Admin:create.html.twig', array(
+            'form' => $form->createView(),
+            'errors' => null
+        ));
     }
 
     /**
@@ -96,6 +120,9 @@ class AdminController extends Controller {
 
         $form->handleRequest($request);
 
-        return $this->render('AdminBundle:Admin:create.html.twig', array('form' => $form->createView()));
+        return $this->render('AdminBundle:Admin:create.html.twig', array(
+            'form' => $form->createView(),
+            'errors' => null
+        ));
     }
 }
