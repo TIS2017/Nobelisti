@@ -10,8 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller {
 
@@ -223,9 +221,19 @@ class AdminController extends Controller {
     }
 
     /**
-     * @Route("admins/delete/{id}", name="admins_delete" methods={"POST"})
+     * @Route("admins/delete/{id}", name="admins_delete", methods={"POST"})
      */
     public function deleteAdmin(Request $request) {
+        //pridat do readme migracie
+        $repo = $this->getDoctrine()->getManager();
+        $adminId = $request->get('id');
+        $admin = $repo->find(Admin::class, $adminId);
+        if (!$admin) { //aj tu to kontrolovat??
+            throw $this->createNotFoundException('Such admin does not exist');
+        }
 
+        $repo->remove($admin);
+        $repo->flush();
+        return $this->redirectToRoute('admins');
     }
 }
