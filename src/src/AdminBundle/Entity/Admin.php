@@ -4,18 +4,19 @@ namespace AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Admin
  *
  * @ORM\Table(name="admin")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\AdminRepository")
+ * @UniqueEntity("email")
  */
 class Admin extends BaseEntity implements UserInterface {
 
-    public function __construct($email, $password) {
+    public function __construct($email) {
         $this->email = $email;
-        $this->password = $password;
         $this->salt = base64_encode(random_bytes(48));
     }
 
@@ -38,7 +39,7 @@ class Admin extends BaseEntity implements UserInterface {
     }
 
     /**
-     * @ORM\Column(name="email", type="string", length=100)
+     * @ORM\Column(name="email", type="string", length=100, unique=true)
      */
     private $email;
 
@@ -99,4 +100,3 @@ class Admin extends BaseEntity implements UserInterface {
         // TODO: Implement eraseCredentials() method.
     }
 }
-
