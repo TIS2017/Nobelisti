@@ -1,11 +1,18 @@
 # To get started with security, check out the documentation:
 # https://symfony.com/doc/current/security.html
 security:
+    encoders:
+        AdminBundle\Entity\Admin:
+            algorithm: sha512
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
         in_memory:
             memory: ~
+        mysql_provider:
+            entity:
+                class: AdminBundle\Entity\Admin
+                property: email
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
