@@ -29,7 +29,7 @@ class AdminController extends Controller {
     }
 
     /**
-     * @Route("/admins/create", name="create" methods={"POST"})
+     * @Route("/admins/create", methods={"POST"})
      */
     public function createAdmin(Request $request) {
         $email = $request->get('email');
@@ -61,7 +61,7 @@ class AdminController extends Controller {
     /**
      * @Route("/admins/create", name="create", methods={"GET"})
      */
-    public function getFormNewAdmin(Request $request) {
+    public function getAdminForm(Request $request) {
         return $this->render('AdminBundle:Admin:create.html.twig', array( 'error' => null));
     }
 }
