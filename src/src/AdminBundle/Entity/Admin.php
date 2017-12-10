@@ -3,15 +3,18 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Admin
  *
  * @ORM\Table(name="admin")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\AdminRepository")
+ * @UniqueEntity("email")
  */
-class Admin extends BaseEntity implements \Serializable {
-
+class Admin extends BaseEntity implements UserInterface, \Serializable {
+    
     public function __construct($email) {
         $this->email = $email;
         $this->salt = base64_encode(random_bytes(48));
@@ -31,13 +34,12 @@ class Admin extends BaseEntity implements \Serializable {
      *
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
     /**
-     * @ORM\Column(name="email", type="string", length=100)
+     * @ORM\Column(name="email", type="string", length=100, unique=true)
      */
     private $email;
 
@@ -68,7 +70,7 @@ class Admin extends BaseEntity implements \Serializable {
         return $this->password;
     }
 
-    public function setPassword($password){
+    public function setPassword($password) {
         $this->password = $password;
     }
 
@@ -88,6 +90,14 @@ class Admin extends BaseEntity implements \Serializable {
 
     public function getRoles() {
         return array('ROLE_ADMIN');
+    }
+
+    public function getUserName() {
+        return $this->getEmail();
+    }
+
+    public function eraseCredentials() {
+        // TODO: Implement eraseCredentials() method.
     }
 
     /** @see \Serializable::serialize() */
@@ -112,4 +122,3 @@ class Admin extends BaseEntity implements \Serializable {
         ) = unserialize($serialized);
     }
 }
-

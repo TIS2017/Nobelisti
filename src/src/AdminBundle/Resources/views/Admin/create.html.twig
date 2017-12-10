@@ -1,0 +1,18 @@
+{% extends "@AdminBundle/Resources/views/base.html.twig" %}
+
+{% block content %}
+    <h2>Add new admin</h2>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            {% if errors %}
+                <div class="alert alert-danger">
+                    {{ errors }}
+                </div>
+            {% endif %}
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
