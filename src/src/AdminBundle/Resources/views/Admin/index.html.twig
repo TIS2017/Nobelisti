@@ -17,7 +17,7 @@
     <tbody>
     {% for admin in admins %}
         <tr>
-            <th scope="row">{{ admin.id }}</th>
+            <th scope="row">{{ loop.index }}</th>
             <td>{{ admin.email }}</td>
             <td><a href="#">Edit</a></td>
             <td><a href="#" data-toggle="modal" data-target="#deleteModal">Delete</a></td>
