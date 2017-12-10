@@ -2,6 +2,7 @@
 
 namespace EmailBundle\Entity;
 
+use AdminBundle\Entity\BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,8 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="email_log_status")
  * @ORM\Entity(repositoryClass="EmailBundle\Repository\EmailLogStatusRepository")
  */
-class EmailLogStatus
-{
+class EmailLogStatus extends BaseEntity {
     /**
      * @var int
      *
@@ -97,6 +97,20 @@ class EmailLogStatus
     public function getResponse()
     {
         return $this->response;
+    }
+
+    /**
+     * Set content
+     *
+     * @param EmailLogContent $content
+     *
+     * @return EmailLogStatus
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+
+        return $this;
     }
 
     /**
