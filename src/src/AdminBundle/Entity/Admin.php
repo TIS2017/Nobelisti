@@ -10,13 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="admin")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\AdminRepository")
  */
-class Admin extends BaseEntity
-{
+class Admin extends BaseEntity implements \Serializable {
 
-    public function __construct($email, $password)
-    {
+    public function __construct($email) {
         $this->email = $email;
-        $this->password = $password;
         $this->salt = base64_encode(random_bytes(48));
     }
 
@@ -87,6 +84,32 @@ class Admin extends BaseEntity
      */
     public function getSalt() {
         return $this->salt;
+    }
+
+    public function getRoles() {
+        return array('ROLE_ADMIN');
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->email,
+            $this->password,
+            $this->salt,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->email,
+            $this->password,
+            $this->salt
+        ) = unserialize($serialized);
     }
 }
 

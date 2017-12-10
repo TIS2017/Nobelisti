@@ -16,6 +16,7 @@ security:
 
     access_control:
         - { path: ^/admin/?(?!/?login).*, roles: ROLE_ADMIN }
+        - { path: ^/admin/login/?$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -24,15 +25,17 @@ security:
             security: false
 
         main:
-            anonymous: true
+            pattern: ^/
+            provider: mysql_provider
+            anonymous: ~
             logout:
-                path: /logout
-                target: /login
+                path: /admin/logout
+                target: /admin/login
             form_login:
                 login_path: login
                 check_path: login
+                default_target_path: /admin
                 always_use_default_target_path: true
-                provider: mysql_provider
             # activate different ways to authenticate
 
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
