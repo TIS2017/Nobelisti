@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @ORM\Table(name="admin")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\AdminRepository")
+ * @UniqueEntity("email")
  */
 class Admin extends BaseEntity implements UserInterface {
 
@@ -99,4 +100,3 @@ class Admin extends BaseEntity implements UserInterface {
         // TODO: Implement eraseCredentials() method.
     }
 }
-
