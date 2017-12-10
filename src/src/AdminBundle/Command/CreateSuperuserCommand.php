@@ -23,8 +23,9 @@ class CreateSuperuserCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $newAdmin = new Admin($input->getArgument('email'));
-        $encoder = $this->getContainer()->get('security.encoder_factory')->getEncoder($newAdmin);
-        $newAdmin->setPassword($encoder->encodePassword($input->getArgument('password'), $newAdmin->getSalt()));
+        $password = $input->getArgument('password');
+        $encoded = $this->getContainer()->get('security.password_encoder')->encodePassword($newAdmin, $password);
+        $newAdmin->setPassword($encoded);
         $manager = $this->getContainer()->get('doctrine')->getManager();
         $manager->persist($newAdmin);
         $manager->flush();
