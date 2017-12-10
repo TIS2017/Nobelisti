@@ -15,9 +15,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Admin extends BaseEntity implements UserInterface {
 
-    public function __construct($email, $password) {
+    public function __construct($email) {
         $this->email = $email;
-        $this->password = $password;
         $this->salt = base64_encode(random_bytes(48));
     }
 
