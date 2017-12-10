@@ -24,7 +24,7 @@ docker-compose up --build -d
 ```
 docker-compose exec php bash
 composer install
-sf3 doctrine:schema:update --force
+php bin/console doctrine:migrations:migrate
 ```
 
 4. Change permissions so symfony can save cache, logs & sessions.
@@ -64,7 +64,11 @@ Do step 4 again.
 ClassNotFoundException
 
 ```
-1. Ensure you ran ```docker-compose up -d``` -> as daemon
-2. Connect to the virtual machine
-3. Run ```composer dumpautoload``` in the root directory
-4. Take a look at: https://stackoverflow.com/questions/44946911/symfony3-classnotfoundexception-after-bundle-creation
+1. Connect to the virtual machine `docker-compose exec php bash`
+2. Run `composer dumpautoload` in the root directory
+3. Take a look at: https://stackoverflow.com/questions/44946911/symfony3-classnotfoundexception-after-bundle-creation
+
+### How to make migrations and migrate?
+1. Connect to the virtual machine `docker-compose exec php bash`
+2. Run `php bin/console doctrine:migrations:diff`
+3. Run `php bin/console doctrine:migrations:migrate`
