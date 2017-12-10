@@ -35,7 +35,14 @@ class OrganizerController extends Controller
 
             $searchedEmail = $form->getData()['email'];
 
-            $organizers = $repository->findBy(array('email' => $searchedEmail));
+            $em = $this->getDoctrine()->getManager();
+            $organizers = $em->getRepository(Organizer::class)
+                ->createQueryBuilder('o')
+                ->where('o.email LIKE :email')
+                ->setParameter('email',"%" . $searchedEmail . "%")
+                ->getQuery()
+                ->getResult();
+
         } else {
 
             $organizers = $repository->findAll();
