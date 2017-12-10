@@ -29,19 +29,16 @@ class OrganizerController extends Controller
         $form->handleRequest($request);
 
         $organizers = [];
+        $repository =$this->getDoctrine()->getRepository(Organizer::class);
 
-       if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $searchedEmail = $form->getData()['email'];
 
-            $organizers = $this->getDoctrine()
-                ->getRepository(Organizer::class)
-                ->findBy(array('email' => $searchedEmail));
+            $organizers = $repository->findBy(array('email' => $searchedEmail));
         } else {
 
-            $organizers = $this->getDoctrine()
-                ->getRepository(Organizer::class)
-                ->findAll();
+            $organizers = $repository->findAll();
         }
 
         return $this->render('AdminBundle:Organizers:organizers.html.twig', array(

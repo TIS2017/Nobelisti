@@ -26,7 +26,7 @@ class Organizer extends BaseEntity
     /**
      * @var string $email
      *
-     * @ORM\Column(name="email", type="string", length=254)
+     * @ORM\Column(name="email", type="string", length=254, unique=true)
      */
     private $email;
 

@@ -17,28 +17,29 @@
         <button id="form_filter" type="submit" class="btn btn-primary">Filter</button>
       </form>-->
       <hr>
-      <table class="table table-bordered">
-        <thead class="thead-light">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">E-mail</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for organizer in organizers %}
-              <tr>
-                <th scope="row">{{ loop.index }}</th>
-                <td>{{ organizer.email }}</td>
-                <td><a href="organizers_edit.html">Edit</a></td>
-                <td><a href="#" data-toggle="modal" data-target="#deleteModal">Delete</a></td>
-              </tr>
-          {% endfor %}
-        </tbody>
-      </table>
       {% if organizers | length == 0 %}
         <p> No organizers found.</p>
+      {% else %}
+        <table class="table table-bordered">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">E-mail</th>
+              <th scope="col">Edit</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for organizer in organizers %}
+                <tr>
+                  <th scope="row">{{ loop.index }}</th>
+                  <td>{{ organizer.email }}</td>
+                  <td><a href="organizers_edit.html">Edit</a></td>
+                  <td><a href="#" data-toggle="modal" data-target="#deleteModal">Delete</a></td>
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       {% endif %}
       </main>
       <!-- Modal -->
