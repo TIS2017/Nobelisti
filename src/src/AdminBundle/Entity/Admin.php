@@ -13,8 +13,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\AdminRepository")
  * @UniqueEntity("email")
  */
-class Admin extends BaseEntity implements UserInterface {
-
+class Admin extends BaseEntity implements UserInterface, \Serializable {
+    
     public function __construct($email) {
         $this->email = $email;
         $this->salt = base64_encode(random_bytes(48));
@@ -98,5 +98,27 @@ class Admin extends BaseEntity implements UserInterface {
 
     public function eraseCredentials() {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->email,
+            $this->password,
+            $this->salt,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->email,
+            $this->password,
+            $this->salt
+        ) = unserialize($serialized);
     }
 }
