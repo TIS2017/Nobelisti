@@ -11,11 +11,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="admin")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\AdminRepository")
  */
-class Admin extends BaseEntity implements UserInterface
-{
+class Admin extends BaseEntity implements UserInterface {
 
-    public function __construct($email, $password)
-    {
+    public function __construct($email, $password) {
         $this->email = $email;
         $this->password = $password;
         $this->salt = base64_encode(random_bytes(48));
@@ -35,8 +33,7 @@ class Admin extends BaseEntity implements UserInterface
      *
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -72,7 +69,7 @@ class Admin extends BaseEntity implements UserInterface
         return $this->password;
     }
 
-    public function setPassword($password){
+    public function setPassword($password) {
         $this->password = $password;
     }
 
@@ -98,8 +95,7 @@ class Admin extends BaseEntity implements UserInterface
         return $this->getEmail();
     }
 
-    public function eraseCredentials()
-    {
+    public function eraseCredentials() {
         // TODO: Implement eraseCredentials() method.
     }
 }
