@@ -1,0 +1,64 @@
+{% extends "@AdminBundle/Resources/views/base.html.twig" %}
+
+{% block content %}
+<h1>
+      <span>Organizers</span>
+      <a class='btn btn-primary float-sm-right' href="organizers_add.html">Add new organizer</a>
+      </h1>
+      <hr>
+      {{ form_start(form) }}
+      {{ form_widget(form) }}
+      {{ form_end(form) }}
+      <!--<form class="form-inline" method="get">
+        <div class="form-group mx-sm-3">
+          <label class="sr-only">Filter</label>
+          <input type="text" id="form_email" name="email" required="required" class="form-control" placeholder="Filter by e-mail">
+        </div>
+        <button id="form_filter" type="submit" class="btn btn-primary">Filter</button>
+      </form>-->
+      <hr>
+      <table class="table table-bordered">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for organizer in organizers %}
+              <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{ organizer.email }}</td>
+                <td><a href="organizers_edit.html">Edit</a></td>
+                <td><a href="#" data-toggle="modal" data-target="#deleteModal">Delete</a></td>
+              </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% if organizers | length == 0 %}
+        <p> No organizers found.</p>
+      {% endif %}
+      </main>
+      <!-- Modal -->
+      <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Delete object</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to delete it?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-danger">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock %}

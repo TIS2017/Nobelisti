@@ -3,12 +3,14 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Organizer
  *
  * @ORM\Table(name="organizer")
- * @ORM\Entity(repositoryClass="OrganizerBundle\Repository\OrganizerRepository")
+ * @ORM\Entity(repositoryClass="AdminBundle\Repository\OrganizerRepository")
+ * @UniqueEntity("email")
  */
 class Organizer extends BaseEntity
 {
@@ -22,6 +24,8 @@ class Organizer extends BaseEntity
     private $id;
 
     /**
+     * @var string $email
+     *
      * @ORM\Column(name="email", type="string", length=254)
      */
     private $email;
