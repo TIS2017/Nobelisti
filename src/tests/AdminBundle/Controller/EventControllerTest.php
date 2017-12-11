@@ -4,7 +4,7 @@ namespace AdminBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DefaultControllerTest extends WebTestCase
+class EventControllerTest extends WebTestCase
 {
     public function testIndex()
     {
