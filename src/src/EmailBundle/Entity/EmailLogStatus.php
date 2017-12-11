@@ -6,12 +6,13 @@ use AdminBundle\Entity\BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * EmailLogStatus
+ * EmailLogStatus.
  *
  * @ORM\Table(name="email_log_status")
  * @ORM\Entity(repositoryClass="EmailBundle\Repository\EmailLogStatusRepository")
  */
-class EmailLogStatus extends BaseEntity {
+class EmailLogStatus extends BaseEntity
+{
     /**
      * @var int
      *
@@ -42,7 +43,7 @@ class EmailLogStatus extends BaseEntity {
     private $content;
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -52,7 +53,7 @@ class EmailLogStatus extends BaseEntity {
     }
 
     /**
-     * Set status
+     * Set status.
      *
      * @param string $status
      *
@@ -66,7 +67,7 @@ class EmailLogStatus extends BaseEntity {
     }
 
     /**
-     * Get status
+     * Get status.
      *
      * @return string
      */
@@ -76,7 +77,7 @@ class EmailLogStatus extends BaseEntity {
     }
 
     /**
-     * Set response
+     * Set response.
      *
      * @param string $response
      *
@@ -90,7 +91,7 @@ class EmailLogStatus extends BaseEntity {
     }
 
     /**
-     * Get response
+     * Get response.
      *
      * @return string
      */
@@ -100,7 +101,7 @@ class EmailLogStatus extends BaseEntity {
     }
 
     /**
-     * Set content
+     * Set content.
      *
      * @param EmailLogContent $content
      *
@@ -114,7 +115,7 @@ class EmailLogStatus extends BaseEntity {
     }
 
     /**
-     * Get content
+     * Get content.
      *
      * @return string
      */

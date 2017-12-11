@@ -6,12 +6,13 @@ use AdminBundle\Entity\BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * EmailLogContent
+ * EmailLogContent.
  *
  * @ORM\Table(name="email_log_content")
  * @ORM\Entity(repositoryClass="EmailBundle\Repository\EmailLogContentRepository")
  */
-class EmailLogContent extends BaseEntity {
+class EmailLogContent extends BaseEntity
+{
     /**
      * @var int
      *
@@ -63,145 +64,157 @@ class EmailLogContent extends BaseEntity {
      */
     private $template;
 
-
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
-     * Set emailAddress
+     * Set emailAddress.
      *
      * @param string $emailAddress
      *
      * @return EmailLogContent
      */
-    public function setEmailAddress($emailAddress) {
+    public function setEmailAddress($emailAddress)
+    {
         $this->emailAddress = $emailAddress;
 
         return $this;
     }
 
     /**
-     * Get emailAddress
+     * Get emailAddress.
      *
      * @return string
      */
-    public function getEmailAddress() {
+    public function getEmailAddress()
+    {
         return $this->emailAddress;
     }
 
     /**
-     * Set emailType
+     * Set emailType.
      *
      * @param string $emailType
      *
      * @return EmailLogContent
      */
-    public function setEmailType($emailType) {
+    public function setEmailType($emailType)
+    {
         $this->emailType = $emailType;
 
         return $this;
     }
 
     /**
-     * Get emailType
+     * Get emailType.
      *
      * @return string
      */
-    public function getEmailType() {
+    public function getEmailType()
+    {
         return $this->emailType;
     }
 
     /**
-     * Set emailMeta
+     * Set emailMeta.
      *
      * @param string $emailMeta
      *
      * @return EmailLogContent
      */
-    public function setEmailMeta($emailMeta) {
+    public function setEmailMeta($emailMeta)
+    {
         $this->emailMeta = $emailMeta;
 
         return $this;
     }
 
     /**
-     * Get emailMeta
+     * Get emailMeta.
      *
      * @return string
      */
-    public function getEmailMeta() {
+    public function getEmailMeta()
+    {
         return $this->emailMeta;
     }
 
     /**
-     * Set contentPlain
+     * Set contentPlain.
      *
      * @param string $contentPlain
      *
      * @return EmailLogContent
      */
-    public function setContentPlain($contentPlain) {
+    public function setContentPlain($contentPlain)
+    {
         $this->contentPlain = $contentPlain;
 
         return $this;
     }
 
     /**
-     * Get contentPlain
+     * Get contentPlain.
      *
      * @return string
      */
-    public function getContentPlain() {
+    public function getContentPlain()
+    {
         return $this->contentPlain;
     }
 
     /**
-     * Set contentHtml
+     * Set contentHtml.
      *
      * @param string $contentHtml
      *
      * @return EmailLogContent
      */
-    public function setContentHtml($contentHtml) {
+    public function setContentHtml($contentHtml)
+    {
         $this->contentHtml = $contentHtml;
 
         return $this;
     }
 
     /**
-     * Get contentHtml
+     * Get contentHtml.
      *
      * @return string
      */
-    public function getContentHtml() {
+    public function getContentHtml()
+    {
         return $this->contentHtml;
     }
 
     /**
-     * Set template
+     * Set template.
      *
      * @param string $template
      *
      * @return EmailLogContent
      */
-    public function setTemplate($template) {
+    public function setTemplate($template)
+    {
         $this->template = $template;
 
         return $this;
     }
 
     /**
-     * Get template
+     * Get template.
      *
      * @return string
      */
-    public function getTemplate() {
+    public function getTemplate()
+    {
         return $this->template;
     }
 }
