@@ -1,7 +1,7 @@
 {% extends "@AdminBundle/Resources/views/base.html.twig" %}
 
 {% block content %}
-    <div class="col-md-4 offset-md-4">
+    <div class="col-md-6 offset-md-3 col-lg-4 offset-lg-4">
         {% if error %}
             <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
