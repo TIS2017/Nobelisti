@@ -45,7 +45,7 @@ class OrganizerController extends Controller
             $organizers = $repository->findAll();
         }
 
-        return $this->render('AdminBundle:Organizers:organizers.html.twig', array(
+        return $this->render('AdminBundle:Organizer:index.html.twig', array(
             'form' => $form->createView(),
             'organizers' => $organizers,
         ));
@@ -70,7 +70,7 @@ class OrganizerController extends Controller
             return $this->redirectToRoute('organizers');
         }
 
-        return $this->render('AdminBundle:Organizers:organizers_add.html.twig', array(
+        return $this->render('AdminBundle:Organizer:create.html.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -99,7 +99,7 @@ class OrganizerController extends Controller
             return $this->redirectToRoute('organizers');
         }
 
-        return $this->render('AdminBundle:Organizers:organizers_edit.html.twig', array(
+        return $this->render('AdminBundle:Organizer:edit.html.twig', array(
             'form' => $form->createView(),
         ));
     }
