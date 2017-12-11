@@ -42,11 +42,11 @@ services:
             PMA_HOST: db
             PMA_PORT: 3306
         ports:
-            - 82:80
+            - 8082:80
     nginx:
         build: nginx
         ports:
-            - 80:80
+            - 8080:80
         volumes_from:
             - php
         volumes:
@@ -54,7 +54,7 @@ services:
     elk:
         image: willdurand/elk
         ports:
-            - 81:80
+            - 8081:80
         volumes:
             - ./elk/logstash:/etc/logstash
             - ./elk/logstash/patterns:/opt/logstash/patterns

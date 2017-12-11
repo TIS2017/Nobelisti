@@ -1,0 +1,2 @@
+php vendor/bin/php-cs-fixer fix ./src --rules=@Symfony --verbose --show-progress=estimating --using-cache=no
+php vendor/bin/php-cs-fixer fix ./tests --rules=@Symfony --verbose --show-progress=estimating --using-cache=no

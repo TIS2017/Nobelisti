@@ -32,7 +32,7 @@ php bin/console doctrine:migrations:migrate
 sudo chmod -R 777 src/var/cache src/var/logs src/var/sessions
 ```
 
-5. Check the app at [localhost/app_dev.php](http://localhost/app_dev.php).
+5. Check the app at [localhost:8080/app_dev.php](http://localhost:8080/app_dev.php).
 
 6. Stop the container politely
 ```
@@ -43,6 +43,10 @@ docker-compose stop
 ```
 docker-compose exec php php vendor/phpunit/phpunit/phpunit
 ```
+
+## Running PHP-CS-Fixer
+
+Run `docker-compose run php ./csfix` script before each commit!
 
 ## FAQ
 
