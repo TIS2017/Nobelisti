@@ -1,36 +1,36 @@
 {% extends "@AdminBundle/Resources/views/base_admin.html.twig" %}
 
 {% block content %}
-<h1>
-    <span>Admin manager</span>
-    <a class='btn btn-primary float-sm-right' href="{{ path('admins_create') }}">Add new admin</a>
-</h1>
-<table class="table table-bordered">
-    <thead class="thead-light">
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">Email</th>
-        <th scope="col">Edit</th>
-        <th scope="col">Delete</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for admin in admins %}
+    <h1>
+        <span>Admin manager</span>
+        <a class='btn btn-primary float-sm-right' href="{{ path('admins_create') }}">Add new admin</a>
+    </h1>
+    <table class="table table-bordered">
+        <thead class="thead-light">
         <tr>
-            <th scope="row">{{ loop.index }}</th>
-            <td>{{ admin.email }}</td>
-            <td><a href="{{ path('admins_edit', {'id': admin.id}) }}">Edit</a></td>
-            <td><a href="#" data-toggle="modal" data-target="#deleteModal{{  admin.id }}">Delete</a></td>
+            <th scope="col">#</th>
+            <th scope="col">Email</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
         </tr>
-        {% include "@AdminBundle/Resources/views/modal.html.twig"
-            with {
-                modal_id: 'deleteModal' ~ admin.id,
-                modal_title: 'Delete admin',
-                modal_content: 'Are you sure you want to delete ' ~ admin.email ~ '?',
-                action_path: path('admins_delete', {'id':admin.id}),
-            }
-        %}
-    {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        {% for admin in admins %}
+            <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{ admin.email }}</td>
+                <td><a href="{{ path('admins_edit', {'id': admin.id}) }}">Edit</a></td>
+                <td><a href="#" data-toggle="modal" data-target="#deleteModal{{  admin.id }}">Delete</a></td>
+            </tr>
+            {% include "@AdminBundle/Resources/views/modal.html.twig"
+                with {
+                    modal_id: 'deleteModal' ~ admin.id,
+                    modal_title: 'Delete admin',
+                    modal_content: 'Are you sure you want to delete ' ~ admin.email ~ '?',
+                    action_path: path('admins_delete', {'id':admin.id}),
+                }
+            %}
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
