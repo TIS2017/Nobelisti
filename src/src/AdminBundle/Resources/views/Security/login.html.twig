@@ -3,12 +3,15 @@
 {% block content %}
     <div class="col-md-6 offset-md-3 col-lg-4 offset-lg-4">
         {% if error %}
-            <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            <div class="alert alert-danger" role="alert">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
         {% endif %}
         <form class="form-signin" method="POST" action="{{ path('login') }}">
             <h2 class="form-signin-heading">Please sign in</h2>
             <label for="username" class="sr-only">Email address</label>
-            <input type="email" name="_username" id="username" class="form-control" placeholder="Email address" value="{{ last_email }}" required autofocus>
+            <input type="email" name="_username" id="username" class="form-control"
+                   placeholder="Email address" value="{{ last_email }}" required autofocus>
             <label for="password" class="sr-only">Password</label>
             <input type="password" name="_password" id="password" class="form-control" placeholder="Password" required>
             <div class="checkbox">

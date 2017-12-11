@@ -1,28 +1,28 @@
 {% extends "@AdminBundle/Resources/views/base_admin.html.twig" %}
 
 {% block content %}
-<h2>Update admin</h2>
-<hr>
-<div class="row">
-    {% if errors %}
-        <div class="alert alert-danger">
-            {{ errors }}
+    <h2>Update admin</h2>
+    <hr>
+    <div class="row">
+        {% if errors %}
+            <div class="alert alert-danger">
+                {{ errors }}
+            </div>
+        {% endif %}
+        <div class="col-md-6">
+            {#todo: naformatovat formular#}
+            <div>
+                {{ form_start(formForFields) }}
+                {{ form_widget(formForFields) }}
+                {{ form_end(formForFields) }}
+            </div>
         </div>
-    {% endif %}
-    <div class="col-md-6">
-        {#todo: naformatovat formular#}
-        <div>
-            {{ form_start(formForFields) }}
-            {{ form_widget(formForFields) }}
-            {{ form_end(formForFields) }}
+        <div class="col-md-6">
+            <div>
+                {{ form_start(formForPassword) }}
+                {{ form_widget(formForPassword) }}
+                {{ form_end(formForPassword) }}
+            </div>
         </div>
     </div>
-    <div class="col-md-6">
-        <div>
-            {{ form_start(formForPassword) }}
-            {{ form_widget(formForPassword) }}
-            {{ form_end(formForPassword) }}
-        </div>
-    </div>
-</div>
 {% endblock %}

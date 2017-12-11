@@ -1,52 +1,52 @@
 {% extends "@AdminBundle/Resources/views/base_admin.html.twig" %}
 
 {% block content %}
-  <h1 class="content">
-    <span>Organizers</span>
-    <a class='btn btn-primary float-sm-right' href="{{ path('create_organizer') }}">Add new organizer</a>
-  </h1>
-  <hr>
-  {{ form_start(form) }}
-  {{ form_widget(form) }}
-  {{ form_end(form) }}
-  <!--<form class="form-inline" method="get">
-    <div class="form-group mx-sm-3">
-      <label class="sr-only">Filter</label>
-      <input type="text" id="form_email" name="email" required="required" class="form-control" placeholder="Filter by e-mail">
-    </div>
-    <button id="form_filter" type="submit" class="btn btn-primary">Filter</button>
-  </form>-->
-  <hr>
-  {% if organizers | length == 0 %}
-    <p> No organizers found.</p>
-  {% else %}
-    <table class="table table-bordered">
-      <thead class="thead-light">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">E-mail</th>
-          <th scope="col">Edit</th>
-          <th scope="col">Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for organizer in organizers %}
-            <tr>
-              <th scope="row">{{ loop.index }}</th>
-              <td>{{ organizer.email }}</td>
-              <td><a href="{{ path('edit_organizer',{'id':organizer.id} ) }}">Edit</a></td>
-              <td><a href="#" data-toggle="modal" data-target="#deleteModal{{organizer.id}}">Delete</a></td>
-            </tr>
-            {% include "@AdminBundle/Resources/views/modal.html.twig"
-               with {
-                modal_id: 'deleteModal' ~ organizer.id,
-                modal_title: 'Delete organizer',
-                modal_content: 'Are you sure you want to delete ' ~ organizer.email ~ '?',
-                action_path: path('delete_organizer', {'id':organizer.id}),
-               }
-            %}
-        {% endfor %}
-      </tbody>
-    </table>
-  {% endif %}
+    <h1 class="content">
+        <span>Organizers</span>
+        <a class='btn btn-primary float-sm-right' href="{{ path('create_organizer') }}">Add new organizer</a>
+    </h1>
+    <hr>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+    <!--<form class="form-inline" method="get">
+        <div class="form-group mx-sm-3">
+            <label class="sr-only">Filter</label>
+            <input type="text" id="form_email" name="email" required="required" class="form-control" placeholder="Filter by e-mail">
+        </div>
+        <button id="form_filter" type="submit" class="btn btn-primary">Filter</button>
+    </form>-->
+    <hr>
+    {% if organizers | length == 0 %}
+        <p> No organizers found.</p>
+    {% else %}
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for organizer in organizers %}
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ organizer.email }}</td>
+                        <td><a href="{{ path('edit_organizer',{'id':organizer.id} ) }}">Edit</a></td>
+                        <td><a href="#" data-toggle="modal" data-target="#deleteModal{{ organizer.id }}">Delete</a></td>
+                    </tr>
+                    {% include "@AdminBundle/Resources/views/modal.html.twig"
+                        with {
+                            modal_id: 'deleteModal' ~ organizer.id,
+                            modal_title: 'Delete organizer',
+                            modal_content: 'Are you sure you want to delete ' ~ organizer.email ~ '?',
+                            action_path: path('delete_organizer', {'id':organizer.id}),
+                        }
+                    %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 {% endblock %}
