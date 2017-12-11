@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Organizer
+ * Organizer.
  *
  * @ORM\Table(name="organizer")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\OrganizerRepository")
@@ -25,7 +25,7 @@ class Organizer extends BaseEntity
     private $id;
 
     /**
-     * @var string $email
+     * @var string
      *
      * @ORM\Column(name="email", type="string", length=254, unique=true)
      * @Assert\NotBlank()
@@ -33,7 +33,7 @@ class Organizer extends BaseEntity
     private $email;
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -43,7 +43,7 @@ class Organizer extends BaseEntity
     }
 
     /**
-     * Get email
+     * Get email.
      *
      * @return string
      */
@@ -53,7 +53,7 @@ class Organizer extends BaseEntity
     }
 
     /**
-     * Set email
+     * Set email.
      */
     public function setEmail($email)
     {

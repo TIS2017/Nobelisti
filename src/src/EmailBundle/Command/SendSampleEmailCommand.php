@@ -9,13 +9,12 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 class SendSampleEmailCommand extends Command
 {
     protected function configure()
     {
         $this
-            ->addArgument("id", InputArgument::REQUIRED, 'ID of message to be send.')
+            ->addArgument('id', InputArgument::REQUIRED, 'ID of message to be send.')
             ->setName('email:send-sample-email')
             ->setDescription('Send sample emails to message queue')
             ->setHelp('This command allows you to manually create a message in message queue');
@@ -31,6 +30,6 @@ class SendSampleEmailCommand extends Command
         $emailId = $input->getArgument('id');
         RabbitMQ::sendMessage(EmailMessageCoder::encode($emailId));
 
-        $output->writeln('Email ' .  $emailId . ' sent.');
+        $output->writeln('Email '.$emailId.' sent.');
     }
 }

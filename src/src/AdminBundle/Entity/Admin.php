@@ -7,15 +7,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Admin
+ * Admin.
  *
  * @ORM\Table(name="admin")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\AdminRepository")
  * @UniqueEntity("email")
  */
-class Admin extends BaseEntity implements UserInterface, \Serializable {
-    
-    public function __construct($email) {
+class Admin extends BaseEntity implements UserInterface, \Serializable
+{
+    public function __construct($email)
+    {
         $this->email = $email;
         $this->salt = base64_encode(random_bytes(48));
     }
@@ -30,11 +31,12 @@ class Admin extends BaseEntity implements UserInterface, \Serializable {
     private $id;
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -44,15 +46,17 @@ class Admin extends BaseEntity implements UserInterface, \Serializable {
     private $email;
 
     /**
-     * Get email
+     * Get email.
      *
      * @return string
      */
-    public function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
 
-    public function setEmail($mail) {
+    public function setEmail($mail)
+    {
         $this->email = $mail;
     }
 
@@ -62,15 +66,17 @@ class Admin extends BaseEntity implements UserInterface, \Serializable {
     private $password;
 
     /**
-     * Get password
+     * Get password.
      *
      * @return string
      */
-    public function getPassword() {
+    public function getPassword()
+    {
         return $this->password;
     }
 
-    public function setPassword($password) {
+    public function setPassword($password)
+    {
         $this->password = $password;
     }
 
@@ -80,23 +86,27 @@ class Admin extends BaseEntity implements UserInterface, \Serializable {
     private $salt;
 
     /**
-     * Get salt
+     * Get salt.
      *
      * @return string
      */
-    public function getSalt() {
+    public function getSalt()
+    {
         return $this->salt;
     }
 
-    public function getRoles() {
+    public function getRoles()
+    {
         return array('ROLE_ADMIN');
     }
 
-    public function getUserName() {
+    public function getUserName()
+    {
         return $this->getEmail();
     }
 
-    public function eraseCredentials() {
+    public function eraseCredentials()
+    {
         // TODO: Implement eraseCredentials() method.
     }
 
@@ -114,7 +124,7 @@ class Admin extends BaseEntity implements UserInterface, \Serializable {
     /** @see \Serializable::unserialize() */
     public function unserialize($serialized)
     {
-        list (
+        list(
             $this->id,
             $this->email,
             $this->password,
