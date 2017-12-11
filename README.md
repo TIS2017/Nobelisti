@@ -43,9 +43,10 @@ docker-compose stop
 ```
 docker-compose exec php php vendor/phpunit/phpunit/phpunit
 ```
+
 ## Running PHP-CS-Fixer
 
-Run `csfix` script before each commit!
+Run `docker-compose run php ./csfix` script before each commit!
 
 ## FAQ
 

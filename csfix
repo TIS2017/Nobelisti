@@ -1,6 +1,0 @@
-SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
-
-cd $SCRIPTPATH/src
-
-vendor/bin/php-cs-fixer fix ./src --rules=@Symfony --verbose --show-progress=estimating --using-cache=no
-vendor/bin/php-cs-fixer fix ./tests --rules=@Symfony --verbose --show-progress=estimating --using-cache=no
