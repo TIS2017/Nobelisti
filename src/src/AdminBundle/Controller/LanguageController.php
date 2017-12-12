@@ -18,7 +18,6 @@ class LanguageController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $languages = [];
         $repository = $this->getDoctrine()->getRepository(Language::class);
         $languages = $repository->findAll();
 
