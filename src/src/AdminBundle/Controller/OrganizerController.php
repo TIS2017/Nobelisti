@@ -16,7 +16,7 @@ class OrganizerController extends Controller
      * @Route("/organizers", name="organizers")
      * @Method("GET")
      */
-    public function organizerAction(Request $request)
+    public function indexAction(Request $request)
     {
         $defaultData = array('email' => '');
 
@@ -55,7 +55,7 @@ class OrganizerController extends Controller
      * @Route("/organizers/create", name="organizers_add")
      * @Method({"GET", "POST"})
      */
-    public function createNewOrganizer(Request $request)
+    public function createAction(Request $request)
     {
         $newOrganizer = new Organizer();
         $form = $this->getForm($newOrganizer);
@@ -79,7 +79,7 @@ class OrganizerController extends Controller
      * @Route("/organizers/edit/{id}", name="organizers_edit")
      * @Method({"GET", "POST"})
      */
-    public function editOrganizer($id, Request $request)
+    public function editAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $organizer = $em->getRepository(Organizer::class)->findOneBy(array('id' => $id));
@@ -117,7 +117,7 @@ class OrganizerController extends Controller
      * @Route("/organizers/delete/{id}", name="organizers_delete")
      * @Method("POST")
      */
-    public function deleteOrganizer($id, Request $request)
+    public function deleteAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $organizer = $em->getRepository(Organizer::class)->findOneBy(array('id' => $id));
