@@ -3,7 +3,7 @@
 {% block content %}
     <h1 class="content">
         <span>Organizers</span>
-        <a class='btn btn-primary float-sm-right' href="{{ path('create_organizer') }}">Add new organizer</a>
+        <a class='btn btn-primary float-sm-right' href="{{ path('organizers_add') }}">Add new organizer</a>
     </h1>
     <hr>
     {{ form_start(form) }}
@@ -34,7 +34,7 @@
                     <tr>
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ organizer.email }}</td>
-                        <td><a href="{{ path('edit_organizer',{'id':organizer.id} ) }}">Edit</a></td>
+                        <td><a href="{{ path('organizers_edit',{'id':organizer.id} ) }}">Edit</a></td>
                         <td><a href="#" data-toggle="modal" data-target="#deleteModal{{ organizer.id }}">Delete</a></td>
                     </tr>
                     {% include "@AdminBundle/Resources/views/modal.html.twig"
@@ -42,7 +42,7 @@
                             modal_id: 'deleteModal' ~ organizer.id,
                             modal_title: 'Delete organizer',
                             modal_content: 'Are you sure you want to delete ' ~ organizer.email ~ '?',
-                            action_path: path('delete_organizer', {'id':organizer.id}),
+                            action_path: path('organizers_delete', {'id':organizer.id}),
                         }
                     %}
                 {% endfor %}
