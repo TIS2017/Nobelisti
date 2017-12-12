@@ -16,14 +16,14 @@ class LanguageController extends Controller
      * @Route("/languages", name="languages")
      * @Method("GET")
      */
-    public function indexAction(Request $request){
-
+    public function indexAction(Request $request)
+    {
         $languages = [];
         $repository = $this->getDoctrine()->getRepository(Language::class);
         $languages = $repository->findAll();
 
         return $this->render('AdminBundle:Language:index.html.twig', array(
-            'languages' => $languages
+            'languages' => $languages,
         ));
     }
 
@@ -31,9 +31,9 @@ class LanguageController extends Controller
      * @Route("/languages/add", name="languages_add")
      * @Method({"GET","POST"})
      */
-    public function createAction(Request $request){
-
-        $newLanguage= new Language();
+    public function createAction(Request $request)
+    {
+        $newLanguage = new Language();
         $form = $this->getForm($newLanguage);
 
         $form->handleRequest($request);
@@ -42,6 +42,7 @@ class LanguageController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($newLanguage);
             $em->flush();
+
             return $this->redirectToRoute('languages');
         }
 
@@ -54,8 +55,8 @@ class LanguageController extends Controller
      * @Route("/languages/edit/{id}", name="languages_edit")
      * @Method({"GET","POST"})
      */
-    public function editAction($id, Request $request){
-
+    public function editAction($id, Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
         $language = $em->getRepository(Language::class)->findOneBy(array('id' => $id));
 
@@ -70,16 +71,17 @@ class LanguageController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
+
             return $this->redirectToRoute('languages');
-        } 
+        }
 
         return $this->render('AdminBundle:Language:edit.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ));
     }
 
-    public function getForm($data){
-
+    public function getForm($data)
+    {
         return $this->createFormBuilder($data)
             ->add('language', TextType::class)
             ->add('code', TextType::class)
@@ -92,8 +94,8 @@ class LanguageController extends Controller
      * @Route("/languages/delete/{id}", name="languages_delete")
      * @Method("POST")
      */
-    public function deleteAction($id, Request $request){
-
+    public function deleteAction($id, Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
         $language = $em->getRepository(Language::class)->findOneBy(array('id' => $id));
 
@@ -107,6 +109,5 @@ class LanguageController extends Controller
         $em->flush();
 
         return $this->redirectToRoute('languages');
-     }     
-
+    }
 }

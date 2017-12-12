@@ -6,9 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-
 /**
- * Language
+ * Language.
  *
  * @ORM\Table(name="language")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\LanguageRepository")
@@ -42,9 +41,8 @@ class Language extends BaseEntity
      */
     private $code;
 
-
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -54,7 +52,7 @@ class Language extends BaseEntity
     }
 
     /**
-     * Set language
+     * Set language.
      *
      * @param string $language
      *
@@ -68,7 +66,7 @@ class Language extends BaseEntity
     }
 
     /**
-     * Get language
+     * Get language.
      *
      * @return string
      */
@@ -78,7 +76,7 @@ class Language extends BaseEntity
     }
 
     /**
-     * Set code
+     * Set code.
      *
      * @param string $code
      *
@@ -92,7 +90,7 @@ class Language extends BaseEntity
     }
 
     /**
-     * Get code
+     * Get code.
      *
      * @return string
      */
@@ -101,4 +99,3 @@ class Language extends BaseEntity
         return $this->code;
     }
 }
-
