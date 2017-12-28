@@ -1,0 +1,42 @@
+{% extends "@AdminBundle/Resources/views/Language/base.html.twig" %}
+
+{% block content %}
+    <h1 class="contents">
+        <span>Languages</span>
+        <a class='btn btn-primary float-sm-right' href="{{ path('languages_add') }}">Add new language</a>
+    </h1>
+    {% if languages | length == 0 %}
+        <p> No languages found.</p>
+    {% else %}
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Language</th>
+                    <th scope="col">Code</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for language in languages %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ language.language }}</td>
+                    <td>{{ language.code }}</td>
+                    <td><a href="{{ path('languages_edit',{'id':language.id} ) }}">Edit</a></td>
+                    <td><a href="#" data-toggle="modal" data-target="#deleteModal{{ language.id }}">Delete</a></td>
+                </tr>
+                {% include "@AdminBundle/Resources/views/modal.html.twig"
+                    with {
+                        modal_id: 'deleteModal' ~ language.id,
+                        modal_title: 'Delete language',
+                        modal_content: 'Are you sure you want to delete ' ~ language.language ~ '?',
+                        action_path: path('languages_delete', {'id':language.id}),
+                    }
+                %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
