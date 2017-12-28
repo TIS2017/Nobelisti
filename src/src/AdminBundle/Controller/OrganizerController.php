@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Form\OrganizerForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AdminBundle\Entity\Organizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -19,7 +20,6 @@ class OrganizerController extends Controller
     public function indexAction(Request $request)
     {
         $defaultData = array('email' => '');
-
         $form = $this->createFormBuilder($defaultData)
             ->add('email', TextType::class)
             ->add('filter', SubmitType::class, array('label' => 'Filter'))
@@ -58,7 +58,7 @@ class OrganizerController extends Controller
     public function createAction(Request $request)
     {
         $newOrganizer = new Organizer();
-        $form = $this->getForm($newOrganizer);
+        $form = $this->createForm(OrganizerForm::class, $newOrganizer);
 
         $form->handleRequest($request);
 
@@ -90,7 +90,7 @@ class OrganizerController extends Controller
             );
         }
 
-        $form = $this->getForm($organizer);
+        $form = $this->createForm(OrganizerForm::class, $organizer);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -102,15 +102,6 @@ class OrganizerController extends Controller
         return $this->render('AdminBundle:Organizer:edit.html.twig', array(
             'form' => $form->createView(),
         ));
-    }
-
-    public function getForm($data)
-    {
-        return $this->createFormBuilder($data)
-            ->add('email', TextType::class)
-            ->add('save', SubmitType::class, array('label' => 'Save'))
-            ->setMethod('POST')
-            ->getForm();
     }
 
     /**
