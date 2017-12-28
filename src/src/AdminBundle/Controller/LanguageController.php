@@ -2,13 +2,12 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Form\LanguageForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AdminBundle\Entity\Language;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class LanguageController extends Controller
 {
@@ -33,7 +32,7 @@ class LanguageController extends Controller
     public function createAction(Request $request)
     {
         $newLanguage = new Language();
-        $form = $this->getForm($newLanguage);
+        $form = $this->createForm(LanguageForm::class, $newLanguage);
 
         $form->handleRequest($request);
 
@@ -65,7 +64,7 @@ class LanguageController extends Controller
             );
         }
 
-        $form = $this->getForm($language);
+        $form = $this->createForm(LanguageForm::class, $language);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -77,16 +76,6 @@ class LanguageController extends Controller
         return $this->render('AdminBundle:Language:edit.html.twig', array(
             'form' => $form->createView(),
         ));
-    }
-
-    public function getForm($data)
-    {
-        return $this->createFormBuilder($data)
-            ->add('language', TextType::class)
-            ->add('code', TextType::class)
-            ->add('save', SubmitType::class, array('label' => 'Save'))
-            ->setMethod('POST')
-            ->getForm();
     }
 
     /**
