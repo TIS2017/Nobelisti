@@ -11,8 +11,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Table(name="language")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\LanguageRepository")
- * @UniqueEntity("language")
- * @UniqueEntity("code")
+ * @UniqueEntity(
+ *     fields={"deleted", "language"},
+ *     errorPath="language",
+ *     ignoreNull=false,
+ * )
+ * @UniqueEntity(
+ *     fields={"deleted", "code"},
+ *     errorPath="code",
+ *     ignoreNull=false,
+ * )
  */
 class Language extends BaseEntity
 {
@@ -28,7 +36,7 @@ class Language extends BaseEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="language", type="string", length=50, unique=true)
+     * @ORM\Column(name="language", type="string", length=50)
      * @Assert\NotBlank()
      */
     private $language;
@@ -36,7 +44,7 @@ class Language extends BaseEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=6, unique=true)
+     * @ORM\Column(name="code", type="string", length=6)
      * @Assert\NotBlank()
      */
     private $code;
