@@ -11,7 +11,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Table(name="organizer")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\OrganizerRepository")
- * @UniqueEntity("email")
+ * @UniqueEntity(
+ *     fields={"deleted", "email"},
+ *     errorPath="email",
+ *     ignoreNull=false,
+ * )
  */
 class Organizer extends BaseEntity
 {
@@ -27,8 +31,9 @@ class Organizer extends BaseEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=254, unique=true)
+     * @ORM\Column(name="email", type="string", length=254)
      * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
 
