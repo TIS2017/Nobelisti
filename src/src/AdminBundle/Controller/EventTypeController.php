@@ -2,7 +2,10 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Entity\Event;
 use AdminBundle\Entity\EventType;
+use AdminBundle\Entity\Language;
+use AdminBundle\Entity\Organizer;
 use AdminBundle\Form\EventTypeForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -73,8 +76,12 @@ class EventTypeController extends Controller
             return $this->redirectToRoute('event_type');
         }
 
+        $repository = $this->getDoctrine()->getRepository(Event::class);
+        $events = $repository->findBy(['eventTypeId' => $id]);
+
         return $this->render('AdminBundle:EventType:edit.html.twig', array(
             'form' => $form->createView(),
+            'events' => $events,
         ));
     }
 

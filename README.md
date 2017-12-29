@@ -76,3 +76,7 @@ ClassNotFoundException
 1. Connect to the virtual machine `docker-compose exec php bash`
 2. Run `php bin/console doctrine:migrations:diff`
 3. Run `php bin/console doctrine:migrations:migrate`
+
+###How to create superuser?
+1. Connect to the virtual machine `docker-compose exec php bash`
+2. `php bin/console admin: email@email.com password`

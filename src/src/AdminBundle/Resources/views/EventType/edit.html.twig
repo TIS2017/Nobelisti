@@ -10,4 +10,47 @@
             {{ form_end(form) }}
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <a class='btn btn-primary' href="{{ path('event_add') }}">Add new Event</a>
+            {% if events | length == 0 %}
+                <div><p>No Event found.</p></div>
+            {% else %}
+                <table class="table table-bordered">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Place</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for event in events %}
+                        <tr>
+                            <th scope="row">{{ loop.index }}</th>
+                            <td>{{ event.address }}</td>
+                            <td>{{ event.date_time }}</td>
+                            <td><a href="{{ path('event_edit', {'id':event.id}) }}">Edit</a></td>
+                            <td><a href="#" data-toggle="modal" data-target="#deleteModal{{ event.id }}">Delete</a></td>
+                        </tr>
+                        {% include "@AdminBundle/Resources/views/modal.html.twig"
+                        with {
+                        modal_id: 'deleteModal' ~ event.id,
+                        modal_title: 'Delete Event Type',
+                        modal_content: 'Are you sure you want to delete ' ~ event.address ~ '?',
+                        action_path: path('event_delete', {'id':event.id}),
+                        }
+                        %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6">
+
+        </div>
+    </div>
 {% endblock %}
