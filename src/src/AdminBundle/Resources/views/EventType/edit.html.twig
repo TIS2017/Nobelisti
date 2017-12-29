@@ -1,0 +1,13 @@
+{% extends "@AdminBundle/Resources/views/EventType/base.html.twig" %}
+
+{% block content %}
+    <h2>Edit Event Type: {{ form.vars.value.slug }}</h2>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
