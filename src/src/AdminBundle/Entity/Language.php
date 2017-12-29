@@ -106,4 +106,9 @@ class Language extends BaseEntity
     {
         return $this->code;
     }
+
+    /**
+     * @ORM\OneToMany(targetEntity="EventLanguages", mappedBy="language_id")
+     */
+    private $events;
 }

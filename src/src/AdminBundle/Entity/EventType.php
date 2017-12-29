@@ -85,4 +85,14 @@ class EventType extends BaseEntity
     {
         return $this->id;
     }
+
+    /**
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="eventTypeId")
+     */
+    private $events;
+
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
+    }
 }

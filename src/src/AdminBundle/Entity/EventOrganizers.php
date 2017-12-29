@@ -1,0 +1,45 @@
+<?php
+
+namespace AdminBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * EventOrganizers.
+ *
+ * @ORM\Table(name="event_organizers")
+ * @ORM\Entity(repositoryClass="AdminBundle\Repository\EventOrganizersRepository")
+ */
+class EventOrganizers extends BaseEntity
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Event", inversedBy="organizers")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
+     */
+    private $event_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Organizer", inversedBy="events")
+     * @ORM\JoinColumn(name="organizer_id", referencedColumnName="id")
+     */
+    private $organizer_id;
+}
