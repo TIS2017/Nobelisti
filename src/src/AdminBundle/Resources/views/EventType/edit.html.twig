@@ -11,8 +11,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
-            <a class='btn btn-primary' href="{{ path('event_add') }}">Add new Event</a>
+        <div class="col-md-7">
+            <a class='btn btn-primary' href="{{ path('event_add', {'id':form.vars.value.id}) }}">Add new Event</a>
             {% if events | length == 0 %}
                 <div><p>No Event found.</p></div>
             {% else %}
@@ -21,7 +21,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Place</th>
-                        <th scope="col">Time</th>
+                        <th scope="col">Date/Time</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                     </tr>
@@ -31,8 +31,8 @@
                         <tr>
                             <th scope="row">{{ loop.index }}</th>
                             <td>{{ event.address }}</td>
-                            <td>{{ event.date_time }}</td>
-                            <td><a href="{{ path('event_edit', {'id':event.id}) }}">Edit</a></td>
+                            <td>{{ event.dateTime|date("jS F Y h:i") }}</td>
+                            <td><a href="{{ path('event_edit', {'event_id':event.id, 'id': form.vars.value.id}) }}">Edit</a></td>
                             <td><a href="#" data-toggle="modal" data-target="#deleteModal{{ event.id }}">Delete</a></td>
                         </tr>
                         {% include "@AdminBundle/Resources/views/modal.html.twig"
@@ -40,7 +40,7 @@
                         modal_id: 'deleteModal' ~ event.id,
                         modal_title: 'Delete Event Type',
                         modal_content: 'Are you sure you want to delete ' ~ event.address ~ '?',
-                        action_path: path('event_delete', {'id':event.id}),
+                        action_path: path('event_delete', {'event_id':event.id, 'id':form.vars.value.id}),
                         }
                         %}
                     {% endfor %}
@@ -49,7 +49,7 @@
             {% endif %}
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-5">
 
         </div>
     </div>

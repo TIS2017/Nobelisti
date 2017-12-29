@@ -20,7 +20,7 @@ class EventForm extends AbstractType
         $builder
             ->add('address', TextType::class)
             ->add('date_time', DateTimeType::class)
-            ->add('notification_threshold', DateTimeType::class)
+            ->add('notification_threshold', IntegerType::class)
             ->add('capacity', NumberType::class)
             ->add('registration_end', DateTimeType::class)
             ->add('template_override', ChoiceType::class, array(
@@ -30,7 +30,6 @@ class EventForm extends AbstractType
                     'template3' => 'var/www/templates/template3',
                 ),
             ))
-            ->add('event_type_id', IntegerType::class)
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setMethod('POST');
     }

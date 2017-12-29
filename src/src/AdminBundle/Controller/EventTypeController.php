@@ -4,8 +4,6 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Event;
 use AdminBundle\Entity\EventType;
-use AdminBundle\Entity\Language;
-use AdminBundle\Entity\Organizer;
 use AdminBundle\Form\EventTypeForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
