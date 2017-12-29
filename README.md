@@ -79,4 +79,4 @@ ClassNotFoundException
 
 ###How to create superuser?
 1. Connect to the virtual machine `docker-compose exec php bash`
-2. `php bin/console admin: email@email.com password`
+2. `php bin/console admin:create-superuser email@email.com password`
