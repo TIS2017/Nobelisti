@@ -46,7 +46,24 @@ class EventController extends Controller
      */
     public function editAction($id, $event_id, Request $request)
     {
-        return $this->render('AdminBundle:Event:index.html.twig');
+        $repository = $this->getDoctrine()->getRepository(Event::class);
+        $event = $repository->findOneBy(['id' => intval($event_id)]);
+
+        $form = $this->createForm(EventForm::class, $event);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($event);
+            $em->flush();
+
+            return $this->redirectToRoute('event_type_edit', ['id' => $id]);
+        }
+
+        return $this->render('AdminBundle:Event:edit.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
     /**
@@ -56,17 +73,17 @@ class EventController extends Controller
     public function deleteAction($id, $event_id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $event = $em->getRepository(Event::class)->findOneBy(array('id' => $event_id));
+        $event = $em->getRepository(Event::class)->findOneBy(array('id' => intval($event_id)));
 
         if (!$event) {
             throw $this->createNotFoundException(
-                'No event type found for id '.$event_id
+                'No event found for id '.$event_id
             );
         }
 
         $em->remove($event);
         $em->flush();
 
-        return $this->redirectToRoute(path('event_type_edit', ['id' => $id]));
+        return $this->redirectToRoute('event_type_edit', ['id' => $id]);
     }
 }
