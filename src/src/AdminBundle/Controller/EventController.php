@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class EventController extends Controller
 {
+    //todo
+
     /**
      * @Route("/zatialnedomyslenarouta", name="event_edit")
      * @Method({"GET"})

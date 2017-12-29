@@ -4,12 +4,18 @@ namespace AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * EventType
+ * EventType.
  *
  * @ORM\Table(name="event_type")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\EventTypeRepository")
+ * @UniqueEntity(
+ *     fields={"slug", "deleted"},
+ *     errorPath="slug",
+ *     ignoreNull=false,
+ * )
  */
 class EventType extends BaseEntity
 {
@@ -71,7 +77,7 @@ class EventType extends BaseEntity
     private $template;
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -79,6 +85,4 @@ class EventType extends BaseEntity
     {
         return $this->id;
     }
-
 }
-

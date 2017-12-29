@@ -22,16 +22,16 @@
                 <tr>
                     <th scope="row">{{ loop.index }}</th>
                     <td>{{ eventType.slug }}</td>
-                    <td><a href="{{ path('event_type_edit',{'id':eventType.id} ) }}">Edit</a></td>
+                    <td><a href="{{ path('event_type_edit', {'id':eventType.id}) }}">Edit</a></td>
                     <td><a href="#" data-toggle="modal" data-target="#deleteModal{{ eventType.id }}">Delete</a></td>
                 </tr>
                 {% include "@AdminBundle/Resources/views/modal.html.twig"
-                with {
-                modal_id: 'deleteModal' ~ eventType.id,
-                modal_title: 'Delete Event Type',
-                modal_content: 'Are you sure you want to delete ' ~ eventType.slug ~ '?',
-                action_path: path('event_type_delete', {'id':eventType.id}),
-                }
+                    with {
+                        modal_id: 'deleteModal' ~ eventType.id,
+                        modal_title: 'Delete Event Type',
+                        modal_content: 'Are you sure you want to delete ' ~ eventType.slug ~ '?',
+                        action_path: path('event_type_delete', {'id':eventType.id}),
+                    }
                 %}
             {% endfor %}
             </tbody>

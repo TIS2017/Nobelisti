@@ -15,8 +15,8 @@ class EventTypeController extends Controller
      * @Route("/", name="event_type")
      * @Method("GET")
      */
-    public function indexAction() {
-
+    public function indexAction()
+    {
         $repository = $this->getDoctrine()->getRepository(EventType::class);
         $eventTypes = $repository->findAll();
 
@@ -29,7 +29,8 @@ class EventTypeController extends Controller
      * @Route("/event_type/create", name="event_type_add")
      * @Method({"GET", "POST"})
      */
-    public function createAction(Request $request) {
+    public function createAction(Request $request)
+    {
         $newEventType = new EventType();
         $form = $this->createForm(EventTypeForm::class, $newEventType);
 

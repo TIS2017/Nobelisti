@@ -17,11 +17,11 @@ class EventTypeForm extends AbstractType
         $builder
             ->add('slug', TextType::class)
             ->add('template', ChoiceType::class, array(
-                'choices' => array(
+                'choices' => array( //todo
                     'template1' => 'var/www/templates/template1',
                     'template2' => 'var/www/templates/template2',
                     'template3' => 'var/www/templates/template3',
-                )
+                ),
             ))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setMethod('POST');
