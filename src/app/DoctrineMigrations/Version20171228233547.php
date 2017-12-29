@@ -16,8 +16,6 @@ class Version20171228233547 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE event_type (id INT AUTO_INCREMENT NOT NULL, slug VARCHAR(50) NOT NULL, template VARCHAR(100) NOT NULL, created DATETIME NOT NULL, updated DATETIME DEFAULT NULL, deleted DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE email_log_content ADD created DATETIME NOT NULL, ADD updated DATETIME DEFAULT NULL, ADD deleted DATETIME DEFAULT NULL');
-        $this->addSql('ALTER TABLE email_log_status ADD created DATETIME NOT NULL, ADD updated DATETIME DEFAULT NULL, ADD deleted DATETIME DEFAULT NULL');
     }
 
     public function down(Schema $schema)
@@ -26,7 +24,5 @@ class Version20171228233547 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('DROP TABLE event_type');
-        $this->addSql('ALTER TABLE email_log_content DROP created, DROP updated, DROP deleted');
-        $this->addSql('ALTER TABLE email_log_status DROP created, DROP updated, DROP deleted');
     }
 }
