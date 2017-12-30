@@ -11,3 +11,7 @@ form label {
 .tab-pane {
     margin-top: 20px;
 }
+
+#log ul {
+	display: table-row;
+}

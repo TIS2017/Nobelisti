@@ -82,6 +82,7 @@ class EventController extends Controller
             'event_type_id' => $id,
             'modal_input_organizers' => self::$modalInputOrganizers,
             'event_id' => $event_id,
+            'autocomplete_path' => 'autocomplete_organizers'
         ));
     }
 
