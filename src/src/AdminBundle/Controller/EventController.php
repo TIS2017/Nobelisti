@@ -69,8 +69,6 @@ class EventController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($event);
             $em->flush();
 
             return $this->redirectToRoute('event_type_edit', ['id' => $id]);
@@ -82,7 +80,7 @@ class EventController extends Controller
             'event_type_id' => $id,
             'modal_input_organizers' => self::$modalInputOrganizers,
             'event_id' => $event_id,
-            'autocomplete_path' => 'autocomplete_organizers'
+            'autocomplete_path' => 'autocomplete_organizers',
         ));
     }
 
@@ -104,7 +102,7 @@ class EventController extends Controller
         $em->remove($event);
         $em->flush();
 
-        return $this->redirectToRoute('event_edit', ['id' => $id, 'event_id' => $event_id]);
+        return $this->redirectToRoute('event_type_edit', ['id' => $id]);
     }
 
     /**
