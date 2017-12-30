@@ -35,11 +35,43 @@ class EventOrganizers extends BaseEntity
      * @ORM\ManyToOne(targetEntity="Event", inversedBy="organizers")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
-    private $event_id;
+    private $eventId;
+
+    /**
+     * @return mixed
+     */
+    public function getEventId()
+    {
+        return $this->eventId;
+    }
+
+    /**
+     * @param mixed $eventId
+     */
+    public function setEventId($eventId)
+    {
+        $this->eventId = $eventId;
+    }
+
+    /**
+     * @param mixed $organizerId
+     */
+    public function setOrganizerId($organizerId)
+    {
+        $this->organizerId = $organizerId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrganizerId()
+    {
+        return $this->organizerId;
+    }
 
     /**
      * @ORM\ManyToOne(targetEntity="Organizer", inversedBy="events")
      * @ORM\JoinColumn(name="organizer_id", referencedColumnName="id")
      */
-    private $organizer_id;
+    private $organizerId;
 }

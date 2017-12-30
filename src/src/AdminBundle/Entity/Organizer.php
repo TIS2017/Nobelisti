@@ -66,7 +66,7 @@ class Organizer extends BaseEntity
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="EventOrganizers", mappedBy="organizer_id")
+     * @ORM\OneToMany(targetEntity="EventOrganizers", mappedBy="organizerId")
      */
     private $events;
 }
