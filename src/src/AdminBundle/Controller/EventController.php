@@ -43,6 +43,8 @@ class EventController extends Controller
         ));
     }
 
+    private static $modalInputOrganizers = 'assignOrganizer';
+
     /**
      * @Route("event_type/edit/{id}/event/{event_id}/edit", name="event_edit")
      * @Method({"GET", "POST"})
@@ -52,12 +54,12 @@ class EventController extends Controller
         $em = $this->getDoctrine();
         $eventOrganizers = $em->getRepository(EventOrganizers::class)->findBy(['eventId' => $event_id]);
 
-        $eventOrganizers_ids = [];
+        $eventOrganizersIds = [];
         foreach ($eventOrganizers as $eventOrganizer) {
-            $eventOrganizers_ids[] = $eventOrganizer->getOrganizerId();
+            $eventOrganizersIds[] = $eventOrganizer->getOrganizerId();
         }
 
-        $organizers = $em->getRepository(Organizer::class)->findById($eventOrganizers_ids);
+        $organizers = $em->getRepository(Organizer::class)->findById($eventOrganizersIds);
 
         $repository = $this->getDoctrine()->getRepository(Event::class);
         $event = $repository->findOneBy(['id' => intval($event_id)]);
@@ -78,6 +80,8 @@ class EventController extends Controller
             'form' => $form->createView(),
             'organizers' => $organizers,
             'event_type_id' => $id,
+            'modal_input_organizers' => self::$modalInputOrganizers,
+            'event_id' => $event_id,
         ));
     }
 
@@ -117,14 +121,10 @@ class EventController extends Controller
             )
         );
 
-        if (!$eventOrganizer) {
-            throw $this->createNotFoundException(
-                'No organizer found for id '.$organizer_id.$event_id
-            );
+        if ($eventOrganizer) {
+            $em->remove($eventOrganizer);
+            $em->flush();
         }
-
-        $em->remove($eventOrganizer);
-        $em->flush();
 
         return $this->redirectToRoute('event_edit', ['id' => $id, 'event_id' => $event_id]);
     }
@@ -136,8 +136,9 @@ class EventController extends Controller
     public function assignOrganizerAction($id, $event_id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        //todo zabezpecit, aby nenasiel deleted organizera
-        $organizer = $em->getRepository(Organizer::class)->findOneBy(['email' => $request->get('birds')]);
+        $organizer = $em->getRepository(Organizer::class)->findOneBy(
+            ['email' => $request->get(self::$modalInputOrganizers)]
+        );
 
         $event = $em->getRepository(Event::class)->findOneBy(['id' => $event_id]);
 
@@ -152,7 +153,7 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/autocomplete", name="autocomplete")
+     * @Route("/autocomplete/organizers", name="autocomplete_organizers")
      */
     public function autocompleteAction(Request $request)
     {

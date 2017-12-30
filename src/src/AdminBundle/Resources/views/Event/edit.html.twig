@@ -13,22 +13,23 @@
     <div class="row">
         <h3>Template Testing</h3>
         <div class="col-md-6">
-            <p>sem pride form s emailovou adresou</p>
+            <p>{#todo: here comes form with email field for template testing#}</p>
         </div>
         <div class="col-md-6">
-            <p>sem pridu linky na testovanie sablony</p>
+            <p>{#todo: here come links for template testing#}</p>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
-            <a href="#" data-toggle="modal" data-target="#{{ 'assignModal' ~ form.vars.value.id }}"
+            <a href="#" data-toggle="modal" data-target="#{{ 'assignModal' ~ event_id }}"
                class='btn btn-primary'>Assign Organizer</a>
             {% include "@AdminBundle/Resources/views/autocompleteModal.html.twig"
                 with {
-                    modal_id: 'assignModal' ~ form.vars.value.id,
+                    modal_id: 'assignModal' ~ event_id,
                     modal_title: 'Assign Organizer',
-                    modal_content: 'Type to assign organizer. ',
-                    action_path: path('event_assign_organizer', {'id':event_type_id, 'event_id': form.vars.value.id}),
+                    modal_content: 'Type to assign organizer.',
+                    modal_input: modal_input_organizers,
+                    action_path: path('event_assign_organizer', {'id':event_type_id, 'event_id': event_id}),
                 }
             %}
             {% if organizers | length == 0 %}
@@ -53,13 +54,12 @@
                             with {
                                 modal_id: 'deleteModal' ~ organizer.id,
                                 modal_title: 'Unassign Organizer',
-                                modal_content: 'Are you sure you want to unassign ' ~ organizer.email ~ ' '~ organizer.id ~'?',
+                                modal_content: 'Are you sure you want to unassign ' ~ organizer.email ~ '?',
                                 action_path: path('event_unassign_organizer', {
                                     'id': event_type_id,
-                                    'event_id': form.vars.value.id,
+                                    'event_id': event_id,
                                     'organizer_id': organizer.id
-                                    }
-                                ),
+                                    }),
                             }
                         %}
                     {% endfor %}
@@ -81,11 +81,10 @@
                 $( "#log" ).scrollTop( 0 );
             }
 
-            $( "#birds" ).autocomplete({
-                source: "{{ path('autocomplete') }}",
+            $( "#{{ modal_input_organizers }}" ).autocomplete({
+                source: "{{ path('autocomplete_organizers') }}",
                 minLength: 2,
                 select: function( event, ui ) {
-                    console.log("hello world");
                     log( ui.item ?
                     "Selected: " + ui.item.value + " aka " + ui.item.id :
                     "Nothing selected, input was " + this.value );
