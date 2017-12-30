@@ -15,12 +15,12 @@
                     <div class="ui-widget">
                         <label for="birds">{{ modal_title }}</label>
                         <input name="{{ modal_input }}" id="{{ modal_input }}">
-                    </div>
-
-                    <div class="ui-widget" style="margin-top:2em; font-family:Arial">
-                        Result:
                         <div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
                     </div>
+
+                    {#<div class="ui-widget" style="margin-top:2em; font-family:Arial">#}
+
+                    {#</div>#}
 
                 </div>
                 <div class="modal-footer">
@@ -31,3 +31,10 @@
         </div>
     </div>
 </div>
+
+
+<style>
+    #log ul {
+        display: table-row;
+    }
+</style>

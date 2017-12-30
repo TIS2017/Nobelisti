@@ -77,17 +77,21 @@
     <script>
         $(function() {
             function log( message ) {
-                $( "<div>" ).text( message ).prependTo( "#log" );
+                $( "<div class='message'>" ).text( message ).prependTo( "#log" );
                 $( "#log" ).scrollTop( 0 );
             }
 
             $( "#{{ modal_input_organizers }}" ).autocomplete({
                 source: "{{ path('autocomplete_organizers') }}",
                 minLength: 2,
-                select: function( event, ui ) {
-                    log( ui.item ?
-                    "Selected: " + ui.item.value + " aka " + ui.item.id :
-                    "Nothing selected, input was " + this.value );
+                appendTo: "#log",
+                position: { my : "right top", at: "right bottom" },
+                response: function( event, ui ) {
+                    if(ui.content.length === 0) {
+                        log( "No results found" )
+                    } else {
+                        $('.message').remove()
+                    }
                 }
             });
         });
