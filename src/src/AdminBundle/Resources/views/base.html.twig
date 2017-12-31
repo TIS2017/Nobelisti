@@ -16,11 +16,13 @@
         {% block content %}
         {% endblock %}
     </main>
-
+    
     {% javascripts
-        'assets/js/jquery-3.1.1.slim.min.js'
+        'assets/js/jquery-3.2.1.min.js'
         'assets/js/tether.min.js'
-        'assets/js/*'
+        'assets/js/jquery-ui.min.js'
+        'assets/js/bootstrap.min.js'
+        'assets/js/main.js'
     %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

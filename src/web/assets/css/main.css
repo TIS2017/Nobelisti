@@ -11,3 +11,13 @@ form label {
 .tab-pane {
     margin-top: 20px;
 }
+
+#log ul {
+	display: table-row;
+}
+
+.ui-widget-content.log {
+	height: 200px;
+	width: 300px;
+	overflow: scroll;
+}

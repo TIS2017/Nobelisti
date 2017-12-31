@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -84,5 +85,15 @@ class EventType extends BaseEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="eventTypeId")
+     */
+    private $events;
+
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
     }
 }

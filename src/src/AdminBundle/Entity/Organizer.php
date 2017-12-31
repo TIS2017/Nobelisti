@@ -64,4 +64,9 @@ class Organizer extends BaseEntity
     {
         $this->email = $email;
     }
+
+    /**
+     * @ORM\OneToMany(targetEntity="EventOrganizers", mappedBy="organizerId")
+     */
+    private $events;
 }
