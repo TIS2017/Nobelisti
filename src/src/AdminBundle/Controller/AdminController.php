@@ -61,10 +61,9 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admins/create")
-     * @Method("POST")
+     * @Route("/admins/create", name="admins_create")
+     * @Method({"GET", "POST"})
      */
-    // todo: zoli
     public function createAdmin(Request $request)
     {
         $form = $this->getNewAdminForm($request);
@@ -99,20 +98,6 @@ class AdminController extends Controller
 
             return $this->redirectToRoute('admins');
         }
-
-        return $this->render('AdminBundle:Admin:create.html.twig', array(
-            'form' => $form->createView(),
-            'errors' => null,
-        ));
-    }
-
-    /**
-     * @Route("/admins/create", name="admins_create")
-     * @Method("GET")
-     */
-    public function createAdminForm(Request $request)
-    {
-        $form = $this->getNewAdminForm($request);
 
         return $this->render('AdminBundle:Admin:create.html.twig', array(
             'form' => $form->createView(),
@@ -164,33 +149,8 @@ class AdminController extends Controller
 
     /**
      * @Route("/admins/edit/{id}", name="admins_edit", requirements={"id"="\d+"})
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      */
-    public function editAdminForm(Request $request)
-    {
-        $adminId = $request->get('id');
-        $repo = $this->getDoctrine()->getManager();
-
-        $admin = $repo->find(Admin::class, $adminId);
-        if (!$admin) {
-            throw $this->createNotFoundException('Admin does not exist');
-        }
-
-        $formForFields = $this->getEditAdminFormForFields($request, $admin);
-        $formChangePassword = $this->getEditAdminFormForPassword($request);
-
-        return $this->render('AdminBundle:Admin:edit.html.twig', array(
-            'formForFields' => $formForFields->createView(),
-            'formForPassword' => $formChangePassword->createView(),
-            'errors' => null,
-        ));
-    }
-
-    /**
-     * @Route("/admins/edit/{id}", requirements={"id"="\d+"})
-     * @Method("POST")
-     */
-    // todo: zoli
     public function editAdmin(Request $request)
     {
         $repo = $this->getDoctrine()->getManager();
