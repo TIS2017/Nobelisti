@@ -3,6 +3,7 @@
 namespace AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AdminBundle\Entity\Admin;
@@ -15,6 +16,7 @@ class AdminController extends Controller
 {
     /**
      * @Route("/admins", name="admins")
+     * @Method("GET")
      */
     public function indexAction()
     {
@@ -59,8 +61,10 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admins/create", methods={"POST"})
+     * @Route("/admins/create")
+     * @Method("POST")
      */
+    // todo: zoli
     public function createAdmin(Request $request)
     {
         $form = $this->getNewAdminForm($request);
@@ -103,7 +107,8 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admins/create", name="admins_create", methods={"GET"})
+     * @Route("/admins/create", name="admins_create")
+     * @Method("GET")
      */
     public function createAdminForm(Request $request)
     {
@@ -158,7 +163,8 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admins/edit/{id}", name="admins_edit", methods={"GET"})
+     * @Route("/admins/edit/{id}", name="admins_edit", requirements={"id"="\d+"})
+     * @Method("GET")
      */
     public function editAdminForm(Request $request)
     {
@@ -181,8 +187,10 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admins/edit/{id}", methods={"POST"})
+     * @Route("/admins/edit/{id}", requirements={"id"="\d+"})
+     * @Method("POST")
      */
+    // todo: zoli
     public function editAdmin(Request $request)
     {
         $repo = $this->getDoctrine()->getManager();
@@ -236,7 +244,8 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("admins/delete/{id}", name="admins_delete", methods={"POST"})
+     * @Route("admins/delete/{id}", name="admins_delete", requirements={"id"="\d+"})
+     * @Method("POST")
      */
     public function deleteAdmin(Request $request)
     {

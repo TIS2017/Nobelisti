@@ -105,7 +105,7 @@ class OrganizerController extends Controller
     }
 
     /**
-     * @Route("/organizers/delete/{id}", name="organizers_delete")
+     * @Route("/organizers/delete/{id}", name="organizers_delete", requirements={"id"="\d+"})
      * @Method("POST")
      */
     public function deleteAction($id, Request $request)

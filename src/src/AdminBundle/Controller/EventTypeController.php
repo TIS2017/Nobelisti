@@ -51,8 +51,8 @@ class EventTypeController extends Controller
     }
 
     /**
-     * @Route("/event_type/edit/{id}", name="event_type_edit")
-     * @Method({"GET","POST"})
+     * @Route("/event_type/edit/{id}", name="event_type_edit", requirements={"id"="\d+"})
+     * @Method({"GET", "POST"})
      */
     public function editAction($id, Request $request)
     {
@@ -84,7 +84,7 @@ class EventTypeController extends Controller
     }
 
     /**
-     * @Route("/event_type/delete/{id}", name="event_type_delete")
+     * @Route("/event_type/delete/{id}", name="event_type_delete", requirements={"id"="\d+"})
      * @Method("POST")
      */
     public function deleteAction($id, Request $request)
