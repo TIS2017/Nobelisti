@@ -1,8 +1,3 @@
-template:
-    resource: "@TemplateBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 admin:
     resource: "@AdminBundle/Controller/"
     type:     annotation

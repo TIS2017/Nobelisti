@@ -3,6 +3,7 @@
 namespace AdminBundle\Form;
 
 use AdminBundle\Entity\Event;
+use TemplateBundle\Controller\CustomTemplateController;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -24,11 +25,7 @@ class EventForm extends AbstractType
             ->add('capacity', NumberType::class)
             ->add('registration_end', DateTimeType::class)
             ->add('template_override', ChoiceType::class, array(
-                'choices' => array( //todo
-                    'template1' => 'var/www/templates/template1',
-                    'template2' => 'var/www/templates/template2',
-                    'template3' => 'var/www/templates/template3',
-                ),
+                'choices' => CustomTemplateController::getTemplateNamesForForm()
             ))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setMethod('POST');

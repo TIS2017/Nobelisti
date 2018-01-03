@@ -2,19 +2,29 @@
 
 namespace AppBundle\Controller;
 
+use AdminBundle\Entity\EventType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
+use TemplateBundle\Controller\CustomTemplateController;
 
-class DefaultController extends Controller
+class DefaultController extends CustomTemplateController
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/{slug}", name="frontend_index")
      */
-    public function indexAction()
+    public function indexAction($slug)
     {
-        return new Response(
-            '<html><body>Nobelisti!</body></html>'
+        $eventType = $this->getDoctrine()->getRepository(EventType::class)->findOneBy(
+            ['slug' => $slug]
         );
+
+        if (!$eventType) {
+            throw $this->createNotFoundException(
+                'No event type found for slug ' . $slug
+            );
+        }
+
+        $template = self::getTemplate($eventType->getTemplate(), 'index.html.twig');
+
+        return $this->render($template, array("data" => ""));
     }
 }

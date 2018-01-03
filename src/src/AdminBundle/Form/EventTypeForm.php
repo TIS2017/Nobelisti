@@ -3,6 +3,7 @@
 namespace AdminBundle\Form;
 
 use AdminBundle\Entity\EventType;
+use TemplateBundle\Controller\CustomTemplateController;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,11 +18,7 @@ class EventTypeForm extends AbstractType
         $builder
             ->add('slug', TextType::class)
             ->add('template', ChoiceType::class, array(
-                'choices' => array( //todo
-                    'template1' => 'var/www/templates/template1',
-                    'template2' => 'var/www/templates/template2',
-                    'template3' => 'var/www/templates/template3',
-                ),
+                'choices' => CustomTemplateController::getTemplateNamesForForm()
             ))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setMethod('POST');
