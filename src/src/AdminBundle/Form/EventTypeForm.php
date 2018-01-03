@@ -18,7 +18,7 @@ class EventTypeForm extends AbstractType
         $builder
             ->add('slug', TextType::class)
             ->add('template', ChoiceType::class, array(
-                'choices' => CustomTemplateController::getTemplateNamesForForm()
+                'choices' => CustomTemplateController::getTemplateNamesForForm(),
             ))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setMethod('POST');

@@ -25,7 +25,7 @@ class EventForm extends AbstractType
             ->add('capacity', NumberType::class)
             ->add('registration_end', DateTimeType::class)
             ->add('template_override', ChoiceType::class, array(
-                'choices' => CustomTemplateController::getTemplateNamesForForm()
+                'choices' => CustomTemplateController::getTemplateNamesForForm(),
             ))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setMethod('POST');

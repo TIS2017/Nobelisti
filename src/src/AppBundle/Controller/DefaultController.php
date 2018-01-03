@@ -19,19 +19,19 @@ class DefaultController extends CustomTemplateController
 
         if (!$eventType) {
             throw $this->createNotFoundException(
-                'No event type found for slug ' . $slug
+                'No event type found for slug '.$slug
             );
         }
 
-        if ($_locale === "DEFAULT") {
-            $language = "sk_SK"; // todo, select a default language or something
+        if ('DEFAULT' === $_locale) {
+            $language = 'sk_SK'; // todo, select a default language or something
         } else {
             $language = $_locale;
             // todo: check language is enabled for this $eventType
         }
 
         $context = [
-            "event_type" => $eventType,
+            'event_type' => $eventType,
         ];
 
         $templateName = $eventType->getTemplate();
