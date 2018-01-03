@@ -12,7 +12,7 @@
     </div>
     <div class="row">
         <div class="col-md-7">
-            <a class='btn btn-primary' href="{{ path('event_add', {'id':form.vars.value.id}) }}">Add new Event</a>
+            <a class='btn btn-primary' href="{{ path('events_add', {'id':form.vars.value.id}) }}">Add new Event</a>
             {% if events | length == 0 %}
                 <div><p>No Event found.</p></div>
             {% else %}
@@ -32,7 +32,7 @@
                             <th scope="row">{{ loop.index }}</th>
                             <td>{{ event.address }}</td>
                             <td>{{ event.dateTime|date("jS F Y h:i A") }}</td>
-                            <td><a href="{{ path('event_edit', {'event_id':event.id, 'id': form.vars.value.id}) }}">Edit</a></td>
+                            <td><a href="{{ path('events_edit', {'event_id':event.id, 'id': form.vars.value.id}) }}">Edit</a></td>
                             <td><a href="#" data-toggle="modal" data-target="#deleteModal{{ event.id }}">Delete</a></td>
                         </tr>
                         {% include "@AdminBundle/Resources/views/modal.html.twig"
@@ -40,7 +40,7 @@
                                 modal_id: 'deleteModal' ~ event.id,
                                 modal_title: 'Delete Event',
                                 modal_content: 'Are you sure you want to delete ' ~ event.address ~ '?',
-                                action_path: path('event_delete', {'event_id':event.id, 'id':form.vars.value.id}),
+                                action_path: path('events_delete', {'event_id':event.id, 'id':form.vars.value.id}),
                             }
                         %}
                     {% endfor %}

@@ -61,10 +61,10 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admins/create", name="admins_create")
+     * @Route("/admins/add", name="admins_add")
      * @Method({"GET", "POST"})
      */
-    public function createAdmin(Request $request)
+    public function createAction(Request $request)
     {
         $form = $this->getNewAdminForm($request);
 
@@ -151,7 +151,7 @@ class AdminController extends Controller
      * @Route("/admins/edit/{id}", name="admins_edit", requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
      */
-    public function editAdmin(Request $request)
+    public function editAction(Request $request)
     {
         $repo = $this->getDoctrine()->getManager();
         $adminId = $request->get('id');
@@ -207,11 +207,10 @@ class AdminController extends Controller
      * @Route("admins/delete/{id}", name="admins_delete", requirements={"id"="\d+"})
      * @Method("POST")
      */
-    public function deleteAdmin(Request $request)
+    public function deleteAction($id, Request $request)
     {
         $repo = $this->getDoctrine()->getManager();
-        $adminId = $request->get('id');
-        $admin = $repo->find(Admin::class, $adminId);
+        $admin = $repo->find(Admin::class, $id);
         if (!$admin) {
             throw $this->createNotFoundException('Admin does not exist.');
         }

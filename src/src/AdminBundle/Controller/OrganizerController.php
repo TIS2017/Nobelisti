@@ -52,7 +52,7 @@ class OrganizerController extends Controller
     }
 
     /**
-     * @Route("/organizers/create", name="organizers_add")
+     * @Route("/organizers/add", name="organizers_add")
      * @Method({"GET", "POST"})
      */
     public function createAction(Request $request)

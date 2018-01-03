@@ -3,7 +3,7 @@
 {% block content %}
     <h1 class="contents">
         <span>Event Type</span>
-        <a class='btn btn-primary float-sm-right' href="{{ path('event_type_add') }}">Add new Event Type</a>
+        <a class='btn btn-primary float-sm-right' href="{{ path('event_types_add') }}">Add new Event Type</a>
     </h1>
     {% if eventTypes | length == 0 %}
         <p>No Event Type found.</p>
@@ -22,7 +22,7 @@
                 <tr>
                     <th scope="row">{{ loop.index }}</th>
                     <td>{{ eventType.slug }}</td>
-                    <td><a href="{{ path('event_type_edit', {'id':eventType.id}) }}">Edit</a></td>
+                    <td><a href="{{ path('event_types_edit', {'id':eventType.id}) }}">Edit</a></td>
                     <td><a href="#" data-toggle="modal" data-target="#deleteModal{{ eventType.id }}">Delete</a></td>
                 </tr>
                 {% include "@AdminBundle/Resources/views/modal.html.twig"
@@ -30,7 +30,7 @@
                         modal_id: 'deleteModal' ~ eventType.id,
                         modal_title: 'Delete Event Type',
                         modal_content: 'Are you sure you want to delete ' ~ eventType.slug ~ '?',
-                        action_path: path('event_type_delete', {'id':eventType.id}),
+                        action_path: path('event_types_delete', {'id': eventType.id}),
                     }
                 %}
             {% endfor %}

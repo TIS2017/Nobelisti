@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class EventTypeController extends Controller
 {
     /**
-     * @Route("/", name="event_type")
+     * @Route("/", name="event_types")
      * @Method("GET")
      */
     public function indexAction()
@@ -27,7 +27,7 @@ class EventTypeController extends Controller
     }
 
     /**
-     * @Route("/event_type/create", name="event_type_add")
+     * @Route("/event_type/add", name="event_types_add")
      * @Method({"GET", "POST"})
      */
     public function createAction(Request $request)
@@ -42,7 +42,7 @@ class EventTypeController extends Controller
             $em->persist($newEventType);
             $em->flush();
 
-            return $this->redirectToRoute('event_type');
+            return $this->redirectToRoute('event_types');
         }
 
         return $this->render('AdminBundle:EventType:create.html.twig', array(
@@ -51,7 +51,7 @@ class EventTypeController extends Controller
     }
 
     /**
-     * @Route("/event_type/edit/{id}", name="event_type_edit", requirements={"id"="\d+"})
+     * @Route("/event_type/edit/{id}", name="event_types_edit", requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
      */
     public function editAction($id, Request $request)
@@ -71,7 +71,7 @@ class EventTypeController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
 
-            return $this->redirectToRoute('event_type');
+            return $this->redirectToRoute('event_types');
         }
 
         $repository = $this->getDoctrine()->getRepository(Event::class);
@@ -84,7 +84,7 @@ class EventTypeController extends Controller
     }
 
     /**
-     * @Route("/event_type/delete/{id}", name="event_type_delete", requirements={"id"="\d+"})
+     * @Route("/event_type/delete/{id}", name="event_types_delete", requirements={"id"="\d+"})
      * @Method("POST")
      */
     public function deleteAction($id, Request $request)
@@ -101,6 +101,6 @@ class EventTypeController extends Controller
         $em->remove($eventType);
         $em->flush();
 
-        return $this->redirectToRoute('event_type');
+        return $this->redirectToRoute('event_types');
     }
 }
