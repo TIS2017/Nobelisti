@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new AdminBundle\AdminBundle(),
             new EmailBundle\EmailBundle(),
+            new TemplateBundle\TemplateBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
