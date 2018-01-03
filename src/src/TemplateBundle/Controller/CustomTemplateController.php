@@ -4,6 +4,7 @@ namespace TemplateBundle\Controller;
 
 use PHPUnit\Runner\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Yaml\Yaml;
 
 class CustomTemplateController extends Controller
 {
@@ -55,4 +56,24 @@ class CustomTemplateController extends Controller
 
         throw new Exception("Neither file nor fallback file does not exist");
     }
+
+    private static function buildLanguagePath($templateName, $languageName) {
+        return '../templates/' . $templateName . '/languages/' . $languageName . '.yaml.twig';
+    }
+
+    public static function getLanguageNames($templateName) {
+        $languagesPath = self::buildLanguagePath($templateName, '*');
+        return array_map('basename', glob($languagesPath));
+    }
+
+    public function getLanguageFile($templateName, $language, $context = []){
+        $languagesPath = self::buildLanguagePath($templateName, $language);
+        $rawContent = file_get_contents($languagesPath);
+
+        $template = $this->get('twig')->createTemplate($rawContent);
+        $rawYaml = $template->render($context);
+
+        return Yaml::parse($rawYaml);
+    }
+
 }

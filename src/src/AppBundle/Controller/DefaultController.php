@@ -9,9 +9,9 @@ use TemplateBundle\Controller\CustomTemplateController;
 class DefaultController extends CustomTemplateController
 {
     /**
-     * @Route("/{slug}", name="frontend_index")
+     * @Route("/{slug}/{_locale}", name="frontend_index", defaults={"_locale": "DEFAULT"})
      */
-    public function indexAction($slug)
+    public function indexAction($slug, $_locale)
     {
         $eventType = $this->getDoctrine()->getRepository(EventType::class)->findOneBy(
             ['slug' => $slug]
@@ -23,8 +23,24 @@ class DefaultController extends CustomTemplateController
             );
         }
 
-        $template = self::getTemplate($eventType->getTemplate(), 'index.html.twig');
+        if ($_locale === "DEFAULT") {
+            $language = "sk_SK"; // todo, select a default language or something
+        } else {
+            $language = $_locale;
+            // todo: check language is enabled for this $eventType
+        }
 
-        return $this->render($template, array("data" => ""));
+        $context = [
+            "event_type" => $eventType,
+        ];
+
+        $templateName = $eventType->getTemplate();
+
+        $template = self::getTemplate($templateName, 'index.html.twig');
+        $languageContext = self::getLanguageFile($templateName, $language, $context);
+
+        $context['lang'] = $languageContext;
+
+        return $this->render($template, $context);
     }
 }
