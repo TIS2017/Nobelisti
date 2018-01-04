@@ -1,1 +1,5 @@
-<h1>This is a default theme</h1>
+{% extends 'base.html.twig'|extendable(event_type) %}
+
+{% block content %}
+    <h1>This is a default theme</h1>
+{% endblock %}
