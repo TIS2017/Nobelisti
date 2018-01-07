@@ -127,13 +127,7 @@ class AdminController extends Controller
 
     private function getEditAdminFormForPassword($request)
     {
-        $defaultData = array(
-            'oldPassword' => '',
-            'password' => '',
-            'password1' => '',
-        );
-
-        $form = $this->createForm(AdminEditPasswordForm::class, $defaultData);
+        $form = $this->createForm(AdminEditPasswordForm::class);
         $form->handleRequest($request);
 
         return $form;
