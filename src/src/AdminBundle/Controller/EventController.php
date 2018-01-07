@@ -16,13 +16,13 @@ use Symfony\Component\HttpFoundation\Request;
 class EventController extends Controller
 {
     /**
-     * @Route("/event_type/edit/{id}/event/add", name="event_add")
+     * @Route("/event_type/edit/{id}/event/add", name="events_add", requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
      */
     public function createAction($id, Request $request)
     {
         $repository = $this->getDoctrine()->getRepository(EventType::class);
-        $eventType = $repository->findOneBy(['id' => intval($id)]);
+        $eventType = $repository->findOneBy(['id' => $id]);
 
         $newEvent = new Event();
         $newEvent->setEventTypeId($eventType);
@@ -35,7 +35,7 @@ class EventController extends Controller
             $em->persist($newEvent);
             $em->flush();
 
-            return $this->redirectToRoute('event_type_edit', ['id' => $id]);
+            return $this->redirectToRoute('event_types_edit', ['id' => $id]);
         }
 
         return $this->render('AdminBundle:Event:create.html.twig', array(
@@ -46,12 +46,12 @@ class EventController extends Controller
     private static $modalInputOrganizers = 'assignOrganizer';
 
     /**
-     * @Route("event_type/edit/{id}/event/{event_id}/edit", name="event_edit")
+     * @Route("/event_type/edit/{id}/event/{event_id}/edit", name="events_edit", requirements={"id"="\d+", "event_id"="\d+"})
      * @Method({"GET", "POST"})
      */
     public function editAction($id, $event_id, Request $request)
     {
-        $em = $this->getDoctrine();
+        $em = $this->getDoctrine()->getManager();
         $eventOrganizers = $em->getRepository(EventOrganizers::class)->findBy(['eventId' => $event_id]);
 
         $eventOrganizersIds = [];
@@ -62,7 +62,7 @@ class EventController extends Controller
         $organizers = $em->getRepository(Organizer::class)->findById($eventOrganizersIds);
 
         $repository = $this->getDoctrine()->getRepository(Event::class);
-        $event = $repository->findOneBy(['id' => intval($event_id)]);
+        $event = $repository->findOneBy(['id' => $event_id]);
 
         $form = $this->createForm(EventForm::class, $event);
 
@@ -71,7 +71,7 @@ class EventController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
 
-            return $this->redirectToRoute('event_type_edit', ['id' => $id]);
+            return $this->redirectToRoute('event_types_edit', ['id' => $id]);
         }
 
         return $this->render('AdminBundle:Event:edit.html.twig', array(
@@ -85,13 +85,13 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("event_type/edit/{id}/event/{event_id}/delete", name="event_delete")
+     * @Route("event_type/edit/{id}/event/{event_id}/delete", name="events_delete", requirements={"id"="\d+", "event_id"="\d+"})
      * @Method("POST")
      */
     public function deleteAction($id, $event_id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $event = $em->getRepository(Event::class)->findOneBy(array('id' => intval($event_id)));
+        $event = $em->getRepository(Event::class)->findOneBy(array('id' => $event_id));
 
         if (!$event) {
             throw $this->createNotFoundException(
@@ -102,11 +102,11 @@ class EventController extends Controller
         $em->remove($event);
         $em->flush();
 
-        return $this->redirectToRoute('event_type_edit', ['id' => $id]);
+        return $this->redirectToRoute('event_types_edit', ['id' => $id]);
     }
 
     /**
-     * @Route("event_type/edit/{id}/event/{event_id}/edit/unassign/organizer/{organizer_id}", name="event_unassign_organizer")
+     * @Route("event_type/edit/{id}/event/{event_id}/edit/unassign/organizer/{organizer_id}", name="events_unassign_organizer", requirements={"id"="\d+", "event_id"="\d+", "organizer_id"="\d+"})
      * @Method("POST")
      */
     public function unassignOrganizerAction($id, $event_id, $organizer_id, Request $request)
@@ -125,11 +125,11 @@ class EventController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('event_edit', ['id' => $id, 'event_id' => $event_id]);
+        return $this->redirectToRoute('events_edit', ['id' => $id, 'event_id' => $event_id]);
     }
 
     /**
-     * @Route("event_type/edit/{id}/event/{event_id}/edit/assign/organizer", name="event_assign_organizer")
+     * @Route("event_type/edit/{id}/event/{event_id}/edit/assign/organizer", name="events_assign_organizer", requirements={"id"="\d+", "event_id"="\d+"})
      * @Method("POST")
      */
     public function assignOrganizerAction($id, $event_id, Request $request)
@@ -148,11 +148,12 @@ class EventController extends Controller
         $em->persist($eventOrganizer);
         $em->flush();
 
-        return $this->redirectToRoute('event_edit', ['id' => $id, 'event_id' => $event_id]);
+        return $this->redirectToRoute('events_edit', ['id' => $id, 'event_id' => $event_id]);
     }
 
     /**
      * @Route("/autocomplete/organizers", name="autocomplete_organizers")
+     * @Method("GET")
      */
     public function autocompleteAction(Request $request)
     {

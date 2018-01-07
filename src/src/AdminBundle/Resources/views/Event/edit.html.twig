@@ -30,7 +30,7 @@
                     modal_content: 'Type to assign organizer.',
                     modal_input_name: modal_input_organizers,
                     modal_input_path: path( autocomplete_path ),
-                    action_path: path('event_assign_organizer', {'id':event_type_id, 'event_id': event_id}),
+                    action_path: path('events_assign_organizer', {'id':event_type_id, 'event_id': event_id}),
                 }
             %}
             {% if organizers | length == 0 %}
@@ -56,7 +56,7 @@
                                 modal_id: 'deleteModal' ~ organizer.id,
                                 modal_title: 'Unassign Organizer',
                                 modal_content: 'Are you sure you want to unassign ' ~ organizer.email ~ '?',
-                                action_path: path('event_unassign_organizer', {
+                                action_path: path('events_unassign_organizer', {
                                     'id': event_type_id,
                                     'event_id': event_id,
                                     'organizer_id': organizer.id

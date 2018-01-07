@@ -52,7 +52,7 @@ class OrganizerController extends Controller
     }
 
     /**
-     * @Route("/organizers/create", name="organizers_add")
+     * @Route("/organizers/add", name="organizers_add")
      * @Method({"GET", "POST"})
      */
     public function createAction(Request $request)
@@ -76,7 +76,7 @@ class OrganizerController extends Controller
     }
 
     /**
-     * @Route("/organizers/edit/{id}", name="organizers_edit")
+     * @Route("/organizers/edit/{id}", name="organizers_edit", requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
      */
     public function editAction($id, Request $request)
@@ -105,7 +105,7 @@ class OrganizerController extends Controller
     }
 
     /**
-     * @Route("/organizers/delete/{id}", name="organizers_delete")
+     * @Route("/organizers/delete/{id}", name="organizers_delete", requirements={"id"="\d+"})
      * @Method("POST")
      */
     public function deleteAction($id, Request $request)

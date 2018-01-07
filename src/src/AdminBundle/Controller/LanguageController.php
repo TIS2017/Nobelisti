@@ -50,7 +50,7 @@ class LanguageController extends Controller
     }
 
     /**
-     * @Route("/languages/edit/{id}", name="languages_edit")
+     * @Route("/languages/edit/{id}", name="languages_edit", requirements={"id"="\d+"})
      * @Method({"GET","POST"})
      */
     public function editAction($id, Request $request)
@@ -79,7 +79,7 @@ class LanguageController extends Controller
     }
 
     /**
-     * @Route("/languages/delete/{id}", name="languages_delete")
+     * @Route("/languages/delete/{id}", name="languages_delete", requirements={"id"="\d+"})
      * @Method("POST")
      */
     public function deleteAction($id, Request $request)
