@@ -76,7 +76,7 @@ class OrganizerController extends Controller
     }
 
     /**
-     * @Route("/organizers/edit/{id}", name="organizers_edit")
+     * @Route("/organizers/edit/{id}", name="organizers_edit", requirements={"id"="\d+"})
      * @Method({"GET", "POST"})
      */
     public function editAction($id, Request $request)
