@@ -5,11 +5,13 @@ namespace AppBundle\Controller;
 use AdminBundle\Entity\EventType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use TemplateBundle\Controller\CustomTemplateController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class DefaultController extends CustomTemplateController
 {
     /**
      * @Route("/{slug}/{_locale}", name="frontend_index", defaults={"_locale": "DEFAULT"})
+     * @Method("GET")
      */
     public function indexAction($slug, $_locale)
     {

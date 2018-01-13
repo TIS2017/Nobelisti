@@ -3,9 +3,12 @@
 namespace AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AdminBundle\Entity\Admin;
+use AdminBundle\Form\AdminEditFieldsForm;
+use AdminBundle\Form\AdminEditPasswordForm;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,6 +18,7 @@ class AdminController extends Controller
 {
     /**
      * @Route("/admins", name="admins")
+     * @Method("GET")
      */
     public function indexAction()
     {
@@ -59,9 +63,10 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admins/create", methods={"POST"})
+     * @Route("/admins/add", name="admins_add")
+     * @Method({"GET", "POST"})
      */
-    public function createAdmin(Request $request)
+    public function createAction(Request $request)
     {
         $form = $this->getNewAdminForm($request);
 
@@ -102,30 +107,9 @@ class AdminController extends Controller
         ));
     }
 
-    /**
-     * @Route("/admins/create", name="admins_create", methods={"GET"})
-     */
-    public function createAdminForm(Request $request)
-    {
-        $form = $this->getNewAdminForm($request);
-
-        return $this->render('AdminBundle:Admin:create.html.twig', array(
-            'form' => $form->createView(),
-            'errors' => null,
-        ));
-    }
-
     private function getEditAdminFormForFields($request, $adminObject)
     {
-        $defaultData = array(
-            'email' => $adminObject->getEmail(),
-        );
-
-        $form = $this->createFormBuilder($defaultData)
-            ->add('email', EmailType::class)
-            ->add('submit', SubmitType::class)
-            ->getForm();
-
+        $form = $this->createForm(AdminEditFieldsForm::class, $adminObject);
         $form->handleRequest($request);
 
         return $form;
@@ -133,57 +117,17 @@ class AdminController extends Controller
 
     private function getEditAdminFormForPassword($request)
     {
-        $defaultData = array(
-            'oldPassword' => '',
-            'password' => '',
-            'password1' => '',
-        );
-
-        $form = $this->createFormBuilder($defaultData)
-            ->add('oldPassword', PasswordType::class)
-            ->add('password', RepeatedType::class, array(
-                'type' => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
-                'options' => array('attr' => array('class' => 'password-field')),
-                'required' => true,
-                'first_options' => array('label' => 'Password'),
-                'second_options' => array('label' => 'Repeat Password'),
-            ))
-            ->add('submit', SubmitType::class)
-            ->getForm();
-
+        $form = $this->createForm(AdminEditPasswordForm::class);
         $form->handleRequest($request);
 
         return $form;
     }
 
     /**
-     * @Route("/admins/edit/{id}", name="admins_edit", methods={"GET"})
+     * @Route("/admins/edit/{id}", name="admins_edit", requirements={"id"="\d+"})
+     * @Method({"GET", "POST"})
      */
-    public function editAdminForm(Request $request)
-    {
-        $adminId = $request->get('id');
-        $repo = $this->getDoctrine()->getManager();
-
-        $admin = $repo->find(Admin::class, $adminId);
-        if (!$admin) {
-            throw $this->createNotFoundException('Admin does not exist');
-        }
-
-        $formForFields = $this->getEditAdminFormForFields($request, $admin);
-        $formChangePassword = $this->getEditAdminFormForPassword($request);
-
-        return $this->render('AdminBundle:Admin:edit.html.twig', array(
-            'formForFields' => $formForFields->createView(),
-            'formForPassword' => $formChangePassword->createView(),
-            'errors' => null,
-        ));
-    }
-
-    /**
-     * @Route("/admins/edit/{id}", methods={"POST"})
-     */
-    public function editAdmin(Request $request)
+    public function editAction(Request $request)
     {
         $repo = $this->getDoctrine()->getManager();
         $adminId = $request->get('id');
@@ -197,7 +141,7 @@ class AdminController extends Controller
 
         if ($formForFields->isSubmitted() && $formForFields->isValid()) {
             $data = $formForFields->getData();
-            $admin->setEmail($data['email']);
+            $admin->setEmail($data->getEmail());
 
             //validate
             $validator = $this->get('validator');
@@ -212,7 +156,8 @@ class AdminController extends Controller
                 $errorsString = (string) $errors;
 
                 return $this->render('AdminBundle:Admin:edit.html.twig', array(
-                    'form' => $formForFields->createView(),
+                    'formForFields' => $formForFields->createView(),
+                    'formForPassword' => $formChangePassword->createView(),
                     'errors' => $errorsString,
                 ));
             }
@@ -225,7 +170,24 @@ class AdminController extends Controller
         }
 
         if ($formChangePassword->isSubmitted() && $formChangePassword->isValid()) {
-            //TODO:porovnaj hesla
+            $data = $formChangePassword->getData();
+
+            $hashedPassword = $this->get('security.password_encoder')->encodePassword($admin, $data['oldPassword']);
+            if ($hashedPassword != $admin->getPassword()) {
+                return $this->render('AdminBundle:Admin:edit.html.twig', array(
+                    'formForFields' => $formForFields->createView(),
+                    'formForPassword' => $formChangePassword->createView(),
+                    'errors' => 'Invalid old password',
+                ));
+            }
+
+            $this->hashPassword($admin, $data['password']);
+
+            $repo = $this->getDoctrine()->getManager();
+            $repo->persist($admin);
+            $repo->flush();
+
+            return $this->redirectToRoute('admins');
         }
 
         return $this->render('AdminBundle:Admin:edit.html.twig', array(
@@ -236,13 +198,13 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("admins/delete/{id}", name="admins_delete", methods={"POST"})
+     * @Route("admins/delete/{id}", name="admins_delete", requirements={"id"="\d+"})
+     * @Method("POST")
      */
-    public function deleteAdmin(Request $request)
+    public function deleteAction($id, Request $request)
     {
         $repo = $this->getDoctrine()->getManager();
-        $adminId = $request->get('id');
-        $admin = $repo->find(Admin::class, $adminId);
+        $admin = $repo->find(Admin::class, $id);
         if (!$admin) {
             throw $this->createNotFoundException('Admin does not exist.');
         }
