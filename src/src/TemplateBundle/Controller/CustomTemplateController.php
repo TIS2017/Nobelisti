@@ -77,14 +77,34 @@ class CustomTemplateController extends Controller
         return array_map('basename', glob($languagesPath));
     }
 
-    public function getLanguageFile($templateName, $language, $context = [])
+    private function getFileToYaml($path, $context)
     {
-        $languagesPath = self::buildLanguagePath($templateName, $language);
-        $rawContent = file_get_contents($languagesPath);
+        $rawContent = file_get_contents($path);
 
         $template = $this->get('twig')->createTemplate($rawContent);
         $rawYaml = $template->render($context);
 
         return Yaml::parse($rawYaml);
+    }
+
+    public function getLanguageFile($templateName, $language, $context = [])
+    {
+        $languagesPath = self::buildLanguagePath($templateName, $language);
+
+        return $this->getFileToYaml($languagesPath, $context);
+    }
+
+    public function renderToString($templateName, $emailPath, $context = [])
+    {
+        $templatePlain = self::getTemplate($templateName, $emailPath);
+
+        return $this->renderView($templatePlain, $context);
+    }
+
+    public function getEmailMeta($templateName, $emailPath, $context = [])
+    {
+        $emailPath = self::getFilePath($templateName, $emailPath);
+
+        return $this->getFileToYaml($emailPath, $context);
     }
 }

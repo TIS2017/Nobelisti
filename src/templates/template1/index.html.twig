@@ -3,4 +3,8 @@
 {% block content %}
     <h1>{{ lang.header }}</h1>
     <p>{{ lang.description }}</p>
+    <hr>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
 {% endblock %}
