@@ -6,7 +6,7 @@ use AdminBundle\Entity\BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Attendee
+ * Attendee.
  *
  * @ORM\Table(name="attendee")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AttendeeRepository")
@@ -50,9 +50,8 @@ class Attendee extends BaseEntity
      */
     private $unsubscribed;
 
-
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -62,7 +61,7 @@ class Attendee extends BaseEntity
     }
 
     /**
-     * Set firstName
+     * Set firstName.
      *
      * @param string $firstName
      *
@@ -76,7 +75,7 @@ class Attendee extends BaseEntity
     }
 
     /**
-     * Get firstName
+     * Get firstName.
      *
      * @return string
      */
@@ -86,7 +85,7 @@ class Attendee extends BaseEntity
     }
 
     /**
-     * Set lastName
+     * Set lastName.
      *
      * @param string $lastName
      *
@@ -100,7 +99,7 @@ class Attendee extends BaseEntity
     }
 
     /**
-     * Get lastName
+     * Get lastName.
      *
      * @return string
      */
@@ -110,7 +109,7 @@ class Attendee extends BaseEntity
     }
 
     /**
-     * Set email
+     * Set email.
      *
      * @param string $email
      *
@@ -124,7 +123,7 @@ class Attendee extends BaseEntity
     }
 
     /**
-     * Get email
+     * Get email.
      *
      * @return string
      */
@@ -134,9 +133,9 @@ class Attendee extends BaseEntity
     }
 
     /**
-     * Set unsubscribed
+     * Set unsubscribed.
      *
-     * @param boolean $unsubscribed
+     * @param bool $unsubscribed
      *
      * @return Attendee
      */
@@ -148,7 +147,7 @@ class Attendee extends BaseEntity
     }
 
     /**
-     * Get unsubscribed
+     * Get unsubscribed.
      *
      * @return bool
      */
@@ -157,4 +156,3 @@ class Attendee extends BaseEntity
         return $this->unsubscribed;
     }
 }
-

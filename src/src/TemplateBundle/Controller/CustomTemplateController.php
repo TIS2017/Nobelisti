@@ -50,7 +50,7 @@ class CustomTemplateController extends Controller
         return self::trimPath($templateNameOrDefault);
     }
 
-    private static function getFilePath($templateName, $file)
+    protected static function getFilePath($templateName, $file)
     {
         $filePath = self::buildTemplatePath($templateName).'/'.$file;
         if (file_exists($filePath)) {
@@ -77,7 +77,7 @@ class CustomTemplateController extends Controller
         return array_map('basename', glob($languagesPath));
     }
 
-    private function getFileToYaml($path, $context)
+    protected function getFileToYaml($path, $context)
     {
         $rawContent = file_get_contents($path);
 
@@ -92,19 +92,5 @@ class CustomTemplateController extends Controller
         $languagesPath = self::buildLanguagePath($templateName, $language);
 
         return $this->getFileToYaml($languagesPath, $context);
-    }
-
-    public function renderToString($templateName, $emailPath, $context = [])
-    {
-        $templatePlain = self::getTemplate($templateName, $emailPath);
-
-        return $this->renderView($templatePlain, $context);
-    }
-
-    public function getEmailMeta($templateName, $emailPath, $context = [])
-    {
-        $emailPath = self::getFilePath($templateName, $emailPath);
-
-        return $this->getFileToYaml($emailPath, $context);
     }
 }

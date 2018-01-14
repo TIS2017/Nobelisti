@@ -5,13 +5,12 @@ namespace AppBundle\Controller;
 use AdminBundle\Entity\EventType;
 use AppBundle\Entity\Attendee;
 use AppBundle\Form\RegistrationForm;
-use EmailBundle\Entity\EmailLog;
+use EmailBundle\Controller\EmailController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use TemplateBundle\Controller\CustomTemplateController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
-class DefaultController extends CustomTemplateController
+class DefaultController extends EmailController
 {
     /**
      * @Route("/{slug}/{_locale}", name="frontend_index", defaults={"_locale": "DEFAULT"})
@@ -38,11 +37,6 @@ class DefaultController extends CustomTemplateController
 
         $attendee = new Attendee();
 
-        // default values for development
-        $attendee->setFirstName('Zoltan');
-        $attendee->setLastName('Onody');
-        $attendee->setEmail('zoltan.onody@gmail.com');
-
         $form = $this->createForm(RegistrationForm::class, $attendee);
         $form->handleRequest($request);
 
@@ -63,38 +57,9 @@ class DefaultController extends CustomTemplateController
 
             $this->sendEmail($attendee, $context, $templateName, 'registration');
 
-            return;
+            // todo: show success page or something
         }
 
         return $this->render($template, $context);
-    }
-
-    private function sendEmail(Attendee $attendee, array $context, String $templateName, String $emailType)
-    {
-        $plain = $this->renderToString($templateName, 'emails/'.$emailType.'.txt.twig', $context);
-        $html = $this->renderToString($templateName, 'emails/'.$emailType.'.html.twig', $context);
-        $meta = $this->getEmailMeta($templateName, 'emails/'.$emailType.'.yaml.twig', $context);
-
-        $message = (new \Swift_Message($meta['subject']))
-            ->setFrom($meta['email_from'])
-            ->setTo($attendee->getEmail())
-            ->setBody($html, 'text/html')
-            ->addPart($plain, 'text/plain')
-        ;
-
-        $status = $this->get('mailer')->send($message);
-
-        $log = new EmailLog();
-        $log->setTemplate($templateName);
-        $log->setContentHtml($html);
-        $log->setContentPlain($plain);
-        $log->setEmailAddress($attendee->getEmail());
-        $log->setEmailMeta(json_encode($meta));
-        $log->setEmailType($emailType);
-        $log->setStatus($status);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($log);
-        $em->flush();
     }
 }
