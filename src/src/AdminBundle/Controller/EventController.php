@@ -3,8 +3,10 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Event;
+use AdminBundle\Entity\EventLanguages;
 use AdminBundle\Entity\EventOrganizers;
 use AdminBundle\Entity\EventType;
+use AdminBundle\Entity\Language;
 use AdminBundle\Entity\Organizer;
 use AdminBundle\Form\EventForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -45,6 +47,8 @@ class EventController extends Controller
 
     private static $modalInputOrganizers = 'assignOrganizer';
 
+    private static $modalInputLanguages = 'assignLanguage';
+
     /**
      * @Route("/event_type/edit/{id}/event/{event_id}/edit", name="events_edit", requirements={"id"="\d+", "event_id"="\d+"})
      * @Method({"GET", "POST"})
@@ -52,6 +56,7 @@ class EventController extends Controller
     public function editAction($id, $event_id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        //EventOrganizers
         $eventOrganizers = $em->getRepository(EventOrganizers::class)->findBy(['eventId' => $event_id]);
 
         $eventOrganizersIds = [];
@@ -61,6 +66,17 @@ class EventController extends Controller
 
         $organizers = $em->getRepository(Organizer::class)->findById($eventOrganizersIds);
 
+        //EventLanguages
+        $eventLanguages = $em->getRepository(EventLanguages::class)->findBy(['eventId' => $event_id]);
+
+        $eventLanguagesIds = [];
+        foreach ($eventLanguages as $eventLanguage) {
+            $eventLanguagesIds[] = $eventLanguage->getLanguageId();
+        }
+
+        $languages = $em->getRepository(Language::class)->findById($eventLanguagesIds);
+
+        //Event
         $repository = $this->getDoctrine()->getRepository(Event::class);
         $event = $repository->findOneBy(['id' => $event_id]);
 
@@ -77,15 +93,21 @@ class EventController extends Controller
         return $this->render('AdminBundle:Event:edit.html.twig', array(
             'form' => $form->createView(),
             'organizers' => $organizers,
+            'languages' => $languages,
             'event_type_id' => $id,
             'modal_input_organizers' => self::$modalInputOrganizers,
+            'modal_input_languages' => self::$modalInputLanguages,
             'event_id' => $event_id,
-            'autocomplete_path' => 'autocomplete_organizers',
+            'autocomplete_path_organizers' => 'autocomplete_organizers',
+            'autocomplete_path_languages' => 'autocomplete_languages',
         ));
     }
 
     /**
-     * @Route("event_type/edit/{id}/event/{event_id}/delete", name="events_delete", requirements={"id"="\d+", "event_id"="\d+"})
+     * @Route("event_type/edit/{id}/event/{event_id}/delete",
+     *     name="events_delete",
+     *     requirements={"id"="\d+", "event_id"="\d+"}
+     * )
      * @Method("POST")
      */
     public function deleteAction($id, $event_id, Request $request)
@@ -106,7 +128,10 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("event_type/edit/{id}/event/{event_id}/edit/unassign/organizer/{organizer_id}", name="events_unassign_organizer", requirements={"id"="\d+", "event_id"="\d+", "organizer_id"="\d+"})
+     * @Route("event_type/edit/{id}/event/{event_id}/edit/unassign/organizer/{organizer_id}",
+     *     name="events_unassign_organizer",
+     *     requirements={"id"="\d+", "event_id"="\d+", "organizer_id"="\d+"}
+     *)
      * @Method("POST")
      */
     public function unassignOrganizerAction($id, $event_id, $organizer_id, Request $request)
@@ -129,7 +154,36 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("event_type/edit/{id}/event/{event_id}/edit/assign/organizer", name="events_assign_organizer", requirements={"id"="\d+", "event_id"="\d+"})
+     * @Route("event_type/edit/{id}/event/{event_id}/edit/unassign/language/{language_id}",
+     *     name="events_unassign_language",
+     *     requirements={"id"="\d+", "event_id"="\d+", "language_id"="\d+"}
+     * )
+     * @Method("POST")
+     */
+    public function unassignLanguageAction($id, $event_id, $language_id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $eventLanguage = $em->getRepository(EventLanguages::class)->findOneBy(
+            array(
+                'eventId' => $event_id,
+                'languageId' => $language_id,
+            )
+        );
+
+        if ($eventLanguage) {
+            $em->remove($eventLanguage);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('events_edit', ['id' => $id, 'event_id' => $event_id]);
+    }
+
+    /**
+     * @Route("event_type/edit/{id}/event/{event_id}/edit/assign/organizer",
+     *     name="events_assign_organizer",
+     *     requirements={"id"="\d+", "event_id"="\d+"}
+     * )
      * @Method("POST")
      */
     public function assignOrganizerAction($id, $event_id, Request $request)
@@ -152,10 +206,36 @@ class EventController extends Controller
     }
 
     /**
+     * @Route("event_type/edit/{id}/event/{event_id}/edit/assign/language",
+     *     name="events_assign_language",
+     *     requirements={"id"="\d+", "event_id"="\d+"}
+     * )
+     * @Method("POST")
+     */
+    public function assignLanguageAction($id, $event_id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $language = $em->getRepository(Language::class)->findOneBy(
+            ['language' => $request->get(self::$modalInputLanguages)]
+        );
+
+        $event = $em->getRepository(Event::class)->findOneBy(['id' => $event_id]);
+
+        $eventLanguage = new EventLanguages();
+        $eventLanguage->setEventId($event);
+        $eventLanguage->setLanguageId($language);
+
+        $em->persist($eventLanguage);
+        $em->flush();
+
+        return $this->redirectToRoute('events_edit', ['id' => $id, 'event_id' => $event_id]);
+    }
+
+    /**
      * @Route("/autocomplete/organizers", name="autocomplete_organizers")
      * @Method("GET")
      */
-    public function autocompleteAction(Request $request)
+    public function autocompleteOrganizersAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -173,6 +253,35 @@ class EventController extends Controller
 
         $response = new JsonResponse();
         $response->setData($emails);
+
+        return $response;
+    }
+
+    /**
+     * @Route("/autocomplete/languages", name="autocomplete_languages")
+     * @Method("GET")
+     */
+    public function autocompleteLanguagesAction(Request $request)
+    {
+        echo "<h1>hello world</h1>";
+
+        $em = $this->getDoctrine()->getManager();
+
+        $languages = $em->getRepository(Language::class)
+            ->createQueryBuilder('l')
+            ->where('l.language LIKE :language')
+            ->setParameter('language', '%'.$request->get('term').'%')
+            ->getQuery()
+            ->getResult();
+
+        $names = array();
+        foreach ($languages as $language) {
+            $names[] = $language->getLanguage();
+        }
+
+
+        $response = new JsonResponse();
+        $response->setData($names);
 
         return $response;
     }

@@ -6,11 +6,11 @@ $( document ).ready(function() {
         $( "#log" ).scrollTop( 0 );
     }
 
-    var path = $("#modal_input").data("autocomplete-path")
-    $( "#modal_input" ).autocomplete({
+    var path = $("#organizer #modal_input").data("autocomplete-path")
+    $( "#organizer #modal_input" ).autocomplete({
         source: path,
         minLength: 2,
-        appendTo: "#log",
+        appendTo: "#organizer #log",
         position: { my : "right tops", at: "right bottom" },
         response: function( event, ui ) {
             if(ui.content.length === 0) {
@@ -20,4 +20,19 @@ $( document ).ready(function() {
             }
         }
     });
+
+	var path = $("#language #modal_input").data("autocomplete-path")
+	$( "#language #modal_input" ).autocomplete({
+		source: path,
+		minLength: 2,
+		appendTo: "#language #log",
+		position: { my : "right tops", at: "right bottom" },
+		response: function( event, ui ) {
+			if(ui.content.length === 0) {
+				log( "No results found" )
+			} else {
+				$('.message').remove()
+			}
+		}
+	});
 });
