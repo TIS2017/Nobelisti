@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Attendee
+ * Attendee.
  *
  * @ORM\Table(name="attendee")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\AttendeeRepository")
@@ -68,13 +68,12 @@ class Attendee extends BaseEntity
     private $languageId;
 
     /**
-     * @ORM\OneToMany(targetEntity="Registration", mappedBy="attendee")
+     * @ORM\OneToMany(targetEntity="Registration", mappedBy="atendeeId")
      */
-    private $registrations;
-
+    public $registrations;
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -83,21 +82,19 @@ class Attendee extends BaseEntity
         return $this->id;
     }
 
-
-
     /**
-     * Get the value of firstName
-     */ 
+     * Get the value of firstName.
+     */
     public function getFirstName()
     {
         return $this->firstName;
     }
 
     /**
-     * Set the value of firstName
+     * Set the value of firstName.
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
@@ -106,18 +103,18 @@ class Attendee extends BaseEntity
     }
 
     /**
-     * Get the value of lastName
-     */ 
+     * Get the value of lastName.
+     */
     public function getLastName()
     {
         return $this->lastName;
     }
 
     /**
-     * Set the value of lastName
+     * Set the value of lastName.
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
@@ -126,18 +123,18 @@ class Attendee extends BaseEntity
     }
 
     /**
-     * Get the value of unsubscribed
-     */ 
+     * Get the value of unsubscribed.
+     */
     public function getUnsubscribed()
     {
         return $this->unsubscribed;
     }
 
     /**
-     * Set the value of unsubscribed
+     * Set the value of unsubscribed.
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setUnsubscribed($unsubscribed)
     {
         $this->unsubscribed = $unsubscribed;
@@ -146,18 +143,18 @@ class Attendee extends BaseEntity
     }
 
     /**
-     * Get the value of email
-     */ 
+     * Get the value of email.
+     */
     public function getEmail()
     {
         return $this->email;
     }
 
     /**
-     * Set the value of email
+     * Set the value of email.
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setEmail($email)
     {
         $this->email = $email;
@@ -166,18 +163,18 @@ class Attendee extends BaseEntity
     }
 
     /**
-     * Get the value of languageId
-     */ 
+     * Get the value of languageId.
+     */
     public function getLanguageId()
     {
         return $this->languageId;
     }
 
     /**
-     * Set the value of languageId
+     * Set the value of languageId.
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setLanguageId($languageId)
     {
         $this->languageId = $languageId;
@@ -185,4 +182,3 @@ class Attendee extends BaseEntity
         return $this;
     }
 }
-

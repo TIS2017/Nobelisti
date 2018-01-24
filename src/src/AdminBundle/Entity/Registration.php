@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Registration
+ * Registration.
  *
  * @ORM\Table(name="registration")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\RegistrationRepository")
@@ -71,7 +71,7 @@ class Registration extends BaseEntity
     private $languageId;
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -81,22 +81,22 @@ class Registration extends BaseEntity
     }
 
     /**
-     * Get the value of code
+     * Get the value of code.
      *
-     * @return  int
-     */ 
+     * @return int
+     */
     public function getCode()
     {
         return $this->code;
     }
 
     /**
-     * Set the value of code
+     * Set the value of code.
      *
-     * @param  int  $code
+     * @param int $code
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setCode(int $code)
     {
         $this->code = $code;
@@ -105,12 +105,12 @@ class Registration extends BaseEntity
     }
 
     /**
-     * Set the value of confirmed
+     * Set the value of confirmed.
      *
-     * @param  int  $confirmed
+     * @param int $confirmed
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setConfirmed(int $confirmed)
     {
         $this->confirmed = $confirmed;
@@ -119,33 +119,32 @@ class Registration extends BaseEntity
     }
 
     /**
-     * Get the value of confirmed
+     * Get the value of confirmed.
      *
-     * @return  int
-     */ 
+     * @return int
+     */
     public function getConfirmed()
     {
         return $this->confirmed;
     }
 
-
     /**
-     * Get the value of confirmationToken
+     * Get the value of confirmationToken.
      *
-     * @return  string
-     */ 
+     * @return string
+     */
     public function getConfirmationToken()
     {
         return $this->confirmationToken;
     }
 
     /**
-     * Set the value of confirmationToken
+     * Set the value of confirmationToken.
      *
-     * @param  string  $confirmationToken
+     * @param string $confirmationToken
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setConfirmationToken(string $confirmationToken)
     {
         $this->confirmationToken = $confirmationToken;
@@ -154,18 +153,18 @@ class Registration extends BaseEntity
     }
 
     /**
-     * Get the value of atendeeId
-     */ 
+     * Get the value of atendeeId.
+     */
     public function getAtendeeId()
     {
         return $this->atendeeId;
     }
 
     /**
-     * Set the value of atendeeId
+     * Set the value of atendeeId.
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setAtendeeId($atendeeId)
     {
         $this->atendeeId = $atendeeId;
@@ -174,18 +173,18 @@ class Registration extends BaseEntity
     }
 
     /**
-     * Get the value of eventDetailsId
-     */ 
+     * Get the value of eventDetailsId.
+     */
     public function getEventDetailsId()
     {
         return $this->eventDetailsId;
     }
 
     /**
-     * Set the value of eventDetailsId
+     * Set the value of eventDetailsId.
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setEventDetailsId($eventDetailsId)
     {
         $this->eventDetailsId = $eventDetailsId;
@@ -194,18 +193,18 @@ class Registration extends BaseEntity
     }
 
     /**
-     * Get the value of languageId
-     */ 
+     * Get the value of languageId.
+     */
     public function getLanguageId()
     {
         return $this->languageId;
     }
 
     /**
-     * Set the value of languageId
+     * Set the value of languageId.
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setLanguageId($languageId)
     {
         $this->languageId = $languageId;
@@ -213,4 +212,3 @@ class Registration extends BaseEntity
         return $this;
     }
 }
-
