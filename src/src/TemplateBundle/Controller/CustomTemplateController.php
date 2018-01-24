@@ -77,7 +77,7 @@ class CustomTemplateController extends Controller
         return array_map('basename', glob($languagesPath));
     }
 
-    protected function getFileToYaml($path, $context)
+    protected function getArrayFromYaml($path, $context)
     {
         $rawContent = file_get_contents($path);
 
@@ -91,6 +91,6 @@ class CustomTemplateController extends Controller
     {
         $languagesPath = self::buildLanguagePath($templateName, $language);
 
-        return $this->getFileToYaml($languagesPath, $context);
+        return $this->getArrayFromYaml($languagesPath, $context);
     }
 }

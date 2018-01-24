@@ -19,7 +19,7 @@ class EmailController extends CustomTemplateController
     {
         $emailPath = self::getFilePath($templateName, $emailPath);
 
-        return $this->getFileToYaml($emailPath, $context);
+        return $this->getArrayFromYaml($emailPath, $context);
     }
 
     protected function sendEmail(Attendee $attendee, array $context, String $templateName, String $emailType)
