@@ -50,7 +50,7 @@ class CustomTemplateController extends Controller
         return self::trimPath($templateNameOrDefault);
     }
 
-    private static function getFilePath($templateName, $file)
+    protected static function getFilePath($templateName, $file)
     {
         $filePath = self::buildTemplatePath($templateName).'/'.$file;
         if (file_exists($filePath)) {
@@ -77,14 +77,20 @@ class CustomTemplateController extends Controller
         return array_map('basename', glob($languagesPath));
     }
 
-    public function getLanguageFile($templateName, $language, $context = [])
+    protected function getArrayFromYaml($path, $context)
     {
-        $languagesPath = self::buildLanguagePath($templateName, $language);
-        $rawContent = file_get_contents($languagesPath);
+        $rawContent = file_get_contents($path);
 
         $template = $this->get('twig')->createTemplate($rawContent);
         $rawYaml = $template->render($context);
 
         return Yaml::parse($rawYaml);
+    }
+
+    public function getLanguageFile($templateName, $language, $context = [])
+    {
+        $languagesPath = self::buildLanguagePath($templateName, $language);
+
+        return $this->getArrayFromYaml($languagesPath, $context);
     }
 }

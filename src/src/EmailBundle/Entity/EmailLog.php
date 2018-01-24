@@ -9,9 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  * EmailLogContent.
  *
  * @ORM\Table(name="email_log_content")
- * @ORM\Entity(repositoryClass="EmailBundle\Repository\EmailLogContentRepository")
+ * @ORM\Entity(repositoryClass="EmailBundle\Repository\EmailLogRepository")
  */
-class EmailLogContent extends BaseEntity
+class EmailLog extends BaseEntity
 {
     /**
      * @var int
@@ -65,6 +65,13 @@ class EmailLogContent extends BaseEntity
     private $template;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="text")
+     */
+    private $status;
+
+    /**
      * Get id.
      *
      * @return int
@@ -79,7 +86,7 @@ class EmailLogContent extends BaseEntity
      *
      * @param string $emailAddress
      *
-     * @return EmailLogContent
+     * @return EmailLog
      */
     public function setEmailAddress($emailAddress)
     {
@@ -103,7 +110,7 @@ class EmailLogContent extends BaseEntity
      *
      * @param string $emailType
      *
-     * @return EmailLogContent
+     * @return EmailLog
      */
     public function setEmailType($emailType)
     {
@@ -127,7 +134,7 @@ class EmailLogContent extends BaseEntity
      *
      * @param string $emailMeta
      *
-     * @return EmailLogContent
+     * @return EmailLog
      */
     public function setEmailMeta($emailMeta)
     {
@@ -151,7 +158,7 @@ class EmailLogContent extends BaseEntity
      *
      * @param string $contentPlain
      *
-     * @return EmailLogContent
+     * @return EmailLog
      */
     public function setContentPlain($contentPlain)
     {
@@ -175,7 +182,7 @@ class EmailLogContent extends BaseEntity
      *
      * @param string $contentHtml
      *
-     * @return EmailLogContent
+     * @return EmailLog
      */
     public function setContentHtml($contentHtml)
     {
@@ -199,7 +206,7 @@ class EmailLogContent extends BaseEntity
      *
      * @param string $template
      *
-     * @return EmailLogContent
+     * @return EmailLog
      */
     public function setTemplate($template)
     {
@@ -216,5 +223,29 @@ class EmailLogContent extends BaseEntity
     public function getTemplate()
     {
         return $this->template;
+    }
+
+    /**
+     * Set status.
+     *
+     * @param string $status
+     *
+     * @return EmailLog
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status.
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }
