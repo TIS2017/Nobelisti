@@ -25,6 +25,14 @@
     </div>
     </form>-->
     <hr>
+
+    {# If filter form was send, retain it when changing a page #}
+    {% if app.request.uri | split('?', 2)[1] is defined %}
+        {% set sendFormUrl = app.request.uri | split('?', 2)[1] %}
+    {% else %}
+        {% set sendFormUrl = "" %}
+    {% endif %}
+
     {% if mailingList | length == 0 %}
         <p> Mailing list is empty.</p>
     {% else %}
@@ -88,11 +96,11 @@
             {% else %}
             <li class="page-item">
             {% endif %}
-                <a class="page-link" href="{{ path('mailing_list', { 'page': 1 }) }}">First</a>
+                <a class="page-link" href="{{ path('mailing_list', { 'page': 1 })  ~ '?' ~ sendFormUrl}}">First</a>
             </li>
 
             {% if currentPage > 1 %}
-                <li class="page-item"><a class="page-link" href="{{ path('mailing_list', { 'page': (currentPage - 1 ) }) }}">{{ currentPage -1 }}</a></li>
+                <li class="page-item"><a class="page-link" href="{{ path('mailing_list', { 'page': (currentPage - 1 ) }) ~ '?' ~ sendFormUrl }}">{{ currentPage -1 }}</a></li>
             {% endif %}
 
             <li class="page-item active">
@@ -103,7 +111,7 @@
             </li>
 
             {% if currentPage < countPages %}
-                <li class="page-item"><a class="page-link" href="{{ path('mailing_list', { 'page': ( currentPage +1 ) }) }}">{{ currentPage + 1 }}</a></li>
+                <li class="page-item"><a class="page-link" href="{{ path('mailing_list', { 'page': ( currentPage +1 ) })  ~ '?' ~ sendFormUrl }}">{{ currentPage + 1 }}</a></li>
             {% endif %}
 
             {% if currentPage == countPages %}
@@ -111,7 +119,7 @@
             {% else %}
             <li class="page-item">
             {% endif %}
-                <a class="page-link" href="{{ path('mailing_list', { 'page': countPages }) }}">Last</a>
+                <a class="page-link" href="{{ path('mailing_list', { 'page': countPages })  ~ '?' ~ sendFormUrl }}">Last</a>
             </li>
             <li id="pageOfAllPages">
                 <span>{{ currentPage }} of {{ countPages }}</span>
