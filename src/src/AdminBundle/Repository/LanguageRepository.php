@@ -2,6 +2,8 @@
 
 namespace AdminBundle\Repository;
 
+use AdminBundle\Entity\Language;
+
 /**
  * LanguageRepository.
  *
@@ -10,4 +12,14 @@ namespace AdminBundle\Repository;
  */
 class LanguageRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getLanguagesFromAutocomplete($term)
+    {
+        $qb = $this->_em->createQueryBuilder('l');
+        $qb->select('l')
+            ->from(Language::class, 'l')
+            ->where('l.language LIKE :language')
+            ->setParameter('language', '%'.$term.'%');
+
+        return $qb->getQuery()->getResult();
+    }
 }
