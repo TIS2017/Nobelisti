@@ -50,7 +50,7 @@ class Attendee extends BaseEntity
      * @ORM\Column(name="unsubscribed", type="boolean")
      * @Assert\NotBlank()
      */
-    private $unsubscribed;
+    private $unsubscribed = 0;
 
     /**
      * @var string
