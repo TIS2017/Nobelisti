@@ -82,40 +82,40 @@
                     action_path: path('events_assign_language', {'id':event_type_id, 'event_id': event_id}),
                 }
             %}
-            {#{% if languages | length == 0 %}#}
-                {#<p>No Language found.</p>#}
-            {#{% else %}#}
-                {#<table class="table table-bordered">#}
-                    {#<thead class="thead-light">#}
-                    {#<tr>#}
-                        {#<th scope="col">#</th>#}
-                        {#<th scope="col">Language</th>#}
-                        {#<th scope="col">Unassign</th>#}
-                    {#</tr>#}
-                    {#</thead>#}
-                    {#<tbody>#}
-                        {#{% for language in languages %}#}
-                            {#<tr>#}
-                                {#<th scope="row">{{ loop.index }}</th>#}
-                                {#<td>{{ language.language }}</td>#}
-                                {#<td><a href="#" data-toggle="modal" data-target="#deleteLanguageModal{{ language.id }}">Unassign</a></td>#}
-                            {#</tr>#}
-                            {#{% include "@AdminBundle/Resources/views/modal.html.twig"#}
-                                {#with {#}
-                                    {#modal_id: 'deleteLanguageModal' ~ language.id,#}
-                                    {#modal_title: 'Unassign Language',#}
-                                    {#modal_content: 'Are you sure you want to unassign ' ~ language.language ~ '?',#}
-                                    {#action_path: path('events_unassign_language', {#}
-                                        {#'id': event_type_id,#}
-                                        {#'event_id': event_id,#}
-                                        {#'language_id': language.id#}
-                                    {#}),#}
-                                {#}#}
-                            {#%}#}
-                        {#{% endfor %}#}
-                    {#</tbody>#}
-                {#</table>#}
-            {#{% endif %}#}
+            {% if languages | length == 0 %}
+                <p>No Language found.</p>
+            {% else %}
+                <table class="table table-bordered">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Language</th>
+                        <th scope="col">Unassign</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for language in languages %}
+                            <tr>
+                                <th scope="row">{{ loop.index }}</th>
+                                <td>{{ language.language }}</td>
+                                <td><a href="#" data-toggle="modal" data-target="#deleteLanguageModal{{ language.id }}">Unassign</a></td>
+                            </tr>
+                            {% include "@AdminBundle/Resources/views/modal.html.twig"
+                                with {
+                                    modal_id: 'deleteLanguageModal' ~ language.id,
+                                    modal_title: 'Unassign Language',
+                                    modal_content: 'Are you sure you want to unassign ' ~ language.language ~ '?',
+                                    action_path: path('events_unassign_language', {
+                                        'id': event_type_id,
+                                        'event_id': event_id,
+                                        'language_id': language.id
+                                    }),
+                                }
+                            %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

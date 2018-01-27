@@ -263,8 +263,6 @@ class EventController extends Controller
      */
     public function autocompleteLanguagesAction(Request $request)
     {
-        echo "<h1>hello world</h1>";
-
         $em = $this->getDoctrine()->getManager();
 
         $languages = $em->getRepository(Language::class)
