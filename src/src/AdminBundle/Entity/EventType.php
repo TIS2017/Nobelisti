@@ -88,7 +88,7 @@ class EventType extends BaseEntity
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="Event", mappedBy="eventTypeId")
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="eventType")
      */
     private $events;
 

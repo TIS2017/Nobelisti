@@ -20,16 +20,16 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
-            <a href="#" data-toggle="modal" data-target="#{{ 'assignModal' ~ event_id }}"
+        <div class="col-md-6" id="organizer">
+            <a href="#" data-toggle="modal" data-target="#{{ 'assignOrganizerModal' ~ event_id }}"
                class='btn btn-primary'>Assign Organizer</a>
             {% include "@AdminBundle/Resources/views/autocompleteModal.html.twig"
                 with {
-                    modal_id: 'assignModal' ~ event_id,
+                    modal_id: 'assignOrganizerModal' ~ event_id,
                     modal_title: 'Assign Organizer',
                     modal_content: 'Type to assign organizer.',
                     modal_input_name: modal_input_organizers,
-                    modal_input_path: path( autocomplete_path ),
+                    modal_input_path: path( autocomplete_path_organizers ),
                     action_path: path('events_assign_organizer', {'id':event_type_id, 'event_id': event_id}),
                 }
             %}
@@ -49,11 +49,11 @@
                         <tr>
                             <th scope="row">{{ loop.index }}</th>
                             <td>{{ organizer.email }}</td>
-                            <td><a href="#" data-toggle="modal" data-target="#deleteModal{{ organizer.id }}">Unassign</a></td>
+                            <td><a href="#" data-toggle="modal" data-target="#deleteOrganizerModal{{ organizer.id }}">Unassign</a></td>
                         </tr>
                         {% include "@AdminBundle/Resources/views/modal.html.twig"
                             with {
-                                modal_id: 'deleteModal' ~ organizer.id,
+                                modal_id: 'deleteOrganizerModal' ~ organizer.id,
                                 modal_title: 'Unassign Organizer',
                                 modal_content: 'Are you sure you want to unassign ' ~ organizer.email ~ '?',
                                 action_path: path('events_unassign_organizer', {
@@ -68,6 +68,54 @@
                 </table>
             {% endif %}
         </div>
-        <div class="col-md-6"></div>
+
+        <div class="col-md-6" id="language">
+            <a href="#" data-toggle="modal" data-target="#{{ 'assignLanguageModal' ~ event_id }}"
+               class='btn btn-primary'>Assign Language</a>
+            {% include "@AdminBundle/Resources/views/autocompleteModal.html.twig"
+                with {
+                    modal_id: 'assignLanguageModal' ~ event_id,
+                    modal_title: 'Assign Language',
+                    modal_content: 'Type to assign language.',
+                    modal_input_name: modal_input_languages,
+                    modal_input_path: path( autocomplete_path_languages ),
+                    action_path: path('events_assign_language', {'id':event_type_id, 'event_id': event_id}),
+                }
+            %}
+            {% if languages | length == 0 %}
+                <p>No Language found.</p>
+            {% else %}
+                <table class="table table-bordered">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Language</th>
+                        <th scope="col">Unassign</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for language in languages %}
+                            <tr>
+                                <th scope="row">{{ loop.index }}</th>
+                                <td>{{ language.language }}</td>
+                                <td><a href="#" data-toggle="modal" data-target="#deleteLanguageModal{{ language.id }}">Unassign</a></td>
+                            </tr>
+                            {% include "@AdminBundle/Resources/views/modal.html.twig"
+                                with {
+                                    modal_id: 'deleteLanguageModal' ~ language.id,
+                                    modal_title: 'Unassign Language',
+                                    modal_content: 'Are you sure you want to unassign ' ~ language.language ~ '?',
+                                    action_path: path('events_unassign_language', {
+                                        'id': event_type_id,
+                                        'event_id': event_id,
+                                        'language_id': language.id
+                                    }),
+                                }
+                            %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

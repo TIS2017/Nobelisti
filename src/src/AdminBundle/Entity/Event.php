@@ -120,9 +120,9 @@ class Event extends BaseEntity
     /**
      * @return mixed
      */
-    public function getEventTypeId()
+    public function getEventType()
     {
-        return $this->eventTypeId;
+        return $this->eventType;
     }
 
     /**
@@ -174,21 +174,21 @@ class Event extends BaseEntity
     }
 
     /**
-     * @param mixed $eventTypeId
+     * @param mixed $eventType
      */
-    public function setEventTypeId($eventTypeId)
+    public function setEventType($eventType)
     {
-        $this->eventTypeId = $eventTypeId;
+        $this->eventType = $eventType;
     }
 
     /**
      * @ORM\ManyToOne(targetEntity="EventType", inversedBy="events")
      * @ORM\JoinColumn(name="event_type_id", referencedColumnName="id")
      */
-    private $eventTypeId;
+    private $eventType;
 
     /**
-     * @ORM\OneToMany(targetEntity="EventOrganizers", mappedBy="eventId")
+     * @ORM\OneToMany(targetEntity="EventOrganizers", mappedBy="event")
      */
     private $organizers;
 
@@ -209,7 +209,7 @@ class Event extends BaseEntity
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="EventLanguages", mappedBy="event_id")
+     * @ORM\OneToMany(targetEntity="EventLanguages", mappedBy="event")
      */
     private $languages;
 }

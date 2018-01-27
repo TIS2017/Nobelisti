@@ -2,6 +2,8 @@
 
 namespace AdminBundle\Repository;
 
+use AdminBundle\Entity\Organizer;
+
 /**
  * OrganizerRepository.
  *
@@ -10,4 +12,14 @@ namespace AdminBundle\Repository;
  */
 class OrganizerRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getOrganizersByEmail($term)
+    {
+        $qb = $this->_em->createQueryBuilder('o');
+        $qb->select('o')
+            ->from(Organizer::class, 'o')
+            ->where('o.email LIKE :email')
+            ->setParameter('email', '%'.$term.'%');
+
+        return $qb->getQuery()->getResult();
+    }
 }
