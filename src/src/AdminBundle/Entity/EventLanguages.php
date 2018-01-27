@@ -34,44 +34,44 @@ class EventLanguages extends BaseEntity
     /**
      * @return mixed
      */
-    public function getEventId()
+    public function getEvent()
     {
-        return $this->eventId;
+        return $this->event;
     }
 
     /**
-     * @param mixed $eventId
+     * @param mixed $event
      */
-    public function setEventId($eventId)
+    public function setEvent($event)
     {
-        $this->eventId = $eventId;
+        $this->event = $event;
     }
 
     /**
      * @return mixed
      */
-    public function getLanguageId()
+    public function getLanguage()
     {
-        return $this->languageId;
+        return $this->language;
     }
 
     /**
-     * @param mixed $languageId
+     * @param mixed $language
      */
-    public function setLanguageId($languageId)
+    public function setLanguage($language)
     {
-        $this->languageId = $languageId;
+        $this->language = $language;
     }
 
     /**
      * @ORM\ManyToOne(targetEntity="Event", inversedBy="languages")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
-    private $eventId;
+    private $event;
 
     /**
      * @ORM\ManyToOne(targetEntity="Language", inversedBy="events")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
-    private $languageId;
+    private $language;
 }

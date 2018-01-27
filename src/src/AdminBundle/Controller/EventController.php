@@ -27,7 +27,7 @@ class EventController extends Controller
         $eventType = $repository->findOneBy(['id' => $id]);
 
         $newEvent = new Event();
-        $newEvent->setEventTypeId($eventType);
+        $newEvent->setEventType($eventType);
         $form = $this->createForm(EventForm::class, $newEvent);
 
         $form->handleRequest($request);
@@ -45,9 +45,9 @@ class EventController extends Controller
         ));
     }
 
-    private static $modalInputOrganizers = 'assignOrganizer';
+    private static $modalInputOrganizers = 'assign_organizer';
 
-    private static $modalInputLanguages = 'assignLanguage';
+    private static $modalInputLanguages = 'assign_language';
 
     /**
      * @Route("/event_type/edit/{id}/event/{event_id}/edit", name="events_edit", requirements={"id"="\d+", "event_id"="\d+"})
@@ -57,21 +57,21 @@ class EventController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         //EventOrganizers
-        $eventOrganizers = $em->getRepository(EventOrganizers::class)->findBy(['eventId' => $event_id]);
+        $eventOrganizers = $em->getRepository(EventOrganizers::class)->findBy(['event' => $event_id]);
 
         $eventOrganizersIds = [];
         foreach ($eventOrganizers as $eventOrganizer) {
-            $eventOrganizersIds[] = $eventOrganizer->getOrganizerId();
+            $eventOrganizersIds[] = $eventOrganizer->getOrganizer();
         }
 
         $organizers = $em->getRepository(Organizer::class)->findById($eventOrganizersIds);
 
         //EventLanguages
-        $eventLanguages = $em->getRepository(EventLanguages::class)->findBy(['eventId' => $event_id]);
+        $eventLanguages = $em->getRepository(EventLanguages::class)->findBy(['event' => $event_id]);
 
         $eventLanguagesIds = [];
         foreach ($eventLanguages as $eventLanguage) {
-            $eventLanguagesIds[] = $eventLanguage->getLanguageId();
+            $eventLanguagesIds[] = $eventLanguage->getLanguage();
         }
 
         $languages = $em->getRepository(Language::class)->findById($eventLanguagesIds);
@@ -140,8 +140,8 @@ class EventController extends Controller
 
         $eventOrganizer = $em->getRepository(EventOrganizers::class)->findOneBy(
             array(
-                'eventId' => $event_id,
-                'organizerId' => $organizer_id,
+                'event' => $event_id,
+                'organizer' => $organizer_id,
             )
         );
 
@@ -166,8 +166,8 @@ class EventController extends Controller
 
         $eventLanguage = $em->getRepository(EventLanguages::class)->findOneBy(
             array(
-                'eventId' => $event_id,
-                'languageId' => $language_id,
+                'event' => $event_id,
+                'language' => $language_id,
             )
         );
 
@@ -196,8 +196,8 @@ class EventController extends Controller
         $event = $em->getRepository(Event::class)->findOneBy(['id' => $event_id]);
 
         $eventOrganizer = new EventOrganizers();
-        $eventOrganizer->setEventId($event);
-        $eventOrganizer->setOrganizerId($organizer);
+        $eventOrganizer->setEvent($event);
+        $eventOrganizer->setOrganizer($organizer);
 
         $em->persist($eventOrganizer);
         $em->flush();
@@ -222,8 +222,8 @@ class EventController extends Controller
         $event = $em->getRepository(Event::class)->findOneBy(['id' => $event_id]);
 
         $eventLanguage = new EventLanguages();
-        $eventLanguage->setEventId($event);
-        $eventLanguage->setLanguageId($language);
+        $eventLanguage->setEvent($event);
+        $eventLanguage->setLanguage($language);
 
         $em->persist($eventLanguage);
         $em->flush();
@@ -276,7 +276,6 @@ class EventController extends Controller
         foreach ($languages as $language) {
             $names[] = $language->getLanguage();
         }
-
 
         $response = new JsonResponse();
         $response->setData($names);
