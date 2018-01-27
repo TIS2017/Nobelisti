@@ -8,25 +8,29 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post" action="{{ action_path }}">
-                <div class="modal-body">
-                    {{ modal_content }}
-
-                    <div class="ui-widget">
-                        <label for="birds">{{ modal_title }}</label>
-                        <input
-                            name="{{ modal_input_name }}"
-                            data-autocomplete-path="{{ modal_input_path }}"
-                            id="modal_input_{{ modal_input_name }}"
-                        >
-                        <div id="log_{{ modal_input_name }}" class="ui-widget-content log"></div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <form method="post" action="{{ action_path }}">
+                            <label for="birds">{{ modal_content }}</label>
+                            <input
+                                    name="{{ modal_input_name }}"
+                                    data-autocomplete-path="{{ modal_input_path }}"
+                                    id="modal_input_{{ modal_input_name }}"
+                                    type="text" class="form-control"
+                            >
+                        </form>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-danger">Assign</button>
+                <div class="list-group">
+                    <div id="log_{{ modal_input_name }}" class="ui-widget-content log"></div>
+
                 </div>
-            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-danger">Assign</button>
+            </div>
         </div>
     </div>
 </div>

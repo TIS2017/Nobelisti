@@ -12,12 +12,12 @@ form label {
     margin-top: 20px;
 }
 
-#log ul {
-	display: table-row;
+.log ul {
+    display: table-row;
 }
 
 .ui-widget-content.log {
-	height: 200px;
-	width: 300px;
-	overflow: scroll;
+    height: 100px;
+    width: 300px;
+    overflow: scroll;
 }

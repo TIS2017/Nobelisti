@@ -12,7 +12,7 @@ use AdminBundle\Entity\Language;
  */
 class LanguageRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getLanguagesFromAutocomplete($term)
+    public function getLanguagesByLanguage($term)
     {
         $qb = $this->_em->createQueryBuilder('l');
         $qb->select('l')

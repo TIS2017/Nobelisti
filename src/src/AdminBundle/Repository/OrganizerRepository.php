@@ -12,7 +12,7 @@ use AdminBundle\Entity\Organizer;
  */
 class OrganizerRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getOrganizersFromAutocomplete($term)
+    public function getOrganizersByEmail($term)
     {
         $qb = $this->_em->createQueryBuilder('o');
         $qb->select('o')

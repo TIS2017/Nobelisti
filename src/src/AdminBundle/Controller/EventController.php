@@ -239,7 +239,7 @@ class EventController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $organizers = $em->getRepository(Organizer::class)->getOrganizersFromAutocomplete($request->get('term'));
+        $organizers = $em->getRepository(Organizer::class)->getOrganizersByEmail($request->get('term'));
 
         $emails = array();
         foreach ($organizers as $organizer) {
@@ -260,7 +260,7 @@ class EventController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $languages = $em->getRepository(Language::class)->getLanguagesFromAutocomplete($request->get('term'));
+        $languages = $em->getRepository(Language::class)->getLanguagesByLanguage($request->get('term'));
 
         $names = array();
         foreach ($languages as $language) {

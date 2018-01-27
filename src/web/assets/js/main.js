@@ -4,8 +4,14 @@ $( document ).ready(function() {
     function log( message, log_type ) {
         var log_div = '#log_' + log_type;
         $( "<div class='message'>" ).text( message ).prependTo( log_div );
-        $( "#log" ).scrollTop( 0 );
+        $( "#log_assign_language" ).scrollTop( 0 );
     }
+
+    function log( message, log_type ) {
+        var log_div = '#log_' + log_type;
+        $( "<div class='message'>" ).text( message ).prependTo( log_div );
+        $( "#log_assign_organizer" ).scrollTop( 0 );
+}
 
     var path = $("#modal_input_assign_organizer").data("autocomplete-path")
     $( "#modal_input_assign_organizer" ).autocomplete({
