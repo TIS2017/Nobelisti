@@ -27,7 +27,6 @@ class MailingListController extends Controller
         $countPages = 0;
         $mailingList = [];
         $em = $this->getDoctrine()->getManager();
-
         $defaultData = array('nameEmail' => '', 'event' => '', 'isSubscribed' => false);
         $form = $this->createFormBuilder($defaultData)
             ->add('nameEmail', TextType::class, array(
@@ -83,7 +82,6 @@ class MailingListController extends Controller
                                     ->setMaxResults($numItemsPerPage)
                                     ->getQuery()
                                     ->getResult();
-
                 $selectCountPages = $em->createQueryBuilder()
                                         ->select('count(a.id)')
                                         ->from('AdminBundle:Attendee', 'a');
