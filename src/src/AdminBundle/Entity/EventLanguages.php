@@ -35,11 +35,11 @@ class EventLanguages extends BaseEntity
      * @ORM\ManyToOne(targetEntity="Event", inversedBy="languages")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
-    private $event_id;
+    private $eventId;
 
     /**
      * @ORM\ManyToOne(targetEntity="Language", inversedBy="events")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
-    private $language_id;
+    private $languageId;
 }

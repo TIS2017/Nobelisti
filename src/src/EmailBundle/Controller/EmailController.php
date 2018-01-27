@@ -2,7 +2,7 @@
 
 namespace EmailBundle\Controller;
 
-use AppBundle\Entity\Attendee;
+use AdminBundle\Entity\Attendee;
 use EmailBundle\Entity\EmailLog;
 use TemplateBundle\Controller\CustomTemplateController;
 
