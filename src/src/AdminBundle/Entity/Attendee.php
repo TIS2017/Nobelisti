@@ -68,7 +68,7 @@ class Attendee extends BaseEntity
     private $languageId;
 
     /**
-     * @ORM\OneToMany(targetEntity="Registration", mappedBy="atendeeId")
+     * @ORM\OneToMany(targetEntity="Registration", mappedBy="attendeeId")
      */
     public $registrations;
 

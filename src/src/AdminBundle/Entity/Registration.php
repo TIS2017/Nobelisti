@@ -56,7 +56,7 @@ class Registration extends BaseEntity
      * @ORM\ManyToOne(targetEntity="Attendee", inversedBy="registrations")
      * @ORM\JoinColumn(name="attendee_id", referencedColumnName="id")
      */
-    private $atendeeId;
+    private $attendeeId;
 
     /**
      * @ORM\ManyToOne(targetEntity="Event", inversedBy="registrations")

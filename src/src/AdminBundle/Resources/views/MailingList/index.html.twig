@@ -3,27 +3,9 @@
 {% block content %}
     <h1>Mailing list</h1>
     <hr>
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
-    <!--<form>
-    <div class="form-row">
-        <div class="col">
-        <input type="text" class="form-control" placeholder="Search by Name/E-mail">
-        </div>
-        <div class="col">
-        <input type="text" class="form-control" placeholder="Filter by event">
-        </div>
-        <div class="col">
-        <label class="form-check-label">
-            <input class="form-check-input" type="checkbox"> Only subscribed
-        </label>
-        </div>
-        <div class="col">
-        <a href="#" class="btn btn-primary">Search</a>
-        </div>
-    </div>
-    </form>-->
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
     <hr>
 
     {# If filter form was send, retain it when changing a page #}
@@ -49,22 +31,22 @@
             </tr>
         </thead>
         <tbody>
-            {% for mailingListItem in mailingList %}
-                 <tr>
+            {% for attendee in mailingList %}
+                <tr>
                 <th scope="row">{{ loop.index + ((currentPage - 1) * numItemsPerPage) }}</th>
-                <td>{{ mailingListItem.firstName }}</td>
-                <td>{{ mailingListItem.lastName }}</td>
-                <td>{{ mailingListItem.email }}</td>
-                <td>{{ mailingListItem.languageId.language }}</td>
+                <td>{{ attendee.firstName }}</td>
+                <td>{{ attendee.lastName }}</td>
+                <td>{{ attendee.email }}</td>
+                <td>{{ attendee.languageId.language }}</td>
                 <td>
-                    {% if mailingListItem.unsubscribed %}
-                        Yes
-                    {% else %}
+                    {% if attendee.unsubscribed %}
                         No
+                    {% else %}
+                        Yes
                     {% endif %}
                 </td>
                 <td>
-                    {% for registration in mailingListItem.registrations | slice (0,3) %}
+                    {% for registration in attendee.registrations | slice (0,3) %}
                         {% if loop.index == 1 %}
                             {{ registration.eventDetailsId.eventTypeId.slug }}
                         {% endif %}
@@ -72,58 +54,60 @@
                             ,&nbsp{{ registration.eventDetailsId.eventTypeId.slug }}
                         {% endif %}
                         {% if loop.index == 3 %}
-                            &nbsp<a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#showAllEvents{{ mailingListItem.id }}">Show all</a>
+                            &nbsp<a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#showAllEvents{{ attendee.id }}">Show all</a>
                         {% endif %}
                     {% endfor %}
                 </td>
                 </tr>
                 {% include "@AdminBundle/Resources/views/showAllEventsModal.html.twig"
                     with {
-                        modal_id: 'showAllEvents' ~ mailingListItem.id,
-                        modal_title_attendee: mailingListItem.firstName ~ ' ' ~ mailingListItem.lastName,
-                        modal_registrations: mailingListItem.registrations,
+                        modal_id: 'showAllEvents' ~ attendee.id,
+                        modal_title_attendee: attendee.firstName ~ ' ' ~ attendee.lastName,
+                        modal_registrations: attendee.registrations,
                     }
                 %}
             {% endfor %}
             </tbody>
         </table>
     {% endif %}
-    <nav aria-label="...">
-        <ul class="pagination">
+    {% if mailingList | length != 0 %}
+        <nav aria-label="...">
+            <ul class="pagination">
 
-            {% if currentPage == 1 %}
-            <li class="page-item disabled">
-            {% else %}
-            <li class="page-item">
-            {% endif %}
-                <a class="page-link" href="{{ path('mailing_list', { 'page': 1 })  ~ '?' ~ sendFormUrl}}">First</a>
-            </li>
+                {% if currentPage == 1 %}
+                <li class="page-item disabled">
+                {% else %}
+                <li class="page-item">
+                {% endif %}
+                    <a class="page-link" href="{{ path('mailing_list', { 'page': 1 })  ~ '?' ~ sendFormUrl }}">First</a>
+                </li>
 
-            {% if currentPage > 1 %}
-                <li class="page-item"><a class="page-link" href="{{ path('mailing_list', { 'page': (currentPage - 1 ) }) ~ '?' ~ sendFormUrl }}">{{ currentPage -1 }}</a></li>
-            {% endif %}
+                {% if currentPage > 1 %}
+                    <li class="page-item"><a class="page-link" href="{{ path('mailing_list', { 'page': (currentPage - 1 ) }) ~ '?' ~ sendFormUrl }}">{{ currentPage -1 }}</a></li>
+                {% endif %}
 
-            <li class="page-item active">
-                <span class="page-link">
-                    {{ currentPage }}
-                    <span class="sr-only">(current)</span>
-                </span>
-            </li>
+                <li class="page-item active">
+                    <span class="page-link">
+                        {{ currentPage }}
+                        <span class="sr-only">(current)</span>
+                    </span>
+                </li>
 
-            {% if currentPage < countPages %}
-                <li class="page-item"><a class="page-link" href="{{ path('mailing_list', { 'page': ( currentPage +1 ) })  ~ '?' ~ sendFormUrl }}">{{ currentPage + 1 }}</a></li>
-            {% endif %}
+                {% if currentPage < countPages %}
+                    <li class="page-item"><a class="page-link" href="{{ path('mailing_list', { 'page': ( currentPage + 1 ) })  ~ '?' ~ sendFormUrl }}">{{ currentPage + 1 }}</a></li>
+                {% endif %}
 
-            {% if currentPage == countPages %}
-            <li class="page-item disabled">
-            {% else %}
-            <li class="page-item">
-            {% endif %}
-                <a class="page-link" href="{{ path('mailing_list', { 'page': countPages })  ~ '?' ~ sendFormUrl }}">Last</a>
-            </li>
-            <li id="pageOfAllPages">
-                <span>{{ currentPage }} of {{ countPages }}</span>
-            </li>
-        </ul>
-    </nav>
+                {% if currentPage == countPages %}
+                <li class="page-item disabled">
+                {% else %}
+                <li class="page-item">
+                {% endif %}
+                    <a class="page-link" href="{{ path('mailing_list', { 'page': countPages })  ~ '?' ~ sendFormUrl }}">Last</a>
+                </li>
+                <li id="pageOfAllPages">
+                    <span>{{ currentPage }} of {{ countPages }}</span>
+                </li>
+            </ul>
+        </nav>
+    {% endif %}
 {% endblock %}
