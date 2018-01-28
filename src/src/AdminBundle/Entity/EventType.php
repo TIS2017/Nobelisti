@@ -96,4 +96,17 @@ class EventType extends BaseEntity
     {
         $this->events = new ArrayCollection();
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLanguages()
+    {
+        return $this->languages;
+    }
+
+    /**
+     * @ORM\OneToMany(targetEntity="EventTypeLanguages", mappedBy="eventType")
+     */
+    private $languages;
 }
