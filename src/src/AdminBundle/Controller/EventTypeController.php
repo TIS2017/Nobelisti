@@ -141,7 +141,7 @@ class EventTypeController extends Controller
         $eventTypeLanguage->setEventType($eventType);
         $eventTypeLanguage->setLanguage($language);
 
-        $em->persist($eventLanguage);
+        $em->persist($eventTypeLanguage);
         $em->flush();
 
         return $this->redirectToRoute('event_types_edit', ['id' => $id]);

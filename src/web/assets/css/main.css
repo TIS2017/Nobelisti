@@ -21,3 +21,7 @@ form label {
     width: 300px;
     overflow: scroll;
 }
+
+.ui-helper-hidden-accessible {
+    display:none;
+}
