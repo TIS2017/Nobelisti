@@ -10,25 +10,27 @@ namespace AdminBundle\Repository;
  */
 class AttendeeRepository extends \Doctrine\ORM\EntityRepository
 {
-
-    public function getSelectCountAllAttendees(){
+    public function getSelectCountAllAttendees()
+    {
         $qb = $this->_em->createQueryBuilder('a');
         $qb->select('count(a.id)')
             ->from('AdminBundle:Attendee', 'a');
+
         return $qb->getQuery()->getSingleScalarResult();
     }
-    
+
     public function getAttendeesFilteredByEvent(
         $searchedNameEmail,
         $searchedEvent,
         $searchedIsSubscribed,
         $numItemsPerPage,
         $page
-    ){
+    ) {
         $selectMailingList = $this->_em->createQueryBuilder('r')
                             ->select('a')
                             ->distinct('a.id')
                             ->from('AdminBundle:Registration', 'r');
+
         return $this->getSearchByEventQuery($selectMailingList, $searchedNameEmail, $searchedEvent, $searchedIsSubscribed)
                     ->orderBy('a.id', 'ASC')
                     ->setFirstResult(($page - 1) * $numItemsPerPage)
@@ -41,10 +43,11 @@ class AttendeeRepository extends \Doctrine\ORM\EntityRepository
         $searchedNameEmail,
         $searchedEvent,
         $searchedIsSubscribed
-    ){
+    ) {
         $selectCounPages = $this->_em->createQueryBuilder('r')
                             ->select('COUNT(DISTINCT a.id)')
                             ->from('AdminBundle:Registration', 'r');
+
         return $this->getSearchByEventQuery($selectCounPages, $searchedNameEmail, $searchedEvent, $searchedIsSubscribed)
                     ->getQuery()
                     ->getSingleScalarResult();
@@ -55,10 +58,11 @@ class AttendeeRepository extends \Doctrine\ORM\EntityRepository
         $searchedIsSubscribed,
         $numItemsPerPage,
         $page
-    ){
+    ) {
         $selectMailingList = $this->_em->createQueryBuilder()
                                 ->select('a')
                                 ->from('AdminBundle:Attendee', 'a');
+
         return $this->getSearchByNameEmailQuery($selectMailingList, $searchedNameEmail, $searchedIsSubscribed)
                     ->orderBy('a.id', 'ASC')
                     ->setFirstResult(($page - 1) * $numItemsPerPage)
@@ -70,39 +74,44 @@ class AttendeeRepository extends \Doctrine\ORM\EntityRepository
     public function getCountOfAttendeesFilteredWithoutEvent(
         $searchedNameEmail,
         $searchedIsSubscribed
-    ){
+    ) {
         $selectCountPages = $this->_em->createQueryBuilder()
                             ->select('count(a.id)')
                             ->from('AdminBundle:Attendee', 'a');
+
         return $this->getSearchByNameEmailQuery($selectCountPages, $searchedNameEmail, $searchedIsSubscribed)
                     ->getQuery()
                     ->getSingleScalarResult();
     }
 
-    private function getSearchByEventQuery($selectQuery, $nameEmail, $event, $isSubscribed) {
+    private function getSearchByEventQuery($selectQuery, $nameEmail, $event, $isSubscribed)
+    {
         $result = $selectQuery
             ->innerJoin('AdminBundle:Attendee', 'a', 'WITH', 'a.id = r.attendeeId')
             ->where('a.email LIKE :name OR a.firstName LIKE :name OR a.lastName LIKE :name')
             ->setParameter('name', '%'.$nameEmail.'%')
-            ->innerJoin('AdminBundle:Event','e', 'WITH', 'e.id = r.eventDetailsId')
+            ->innerJoin('AdminBundle:Event', 'e', 'WITH', 'e.id = r.eventDetailsId')
             ->innerJoin('AdminBundle:EventType', 'et', 'WITH', 'et.id = e.eventTypeId')
             ->andwhere('et.slug LIKE :event')
             ->setParameter('event', '%'.$event.'%');
-        if ($isSubscribed == true) {
-            $result -> andWhere('a.unsubscribed = :subsc')
+        if (true == $isSubscribed) {
+            $result->andWhere('a.unsubscribed = :subsc')
             ->setParameter('subsc', !$isSubscribed);
         }
+
         return $result;
     }
 
-    private function getSearchByNameEmailQuery($selectQuery, $nameEmail, $isSubscribed) {
+    private function getSearchByNameEmailQuery($selectQuery, $nameEmail, $isSubscribed)
+    {
         $result = $selectQuery
             ->where('a.email LIKE :name OR a.firstName LIKE :name OR a.lastName LIKE :name')
             ->setParameter('name', '%'.$nameEmail.'%');
-        if ($isSubscribed == true) {
-            $result -> andWhere('a.unsubscribed = :subsc')
+        if (true == $isSubscribed) {
+            $result->andWhere('a.unsubscribed = :subsc')
             ->setParameter('subsc', !$isSubscribed);
         }
+
         return $result;
     }
 }

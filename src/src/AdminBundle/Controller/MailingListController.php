@@ -6,12 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AdminBundle\Form\MailingListFilterForm;
 use AdminBundle\Entity\Attendee;
 use AdminBundle\Entity\Event;
-use AdminBundle\Entity\EventType;
-use AdminBundle\Entity\Registration;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\Query\Expr\Join;
 
 class MailingListController extends Controller
 {
@@ -35,7 +32,7 @@ class MailingListController extends Controller
             $searchedEvent = $form->getData()['event'];
             $searchedIsSubscribed = $form->getData()['isSubscribed'];
 
-            if ($searchedEvent != "" ) {
+            if ('' != $searchedEvent) {
                 $mailingList = $repositoryAttendee
                                 ->getAttendeesFilteredByEvent(
                                         $searchedNameEmail,
@@ -45,13 +42,12 @@ class MailingListController extends Controller
                                         $page
                                     );
 
-                $countPages = ceil( $repositoryAttendee
+                $countPages = ceil($repositoryAttendee
                                     ->getCountOfAttendeesFilteredByEvent(
                                         $searchedNameEmail,
                                         $searchedEvent,
                                         $searchedIsSubscribed
                                     ) / $numItemsPerPage);
-
             } else {
                 $mailingList = $repositoryAttendee
                                 ->getAttendeesFilteredWithoutEvent(
@@ -67,7 +63,6 @@ class MailingListController extends Controller
                                         $searchedIsSubscribed
                                     ) / $numItemsPerPage));
             }
-            
         } else {
             $mailingList = $repositoryAttendee->findBy(array(), array(), $numItemsPerPage, ($page - 1) * $numItemsPerPage);
             $countPages = ceil($repositoryAttendee->getSelectCountAllAttendees() / $numItemsPerPage);
@@ -82,9 +77,10 @@ class MailingListController extends Controller
         ));
     }
 
-    private function filterIsNotEmpty($form) {
-        return ($form->getData()['nameEmail'] != "")
-                || ($form->getData()['event'] != "") 
-                || ($form->getData()['isSubscribed'] != ""); 
+    private function filterIsNotEmpty($form)
+    {
+        return ('' != $form->getData()['nameEmail'])
+                || ('' != $form->getData()['event'])
+                || ('' != $form->getData()['isSubscribed']);
     }
 }
