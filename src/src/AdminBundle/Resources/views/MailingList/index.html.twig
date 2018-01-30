@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Mailing list</h1>
     <hr>
-        {{ form_start(form) }}
+        {{ form_start(form, {'action': path('mailing_list')}) }}
         {{ form_widget(form) }}
         {{ form_end(form) }}
     <hr>
@@ -37,7 +37,7 @@
                 <td>{{ attendee.firstName }}</td>
                 <td>{{ attendee.lastName }}</td>
                 <td>{{ attendee.email }}</td>
-                <td>{{ attendee.languageId.language }}</td>
+                <td>{{ attendee.languages.language }}</td>
                 <td>
                     {% if attendee.unsubscribed %}
                         No
@@ -48,10 +48,10 @@
                 <td>
                     {% for registration in attendee.registrations | slice (0,3) %}
                         {% if loop.index == 1 %}
-                            {{ registration.eventDetailsId.eventTypeId.slug }}
+                            {{ registration.eventDetails.eventTypeId.slug }}
                         {% endif %}
                         {% if loop.index == 2 %}
-                            ,&nbsp{{ registration.eventDetailsId.eventTypeId.slug }}
+                            ,&nbsp{{ registration.eventDetails.eventTypeId.slug }}
                         {% endif %}
                         {% if loop.index == 3 %}
                             &nbsp<a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#showAllEvents{{ attendee.id }}">Show all</a>
