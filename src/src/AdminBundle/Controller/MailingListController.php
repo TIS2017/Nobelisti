@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class MailingListController extends Controller
 {
     /**
-     * @Route("/mailing_list/{page}", name="mailing_list", defaults={"page"=1})
+     * @Route("/mailing_list/{page}", name="mailing_list", defaults={"page"=1}, requirements={"id"="\d+"})
      * @Method("GET")
      */
     public function indexAction($page, Request $request)

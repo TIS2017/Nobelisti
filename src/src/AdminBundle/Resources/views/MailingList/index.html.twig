@@ -51,10 +51,10 @@
                             {{ registration.eventDetails.eventTypeId.slug }}
                         {% endif %}
                         {% if loop.index == 2 %}
-                            ,&nbsp{{ registration.eventDetails.eventTypeId.slug }}
+                            ,&nbsp;{{ registration.eventDetails.eventTypeId.slug }}
                         {% endif %}
                         {% if loop.index == 3 %}
-                            &nbsp<a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#showAllEvents{{ attendee.id }}">Show all</a>
+                            &nbsp;<a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#showAllEvents{{ attendee.id }}">Show all</a>
                         {% endif %}
                     {% endfor %}
                 </td>

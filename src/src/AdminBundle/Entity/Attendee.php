@@ -163,11 +163,11 @@ class Attendee extends BaseEntity
     }
 
     /**
-     * Get the value of languageId.
+     * Get the value of languages.
      */
-    public function getLanguageId()
+    public function getLanguages()
     {
-        return $this->languageId;
+        return $this->languages;
     }
 
     /**
@@ -175,9 +175,9 @@ class Attendee extends BaseEntity
      *
      * @return self
      */
-    public function setLanguageId($languageId)
+    public function setLanguages($languages)
     {
-        $this->languageId = $languageId;
+        $this->languages = $languages;
 
         return $this;
     }

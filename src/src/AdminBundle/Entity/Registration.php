@@ -153,61 +153,61 @@ class Registration extends BaseEntity
     }
 
     /**
-     * Get the value of atendeeId.
+     * Get the value of attendee.
      */
-    public function getAtendeeId()
+    public function getAttendee()
     {
-        return $this->atendeeId;
+        return $this->attendee;
     }
 
     /**
-     * Set the value of atendeeId.
+     * Set the value of attendee.
      *
      * @return self
      */
-    public function setAtendeeId($atendeeId)
+    public function setAttendee($attendee)
     {
-        $this->atendeeId = $atendeeId;
+        $this->attendee = $attendee;
 
         return $this;
     }
 
     /**
-     * Get the value of eventDetailsId.
+     * Get the value of eventDetails.
      */
-    public function getEventDetailsId()
+    public function getEventDetails()
     {
-        return $this->eventDetailsId;
+        return $this->eventDetails;
     }
 
     /**
-     * Set the value of eventDetailsId.
+     * Set the value of eventDetails.
      *
      * @return self
      */
-    public function setEventDetailsId($eventDetailsId)
+    public function setEventDetailsId($eventDetails)
     {
-        $this->eventDetailsId = $eventDetailsId;
+        $this->eventDetails = $eventDetails;
 
         return $this;
     }
 
     /**
-     * Get the value of languageId.
+     * Get the value of languages.
      */
-    public function getLanguageId()
+    public function getLanguages()
     {
-        return $this->languageId;
+        return $this->languages;
     }
 
     /**
-     * Set the value of languageId.
+     * Set the value of languages.
      *
      * @return self
      */
-    public function setLanguageId($languageId)
+    public function setLanguages($languages)
     {
-        $this->languageId = $languageId;
+        $this->languages = $languages;
 
         return $this;
     }
