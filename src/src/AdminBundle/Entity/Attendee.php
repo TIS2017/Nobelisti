@@ -65,10 +65,10 @@ class Attendee extends BaseEntity
      * @ORM\ManyToOne(targetEntity="Language", inversedBy="attendees")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
-    private $languageId;
+    public $languages;
 
     /**
-     * @ORM\OneToMany(targetEntity="Registration", mappedBy="attendeeId")
+     * @ORM\OneToMany(targetEntity="Registration", mappedBy="attendee")
      */
     public $registrations;
 

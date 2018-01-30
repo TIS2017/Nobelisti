@@ -129,12 +129,12 @@ class Language extends BaseEntity
     private $events;
 
     /**
-     * @ORM\OneToMany(targetEntity="Registration", mappedBy="languageId")
+     * @ORM\OneToMany(targetEntity="Registration", mappedBy="languages")
      */
     private $registrations;
 
     /**
-     * @ORM\OneToMany(targetEntity="Attendee", mappedBy="languageId")
+     * @ORM\OneToMany(targetEntity="Attendee", mappedBy="languages")
      */
     private $attendees;
 }
