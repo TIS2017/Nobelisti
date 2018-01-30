@@ -209,7 +209,7 @@ class Event extends BaseEntity
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="EventLanguages", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="EventLanguages", mappedBy="events")
      */
     private $languages;
 
