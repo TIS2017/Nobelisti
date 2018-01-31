@@ -74,11 +74,21 @@ class EventTypeController extends Controller
             return $this->redirectToRoute('event_types');
         }
 
+        $testUrls = array();
+        foreach ($eventType->getLanguages() as $language) {
+            $basicParameters = array('eventSlug' => $eventType->getSlug(), 'lang' => $language->getCode());
+            $testUrls[] = $this->generateUrl('event_test', array_merge(array('state' => 'registration_not_started'), $basicParameters);
+            $testUrls[] = $this->generateUrl('event_test', array_merge(array('state' => 'registration_open'), $basicParameters);
+            $testUrls[] = $this->generateUrl('event_test', array_merge(array('state' => 'registration_finished'), $basicParameters);
+            $testUrls[] = $this->generateUrl('event_test', array_merge(array('state' => 'registration_no_capacity'), $basicParameters);
+        }
+
         $repository = $this->getDoctrine()->getRepository(Event::class);
         $events = $repository->findBy(['eventTypeId' => $id]);
 
         return $this->render('AdminBundle:EventType:edit.html.twig', array(
             'form' => $form->createView(),
+            'testUrls' => $testUrls,
             'events' => $events,
         ));
     }

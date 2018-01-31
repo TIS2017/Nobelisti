@@ -11,6 +11,17 @@
         </div>
     </div>
     <div class="row">
+        <h3>Template Testing</h3>
+        <div class="col-md-6">
+            {% for url in testUrls %}
+                <a href="{{url}}">url</a><br>
+            {% endfor %}
+        </div>
+        <div class="col-md-6">
+            <a class="btn btn-primary" href="{{ path('event_test_languages', {'eventTypeId':form.vars.value.id}) }}"></a>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-7">
             <a class='btn btn-primary' href="{{ path('events_add', {'id':form.vars.value.id}) }}">Add new Event</a>
             {% if events | length == 0 %}
