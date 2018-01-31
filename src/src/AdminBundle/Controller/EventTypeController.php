@@ -69,14 +69,7 @@ class EventTypeController extends Controller
             );
         }
 
-        $eventTypeLanguages = $em->getRepository(EventTypeLanguages::class)->findBy(['eventType' => $id]);
-
-        $eventTypeLanguagesIds = [];
-        foreach ($eventTypeLanguages as $eventTypeLanguage) {
-            $eventTypeLanguagesIds[] = $eventTypeLanguage->getLanguage();
-        }
-
-        $languages = $em->getRepository(Language::class)->findById($eventTypeLanguagesIds);
+        $languages = $em->getRepository(EventTypeLanguages::class)->findBy(['eventType' => $id])->getLanguages();
 
         $form = $this->createForm(EventTypeForm::class, $eventType);
         $form->handleRequest($request);
