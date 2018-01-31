@@ -62,7 +62,7 @@ class Registration extends BaseEntity
      * @ORM\ManyToOne(targetEntity="Event", inversedBy="registrations")
      * @ORM\JoinColumn(name="event_details_id", referencedColumnName="id")
      */
-    private $eventDetails;
+    private $events;
 
     /**
      * @ORM\ManyToOne(targetEntity="Language", inversedBy="registrations")
@@ -175,9 +175,9 @@ class Registration extends BaseEntity
     /**
      * Get the value of eventDetails.
      */
-    public function getEventDetails()
+    public function getEvents()
     {
-        return $this->eventDetails;
+        return $this->events;
     }
 
     /**
@@ -185,9 +185,9 @@ class Registration extends BaseEntity
      *
      * @return self
      */
-    public function setEventDetailsId($eventDetails)
+    public function setEvents($events)
     {
-        $this->eventDetails = $eventDetails;
+        $this->events = $events;
 
         return $this;
     }
