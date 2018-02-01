@@ -1,0 +1,113 @@
+{% extends "@AdminBundle/Resources/views/MailingList/base.html.twig" %}
+
+{% block content %}
+    <h1>Mailing list</h1>
+    <hr>
+        {{ form_start(form, {'action': path('mailing_list')}) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    <hr>
+
+    {# If filter form was send, retain it when changing a page #}
+    {% if app.request.uri | split('?', 2)[1] is defined %}
+        {% set sendFormUrl = app.request.uri | split('?', 2)[1] %}
+    {% else %}
+        {% set sendFormUrl = "" %}
+    {% endif %}
+
+    {% if mailingList | length == 0 %}
+        <p> Mailing list is empty.</p>
+    {% else %}
+        <table class="table table-bordered">
+        <thead class="thead-light">
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Language</th>
+            <th scope="col">Subscribed</th>
+            <th scope="col">Events</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for attendee in mailingList %}
+                <tr>
+                <th scope="row">{{ loop.index + ((currentPage - 1) * numItemsPerPage) }}</th>
+                <td>{{ attendee.firstName }}</td>
+                <td>{{ attendee.lastName }}</td>
+                <td>{{ attendee.email }}</td>
+                <td>{{ attendee.languages.language }}</td>
+                <td>
+                    {% if attendee.unsubscribed %}
+                        No
+                    {% else %}
+                        Yes
+                    {% endif %}
+                </td>
+                <td>
+                    {% for registration in attendee.registrations | slice (0,3) %}
+                        {% if loop.index == 1 %}
+                            {{ registration.eventDetails.eventTypeId.slug }}
+                        {% endif %}
+                        {% if loop.index == 2 %}
+                            ,&nbsp;{{ registration.eventDetails.eventTypeId.slug }}
+                        {% endif %}
+                        {% if loop.index == 3 %}
+                            &nbsp;<a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#showAllEvents{{ attendee.id }}">Show all</a>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                </tr>
+                {% include "@AdminBundle/Resources/views/showAllEventsModal.html.twig"
+                    with {
+                        modal_id: 'showAllEvents' ~ attendee.id,
+                        modal_title_attendee: attendee.firstName ~ ' ' ~ attendee.lastName,
+                        modal_registrations: attendee.registrations,
+                    }
+                %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    {% if mailingList | length != 0 %}
+        <nav aria-label="...">
+            <ul class="pagination">
+
+                {% if currentPage == 1 %}
+                <li class="page-item disabled">
+                {% else %}
+                <li class="page-item">
+                {% endif %}
+                    <a class="page-link" href="{{ path('mailing_list', { 'page': 1 })  ~ '?' ~ sendFormUrl }}">First</a>
+                </li>
+
+                {% if currentPage > 1 %}
+                    <li class="page-item"><a class="page-link" href="{{ path('mailing_list', { 'page': (currentPage - 1 ) }) ~ '?' ~ sendFormUrl }}">{{ currentPage -1 }}</a></li>
+                {% endif %}
+
+                <li class="page-item active">
+                    <span class="page-link">
+                        {{ currentPage }}
+                        <span class="sr-only">(current)</span>
+                    </span>
+                </li>
+
+                {% if currentPage < countPages %}
+                    <li class="page-item"><a class="page-link" href="{{ path('mailing_list', { 'page': ( currentPage + 1 ) })  ~ '?' ~ sendFormUrl }}">{{ currentPage + 1 }}</a></li>
+                {% endif %}
+
+                {% if currentPage == countPages %}
+                <li class="page-item disabled">
+                {% else %}
+                <li class="page-item">
+                {% endif %}
+                    <a class="page-link" href="{{ path('mailing_list', { 'page': countPages })  ~ '?' ~ sendFormUrl }}">Last</a>
+                </li>
+                <li id="pageOfAllPages">
+                    <span>{{ currentPage }} of {{ countPages }}</span>
+                </li>
+            </ul>
+        </nav>
+    {% endif %}
+{% endblock %}

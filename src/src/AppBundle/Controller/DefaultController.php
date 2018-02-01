@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 use AdminBundle\Entity\EventType;
-use AppBundle\Entity\Attendee;
+use AdminBundle\Entity\Attendee;
 use AppBundle\Form\RegistrationForm;
 use EmailBundle\Controller\EmailController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
