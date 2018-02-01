@@ -15,9 +15,41 @@ form label {
 .log ul {
     display: table-row;
 }
-
 .ui-widget-content.log {
     height: 100px;
     width: 300px;
     overflow: scroll;
+}
+.ui-helper-hidden-accessible {
+    display:none;
+}
+#pageOfAllPages {
+    margin-left: 15px;
+    height: 38px;
+}
+#pageOfAllPages span {
+    position: relative;
+    top: 7px;
+}
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    max-height: 60vh;
+    overflow-y: auto;
+}
+#pageOfAllPages {
+    margin-left: 15px;
+    height: 38px;
+}
+#pageOfAllPages span {
+    position: relative;
+    top: 7px;
+}
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    max-height: 60vh;
+    overflow-y: auto;
 }

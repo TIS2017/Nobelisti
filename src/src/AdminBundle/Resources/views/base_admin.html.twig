@@ -22,7 +22,8 @@
                         href="{{ path('languages') }}">Languages</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Mailing list</a>
+                    <a class="nav-link{% if mailing_list_link_active is defined %} active{% endif %}"
+                        href="{{ path('mailing_list') }}">Mailing list</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link{% if admins_link_active is defined %} active{% endif %}"

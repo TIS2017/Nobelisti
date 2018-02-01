@@ -90,6 +90,22 @@ class Language extends BaseEntity
     }
 
     /**
+     * @return mixed
+     */
+    public function getEventTypes()
+    {
+        return $this->eventTypes;
+    }
+
+    /**
+     * @param mixed $eventTypes
+     */
+    public function setEventTypes($eventTypes)
+    {
+        $this->eventTypes = $eventTypes;
+    }
+
+    /**
      * Get language.
      *
      * @return string
@@ -124,7 +140,23 @@ class Language extends BaseEntity
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="EventLanguages", mappedBy="language")
+     * @ORM\OneToMany(targetEntity="EventLanguages", mappedBy="languages")
      */
     private $events;
+
+    /**
+     * @ORM\OneToMany(targetEntity="EventTypeLanguages", mappedBy="language")
+     */
+    private $eventTypes;
+  
+    /**
+     * @ORM\OneToMany(targetEntity="Registration", mappedBy="languages")
+     */
+    private $registrations;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Attendee", mappedBy="languages")
+     */
+    private $attendees;
+
 }
