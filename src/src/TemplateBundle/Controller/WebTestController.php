@@ -1,18 +1,20 @@
 <?php
 
+namespace TemplateBundle\Controller;
+
 use AdminBundle\Entity\EventType;
 use AdminBundle\Entity\Event;
+use AdminBundle\Entity\Attendee;
+use AppBundle\Form\RegistrationForm;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
-namespace TemplateBundle\Controller;
 
 class WebTestController extends CustomTemplateController
 {
     /**
-     * @Route("/test/{eventSlug}/web", name="event_test")
-     * @Method({"GET"})
+     * @Route("/test/{eventSlug}/web", name="test_event")
+     * @Method("GET")
      */
     public function testEventAction($eventSlug, Request $request)
     {
@@ -56,8 +58,8 @@ class WebTestController extends CustomTemplateController
     }
 
     /**
-     * @Route("/test/{eventTypeId}/languages", name="event_test_languages")
-     * @Method({"GET"})
+     * @Route("/test/{eventTypeId}/languages", name="test_event_languages", requirements={"eventTypeId"="\d+"})
+     * @Method("GET")
      */
     public function testEventLanguagesAction($eventTypeId, Request $request) {
         $eventType = $this->getDoctrine()->getRepository(EventType::class)->findOneBy(
@@ -66,7 +68,7 @@ class WebTestController extends CustomTemplateController
 
         if (!$eventType) {
             throw $this->createNotFoundException(
-                'No event type found for id '.$id
+                'No event type found for id '.$eventTypeId
             );
         }
 
@@ -75,10 +77,11 @@ class WebTestController extends CustomTemplateController
         };
 
         $availableEventTypeLanguages = self::getLanguageNames($eventType->getTemplate());
-        $definedEventTypeLanguages = array_map($getNamesFromLanguage, $eventType->getLanguages());
+        $availableEventTypeLanguages = array_map(function ($l) { return substr($l, 0, -10); }, $availableEventTypeLanguages);
+        $definedEventTypeLanguages = array_map($getNamesFromLanguage, $eventType->getLanguages()->toArray());
 
         $eventId = $request->query->get('eventId');
-        if ($eventId == null) {
+        if ($eventId != null) {
             $event = $this->getDoctrine()->getRepository(Event::class)->findOneBy(
                 ['id' => $eventId]
             );
@@ -90,14 +93,15 @@ class WebTestController extends CustomTemplateController
             }
 
             $allAvailableLanguages = $availableEventTypeLanguages;
-            if (!empty($event->getTemplate())) {
-                $availableEventLanguages = self::getLanguageNames($event->getTemplate());
+            if (!empty($event->getTemplateOverride())) {
+                $availableEventLanguages = self::getLanguageNames($event->getTemplateOverride());
+                $availableEventLanguages = array_map(function ($l) { return substr($l, 0, -10); }, $availableEventLanguages);
                 $allAvailableLanguages = array_unique(array_merge($availableEventTypeLanguages, $availableEventLanguages));
             }
 
             $allDefinedLanguages = $definedEventTypeLanguages;
             if (!empty($event->getLanguages())) {
-                $definedEventLanguages = array_map($getNamesFromLanguage, $event->getLanguages());
+                $definedEventLanguages = array_map($getNamesFromLanguage, $event->getLanguages()->toArray());
                 $allDefinedLanguages = array_unique(array_merge($definedEventTypeLanguages, $definedEventLanguages));
             }
 
@@ -108,7 +112,7 @@ class WebTestController extends CustomTemplateController
                 }
             }
 
-            return $this->redirectToRoute('events_edit', ['id' => $eventType->getId(), 'event_id' => $event->getId(), 'notFoundLanguages' => $notFoundLanguages()]);
+            return $this->redirectToRoute('events_edit', ['id' => $eventType->getId(), 'event_id' => $event->getId(), 'notFoundLanguages' => $notFoundLanguages]);
         }
         else {
             $notFoundLanguages = array();

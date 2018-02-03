@@ -11,14 +11,22 @@
         </div>
     </div>
     <div class="row">
-        <h3>Template Testing</h3>
+        <h3 class="col-md-12">Template Testing</h3>
         <div class="col-md-6">
             {% for url in testUrls %}
-                <a href="{{url}}">url</a><br>
+                <a href="{{url}}">{{url}}</a><br>
             {% endfor %}
         </div>
         <div class="col-md-6">
-            <a class="btn btn-primary" href="{{ path('event_test_languages', {'eventTypeId':form.vars.value.id}) }}"></a>
+            {% if notFoundLanguages %}
+                <p class="text-danger">The following languages were not found:</p>
+                <ul>
+                {% for language in notFoundLanguages %}
+                    <li>{{language}}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            <a class="btn btn-primary" href="{{ path('test_event_languages', {'eventTypeId':form.vars.value.id}) }}">Test languages</a>
         </div>
     </div>
     <div class="row">

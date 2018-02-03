@@ -69,7 +69,7 @@ class EventTypeController extends Controller
             );
         }
 
-        $languages = $em->getRepository(EventTypeLanguages::class)->findBy(['eventType' => $id])->getLanguages();
+        $languages = $eventType->getLanguages();
 
         $form = $this->createForm(EventTypeForm::class, $eventType);
         $form->handleRequest($request);
@@ -81,21 +81,25 @@ class EventTypeController extends Controller
         }
 
         $testUrls = array();
-        foreach ($eventType->getLanguages() as $language) {
-            $basicParameters = array('eventSlug' => $eventType->getSlug(), 'lang' => $language->getCode());
-            $testUrls[] = $this->generateUrl('event_test', array_merge(array('state' => 'registration_not_started'), $basicParameters);
-            $testUrls[] = $this->generateUrl('event_test', array_merge(array('state' => 'registration_open'), $basicParameters);
-            $testUrls[] = $this->generateUrl('event_test', array_merge(array('state' => 'registration_finished'), $basicParameters);
-            $testUrls[] = $this->generateUrl('event_test', array_merge(array('state' => 'registration_no_capacity'), $basicParameters);
+        foreach ($languages as $language) {
+            $basicParameters = array('eventSlug' => $eventType->getSlug(), 'lang' => $language->getLanguage()->getCode());
+            $testUrls[] = $this->generateUrl('test_event', array_merge(array('state' => 'registration_not_started'), $basicParameters));
+            $testUrls[] = $this->generateUrl('test_event', array_merge(array('state' => 'registration_open'), $basicParameters));
+            $testUrls[] = $this->generateUrl('test_event', array_merge(array('state' => 'registration_finished'), $basicParameters));
+            $testUrls[] = $this->generateUrl('test_event', array_merge(array('state' => 'registration_no_capacity'), $basicParameters));
         }
+
+        $languageNames = array_map(function ($l) { return $l->getLanguage(); }, $languages->toArray());
 
         $repository = $this->getDoctrine()->getRepository(Event::class);
         $events = $repository->findBy(['eventType' => $id]);
+        $notFoundLanguages = $request->query->get('notFoundLanguages');
 
         return $this->render('AdminBundle:EventType:edit.html.twig', array(
             'form' => $form->createView(),
             'testUrls' => $testUrls,
-            'languages' => $languages,
+            'languages' => $languageNames,
+            'notFoundLanguages' => $notFoundLanguages,
             'modal_input_languages' => self::$modalInputLanguages,
             'event_type_id' => $id,
             'events' => $events,
