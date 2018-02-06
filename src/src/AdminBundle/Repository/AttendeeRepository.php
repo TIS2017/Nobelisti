@@ -18,6 +18,7 @@ class AttendeeRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb->getQuery()->getSingleScalarResult();
     }
+
     public function getAttendeesFilteredByEvent(
         $searchedNameEmail,
         $searchedEvent,

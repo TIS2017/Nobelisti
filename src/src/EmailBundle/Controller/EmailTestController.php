@@ -123,6 +123,7 @@ class EmailTestController extends EmailController
         if (empty($templateOverride)) {
             return $event->getEventType()->getTemplate();
         }
+
         return $templateOverride;
     }
 }
