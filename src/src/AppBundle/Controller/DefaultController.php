@@ -51,6 +51,7 @@ class DefaultController extends EmailController
         $languageContext = self::getLanguageFile($templateName, $language, $context);
 
         $context['lang'] = $languageContext;
+        $context['lang_code'] = $language;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $context['attendee'] = $attendee;

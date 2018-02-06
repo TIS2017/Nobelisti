@@ -17,7 +17,7 @@
                 <a href="{{url}}">{{url}}</a><br>
             {% endfor %}
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             {% if notFoundLanguages %}
                 <p class="text-danger">The following languages were not found:</p>
                 <ul>
@@ -27,6 +27,16 @@
                 </ul>
             {% endif %}
             <a class="btn btn-primary" href="{{ path('test_event_languages', {'eventTypeId':form.vars.value.id}) }}">Test languages</a>
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#testNewEventEmail">Test new event email</a>
+            {% include "@AdminBundle/Resources/views/testEmailModal.html.twig"
+                with {
+                    modal_id: 'testNewEventEmail',
+                    modal_title: 'Test New Event Email',
+                    action_path: path('test_new_event_mail', {'eventSlug': form.vars.value.slug}),
+                }
+            %}
         </div>
     </div>
     <div class="row">

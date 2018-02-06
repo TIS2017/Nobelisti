@@ -7,8 +7,12 @@ app:
     resource: '@AppBundle/Controller/'
     type: annotation
 
-test:
+template:
     resource: '@TemplateBundle/Controller/'
+    type:     annotation
+
+email:
+    resource: '@EmailBundle/Controller/'
     type:     annotation
 
 logout:
