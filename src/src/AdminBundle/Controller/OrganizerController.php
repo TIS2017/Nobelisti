@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Form\OrganizerFilterForm;
 use AdminBundle\Form\OrganizerForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AdminBundle\Entity\Organizer;
@@ -19,28 +20,14 @@ class OrganizerController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $defaultData = array('email' => '');
-        $form = $this->createFormBuilder($defaultData)
-            ->add('email', TextType::class)
-            ->add('filter', SubmitType::class, array('label' => 'Filter'))
-            ->setMethod('GET')
-            ->getForm();
-
+        $form = $this->createForm(OrganizerFilterForm::class, array('email' => ''));
         $form->handleRequest($request);
 
-        $organizers = [];
         $repository = $this->getDoctrine()->getRepository(Organizer::class);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $searchedEmail = $form->getData()['email'];
-
-            $em = $this->getDoctrine()->getManager();
-            $organizers = $em->getRepository(Organizer::class)
-                ->createQueryBuilder('o')
-                ->where('o.email LIKE :email')
-                ->setParameter('email', '%'.$searchedEmail.'%')
-                ->getQuery()
-                ->getResult();
+            $organizers = $repository->getOrganizersByEmail($searchedEmail);
         } else {
             $organizers = $repository->findAll();
         }
@@ -82,7 +69,7 @@ class OrganizerController extends Controller
     public function editAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $organizer = $em->getRepository(Organizer::class)->findOneBy(array('id' => $id));
+        $organizer = $em->find(Organizer::class, $id);
 
         if (!$organizer) {
             throw $this->createNotFoundException(
@@ -111,7 +98,7 @@ class OrganizerController extends Controller
     public function deleteAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $organizer = $em->getRepository(Organizer::class)->findOneBy(array('id' => $id));
+        $organizer = $em->find(Organizer::class, $id);
 
         if (!$organizer) {
             throw $this->createNotFoundException(
