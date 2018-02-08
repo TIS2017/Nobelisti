@@ -5,7 +5,7 @@ namespace AdminBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * EventTypeLanguages
+ * EventTypeLanguages.
  *
  * @ORM\Table(name="event_type_languages")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\EventTypeLanguagesRepository")
@@ -33,9 +33,8 @@ class EventTypeLanguages
      */
     private $language;
 
-
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -45,7 +44,7 @@ class EventTypeLanguages
     }
 
     /**
-     * Set eventType
+     * Set eventType.
      *
      * @param mixed $eventType
      */
@@ -55,7 +54,7 @@ class EventTypeLanguages
     }
 
     /**
-     * Get eventType
+     * Get eventType.
      *
      * @return mixed
      */
@@ -65,7 +64,7 @@ class EventTypeLanguages
     }
 
     /**
-     * Set language
+     * Set language.
      *
      * @param mixed $language
      */
@@ -75,7 +74,7 @@ class EventTypeLanguages
     }
 
     /**
-     * Get language
+     * Get language.
      *
      * @return mixed
      */
@@ -84,4 +83,3 @@ class EventTypeLanguages
         return $this->language;
     }
 }
-
