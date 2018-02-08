@@ -1,6 +1,6 @@
 # Nobelisti
 
-## Instalation
+## Installation for development
 
 0. Ensure you have installed [docker](https://docs.docker.com/engine/installation/) and [docker-compose](https://docs.docker.com/compose/install/)
 ```
@@ -29,7 +29,7 @@ php bin/console doctrine:migrations:migrate
 
 4. Change permissions so symfony can save cache, logs & sessions.
 ```
-sudo chmod -R 777 src/var/cache src/var/logs src/var/sessions
+sudo chown :33 src/var -R
 ```
 
 5. Check the app at [localhost:8080/app_dev.php](http://localhost:8080/app_dev.php).
@@ -37,6 +37,23 @@ sudo chmod -R 777 src/var/cache src/var/logs src/var/sessions
 6. Stop the container politely
 ```
 docker-compose stop
+```
+
+## Running in production
+
+We have a separate docker-composer file for production,
+to install the production requirements run
+
+```
+docker-compose up --build -d -f docker-compose.prod.yml
+
+```
+
+If you do not want to use docker in production, the minimal requirements for this applications are
+
+```
+Database client version: libmysql - 10.1.26-MariaDB
+PHP version: 7.0
 ```
 
 ## Running the tests
