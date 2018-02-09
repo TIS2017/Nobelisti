@@ -9,6 +9,7 @@ use AdminBundle\Entity\EventType;
 use AdminBundle\Entity\Language;
 use AdminBundle\Entity\Organizer;
 use AdminBundle\Form\EventForm;
+use AdminBundle\Form\EmailTestForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -90,11 +91,15 @@ class EventController extends Controller
             return $this->redirectToRoute('event_types_edit', ['id' => $id]);
         }
 
+        $emailTestForm = $this->createForm(EmailTestForm::class);
+
         $notFoundLanguages = $request->query->get('notFoundLanguages');
 
         return $this->render('AdminBundle:Event:edit.html.twig', array(
             'form' => $form->createView(),
             'organizers' => $organizers,
+            'registrationTestForm' => $emailTestForm->createView(),
+            'reminderTestForm' => $emailTestForm->createView(),
             'languages' => $languages,
             'notFoundLanguages' => $notFoundLanguages,
             'event_type_id' => $id,

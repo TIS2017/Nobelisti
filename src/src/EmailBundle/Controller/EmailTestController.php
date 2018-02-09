@@ -22,20 +22,11 @@ class EmailTestController extends EmailController
             ['slug' => $eventSlug]
         );
 
-        $attendee = self::createMockAttendee($request->request);
-        $templateName = $eventType->getTemplate();
-
         $context = [
             'event_type' => $eventType,
         ];
 
-        $languageCode = $attendee->getLanguages()->getCode();
-        $languageContext = self::getLanguageFile($templateName, $languageCode, $context);
-        $context['lang'] = $languageContext;
-        $context['lang_code'] = $languageCode;
-        $context['attendee'] = $attendee;
-
-        $this->sendEmail($attendee, $context, $templateName, 'new_event');
+        self::buildAndSendEmail($request->get('email_test_form'), $context, 'new_event');
 
         return $this->redirectToRoute('event_types_edit', ['id' => $eventType->getId()]);
     }
@@ -49,21 +40,12 @@ class EmailTestController extends EmailController
         $event = $this->getDoctrine()->getRepository(Event::class)->find($eventId);
         $eventType = $event->getEventType();
 
-        $attendee = self::createMockAttendee($request->request);
-        $templateName = self::getEventTemplateName($event);
-
         $context = [
             'event' => $event,
             'event_type' => $eventType,
         ];
 
-        $languageCode = $attendee->getLanguages()->getCode();
-        $languageContext = self::getLanguageFile($templateName, $languageCode, $context);
-        $context['lang'] = $languageContext;
-        $context['lang_code'] = $languageCode;
-        $context['attendee'] = $attendee;
-
-        $this->sendEmail($attendee, $context, $templateName, 'registration');
+        self::buildAndSendEmail($request->get('email_test_form'), $context, 'registration');
 
         return $this->redirectToRoute('events_edit', ['id' => $eventType->getId(), 'event_id' => $event->getId()]);
     }
@@ -77,31 +59,40 @@ class EmailTestController extends EmailController
         $event = $this->getDoctrine()->getRepository(Event::class)->find($eventId);
         $eventType = $event->getEventType();
 
-        $attendee = self::createMockAttendee($request->request);
-        $templateName = self::getEventTemplateName($event);
-
         $context = [
             'event' => $event,
             'event_type' => $eventType,
         ];
 
-        $languageCode = $attendee->getLanguages()->getCode();
-        $languageContext = self::getLanguageFile($templateName, $languageCode, $context);
-        $context['lang'] = $languageContext;
-        $context['lang_code'] = $languageCode;
-        $context['attendee'] = $attendee;
-
-        $this->sendEmail($attendee, $context, $templateName, 'reminder');
+        self::buildAndSendEmail($request->get('email_test_form'), $context, 'reminder');
 
         return $this->redirectToRoute('events_edit', ['id' => $eventType->getId(), 'event_id' => $event->getId()]);
     }
 
-    private function createMockAttendee($parameterBag)
+    private function buildAndSendEmail($formData, $context, $type)
     {
-        $email = $parameterBag->get('email');
-        $firstName = $parameterBag->get('first_name');
-        $lastName = $parameterBag->get('last_name');
-        $languageCode = $parameterBag->get('language');
+        $attendee = self::createMockAttendee($formData);
+        $context['attendee'] = $attendee;
+
+        $templateName = array_key_exists('event', $context)
+            ? self::getEventTemplateName($context['event'])
+            : $context['event_type']->getTemplate();
+
+        $languageCode = $attendee->getLanguages()->getCode();
+        $languageContext = self::getLanguageFile($templateName, $languageCode, $context);
+
+        $context['lang'] = $languageContext;
+        $context['lang_code'] = $languageCode;
+
+        $this->sendEmail($attendee, $context, $templateName, $type);
+    }
+
+    private function createMockAttendee($formData)
+    {
+        $email = $formData['email'];
+        $firstName = $formData['first_name'];
+        $lastName = $formData['last_name'];
+        $languageCode = $formData['language'];
 
         $language = $this->getDoctrine()->getRepository(Language::class)->findOneBy(
             ['code' => $languageCode]

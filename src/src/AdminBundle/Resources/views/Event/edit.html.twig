@@ -29,6 +29,7 @@
                 with {
                     modal_id: 'testRegistrationEmail',
                     modal_title: 'Test Registration Email',
+                    form: registrationTestForm,
                     action_path: path('test_registration_mail', {'eventId': event_id}),
                 }
             %}
@@ -39,6 +40,7 @@
                 with {
                     modal_id: 'testReminderEmail',
                     modal_title: 'Test Reminder Email',
+                    form: reminderTestForm,
                     action_path: path('test_reminder_mail', {'eventId': event_id}),
                 }
             %}

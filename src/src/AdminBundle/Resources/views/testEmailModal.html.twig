@@ -8,34 +8,18 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post" action="{{ action_path }}">
+            {{ form_start(form, {'action': action_path}) }}
                 <div class="modal-body">
-                    <div class="form-group row">
-                        <div class="col-sm-6">
-                            <label for="first_name">First Name</label>
-                            <input name="first_name" id="{{modal_id}}_first_name" type="text" class="form-control" required>
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="last_name">Last Name</label>
-                            <input name="last_name" id="{{modal_id}}_last_name" type="text" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-8">
-                            <label for="email">Email</label>
-                            <input name="email" id="{{modal_id}}_email" type="email" class="form-control" required>
-                        </div>
-                        <div class="col-sm-4">
-                            <label for="language">Language Code</label>
-                            <input name="language" id="{{modal_id}}_language" type="text" class="form-control" required>
-                        </div>
-                    </div>
+                    {{ form_row(form.first_name) }}
+                    {{ form_row(form.last_name) }}
+                    {{ form_row(form.email) }}
+                    {{ form_row(form.language) }}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Send</button>
+                    {{ form_widget(form.submit, { 'attr': {'class': 'btn-success'} }) }}
                 </div>
-            </form>
+            {{ form_end(form) }}
         </div>
     </div>
 </div>
