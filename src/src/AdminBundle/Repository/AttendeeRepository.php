@@ -1,6 +1,7 @@
 <?php
 
 namespace AdminBundle\Repository;
+
 use AdminBundle\Entity\Attendee;
 use AdminBundle\Entity\Event;
 use AdminBundle\Entity\EventType;
