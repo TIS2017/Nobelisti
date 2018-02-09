@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AdminBundle\Entity\EventType;
 use AdminBundle\Entity\Attendee;
+use AdminBundle\Entity\Language;
 use AdminBundle\Entity\Registration;
 use AppBundle\Form\RegistrationForm;
 use Symfony\Component\Form\FormError;
@@ -29,11 +30,30 @@ class DefaultController extends EmailController
             throw $this->createNotFoundException('No event type found for slug '.$slug);
         }
 
-        if ('DEFAULT' === $_locale) {
-            $language = 'sk_SK'; // todo, select a default language or something
+        if ('DEFAULT' === $_locale) { // select a default language or something
+            $language = 'en_US';
+            $attendeeLanguage = $this->getDoctrine()->getRepository(Language::class)->findOneBy(
+                ['code' => 'en_US']
+            );
         } else {
             $language = $_locale;
-            // todo: check language is enabled for this $eventType
+            $attendeeLanguage = $this->getDoctrine()->getRepository(Language::class)->findOneBy(
+                ['code' => $_locale]
+            );
+
+            if ($attendeeLanguage == null) {
+                return $this->redirectToRoute('frontend_index', ['slug'=> $slug, '_locale' => 'en_US']);
+            }
+
+            $form = $this->getEmptyRegistraionForm($eventType);
+            $form->handleRequest($request);
+            $templateName = $eventType->getTemplate();
+            // check language is enabled for this $eventType
+            if (! self::existsLanguageFile($templateName, $language)) {
+                return $this->redirectToRoute('frontend_index', ['slug'=> $slug, '_locale' => 'en_US']);
+            }
+
+
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -44,6 +64,7 @@ class DefaultController extends EmailController
         $registration->setAttendee($attendee);
         $registration->setConfirmationToken($token);
         $registration->setCode(9); // TODO
+        $registration->setLanguages($attendeeLanguage);
         $date = new \DateTime('now');
         $registration->setConfirmed($date); // TODO migracia
 
@@ -79,6 +100,7 @@ class DefaultController extends EmailController
                 $attendee->setFirstName($firstName);
                 $attendee->setlastName($lastName);
                 $attendee->setEmail($email);
+                $attendee->setLanguages($attendeeLanguage);
 
                 $context['attendee'] = $attendee;
                 $context['registration'] = $registration;
