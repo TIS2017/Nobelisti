@@ -3,12 +3,17 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * EventOrganizers.
  *
  * @ORM\Table(name="event_organizers")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\EventOrganizersRepository")
+ * @UniqueEntity(
+ *     fields={"event", "organizer", "deleted"},
+ *     ignoreNull=false,
+ * )
  */
 class EventOrganizers extends BaseEntity
 {
@@ -33,7 +38,7 @@ class EventOrganizers extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="Event", inversedBy="organizers")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", nullable=false)
      */
     private $event;
 
@@ -71,7 +76,7 @@ class EventOrganizers extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="Organizer", inversedBy="events")
-     * @ORM\JoinColumn(name="organizer_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="organizer_id", referencedColumnName="id", nullable=false)
      */
     private $organizer;
 }
