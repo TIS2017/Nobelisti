@@ -38,6 +38,7 @@ class Language extends BaseEntity
      *
      * @ORM\Column(name="language", type="string", length=50)
      * @Assert\NotBlank()
+     * @Assert\Length(max=50)
      */
     private $language;
 
@@ -46,6 +47,7 @@ class Language extends BaseEntity
      *
      * @ORM\Column(name="code", type="string", length=6)
      * @Assert\NotBlank()
+     * @Assert\Length(max=6)
      */
     private $code;
 
@@ -158,5 +160,4 @@ class Language extends BaseEntity
      * @ORM\OneToMany(targetEntity="Attendee", mappedBy="languages")
      */
     private $attendees;
-
 }

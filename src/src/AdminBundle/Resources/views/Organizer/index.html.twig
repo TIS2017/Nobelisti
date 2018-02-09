@@ -3,19 +3,12 @@
 {% block content %}
     <h1 class="content">
         <span>Organizers</span>
-        <a class='btn btn-primary float-sm-right' href="{{ path('organizers_add') }}">Add new organizer</a>
+        <a class='btn btn-primary float-sm-right' href="{{ path('organizers_add') }}">Create organizer</a>
     </h1>
     <hr>
     {{ form_start(form) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}
-    <!--<form class="form-inline" method="get">
-        <div class="form-group mx-sm-3">
-            <label class="sr-only">Filter</label>
-            <input type="text" id="form_email" name="email" required="required" class="form-control" placeholder="Filter by e-mail">
-        </div>
-        <button id="form_filter" type="submit" class="btn btn-primary">Filter</button>
-    </form>-->
     <hr>
     {% if organizers | length == 0 %}
         <p> No organizers found.</p>

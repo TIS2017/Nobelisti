@@ -3,6 +3,7 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -11,13 +12,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Table(name="admin")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\AdminRepository")
- * @UniqueEntity("email")
+ * @UniqueEntity(
+ *     fields={"deleted", "email"},
+ *     errorPath="email",
+ *     ignoreNull=false,
+ * )
  */
 class Admin extends BaseEntity implements UserInterface, \Serializable
 {
-    public function __construct($email)
+    public function __construct()
     {
-        $this->email = $email;
         $this->salt = base64_encode(random_bytes(48));
     }
 
@@ -41,7 +45,9 @@ class Admin extends BaseEntity implements UserInterface, \Serializable
     }
 
     /**
-     * @ORM\Column(name="email", type="string", length=100, unique=true)
+     * @ORM\Column(name="email", type="string", length=100)
+     * @Assert\NotBlank()
+     * @Assert\Length(max=100)
      */
     private $email;
 

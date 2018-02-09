@@ -33,6 +33,7 @@ class Organizer extends BaseEntity
      *
      * @ORM\Column(name="email", type="string", length=254)
      * @Assert\NotBlank()
+     * @Assert\Length(max=254)
      * @Assert\Email()
      */
     private $email;

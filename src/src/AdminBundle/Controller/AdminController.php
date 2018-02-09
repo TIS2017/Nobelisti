@@ -2,17 +2,15 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Form\AdminCreateForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use AdminBundle\Entity\Admin;
 use AdminBundle\Form\AdminEditFieldsForm;
 use AdminBundle\Form\AdminEditPasswordForm;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class AdminController extends Controller
 {
@@ -22,7 +20,7 @@ class AdminController extends Controller
      */
     public function indexAction()
     {
-        $repo = $this->getDoctrine()->getRepository('AdminBundle:Admin');
+        $repo = $this->getDoctrine()->getRepository(Admin::class);
         $adminResult = $repo->findAll();
 
         return $this->render('AdminBundle:Admin:index.html.twig', array(
@@ -36,63 +34,19 @@ class AdminController extends Controller
         $admin->setPassword($encoded);
     }
 
-    private function getNewAdminForm($request)
-    {
-        $defaultData = array(
-            'email' => '',
-            'password' => '',
-            'password1' => '',
-        );
-
-        $form = $this->createFormBuilder($defaultData)
-            ->add('email', EmailType::class)
-            ->add('password', RepeatedType::class, array(
-                'type' => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
-                'options' => array('attr' => array('class' => 'password-field')),
-                'required' => true,
-                'first_options' => array('label' => 'Password'),
-                'second_options' => array('label' => 'Repeat Password'),
-            ))
-            ->add('submit', SubmitType::class)
-            ->getForm();
-
-        $form->handleRequest($request);
-
-        return $form;
-    }
-
     /**
      * @Route("/admins/add", name="admins_add")
      * @Method({"GET", "POST"})
      */
     public function createAction(Request $request)
     {
-        $form = $this->getNewAdminForm($request);
+        $admin = new Admin();
+
+        $form = $this->createForm(AdminCreateForm::class, $admin);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // data is an array with, "email", and "password" keys
-            $data = $form->getData();
-            $admin = new Admin($data['email']);
-            $this->hashPassword($admin, $data['password']);
-
-            //validate
-            $validator = $this->get('validator');
-            $errors = $validator->validate($admin);
-            if (count($errors) > 0) {
-                /*
-                 * Uses a __toString method on the $errors variable which is a
-                 * ConstraintViolationList object. This gives us a nice string
-                 * for debugging.
-                 */
-                //TODO: implement __toString()
-                $errorsString = (string) $errors;
-
-                return $this->render('AdminBundle:Admin:create.html.twig', array(
-                    'form' => $form->createView(),
-                    'errors' => $errorsString,
-                ));
-            }
+            $this->hashPassword($admin, $form->getData()->getPassword());
 
             $repo = $this->getDoctrine()->getManager();
             $repo->persist($admin);
@@ -103,24 +57,7 @@ class AdminController extends Controller
 
         return $this->render('AdminBundle:Admin:create.html.twig', array(
             'form' => $form->createView(),
-            'errors' => null,
         ));
-    }
-
-    private function getEditAdminFormForFields($request, $adminObject)
-    {
-        $form = $this->createForm(AdminEditFieldsForm::class, $adminObject);
-        $form->handleRequest($request);
-
-        return $form;
-    }
-
-    private function getEditAdminFormForPassword($request)
-    {
-        $form = $this->createForm(AdminEditPasswordForm::class);
-        $form->handleRequest($request);
-
-        return $form;
     }
 
     /**
@@ -130,71 +67,65 @@ class AdminController extends Controller
     public function editAction(Request $request)
     {
         $repo = $this->getDoctrine()->getManager();
-        $adminId = $request->get('id');
-        $admin = $repo->find(Admin::class, $adminId);
+        $admin = $repo->find(Admin::class, $request->get('id'));
         if (!$admin) {
             throw $this->createNotFoundException('Admin does not exist');
         }
 
-        $formForFields = $this->getEditAdminFormForFields($request, $admin);
-        $formChangePassword = $this->getEditAdminFormForPassword($request);
+        $formForFields = $this->getHandledChangeFieldsForm($admin, $request);
+        $formChangePassword = $this->getHandledPasswordForm($admin, $request);
 
-        if ($formForFields->isSubmitted() && $formForFields->isValid()) {
-            $data = $formForFields->getData();
-            $admin->setEmail($data->getEmail());
-
-            //validate
-            $validator = $this->get('validator');
-            $errors = $validator->validate($admin);
-            if (count($errors) > 0) {
-                /*
-                 * Uses a __toString method on the $errors variable which is a
-                 * ConstraintViolationList object. This gives us a nice string
-                 * for debugging.
-                 */
-                //TODO: implement __toString()
-                $errorsString = (string) $errors;
-
-                return $this->render('AdminBundle:Admin:edit.html.twig', array(
-                    'formForFields' => $formForFields->createView(),
-                    'formForPassword' => $formChangePassword->createView(),
-                    'errors' => $errorsString,
-                ));
-            }
-
-            $repo = $this->getDoctrine()->getManager();
-            $repo->persist($admin);
-            $repo->flush();
-
-            return $this->redirectToRoute('admins');
-        }
-
-        if ($formChangePassword->isSubmitted() && $formChangePassword->isValid()) {
-            $data = $formChangePassword->getData();
-
-            $hashedPassword = $this->get('security.password_encoder')->encodePassword($admin, $data['oldPassword']);
-            if ($hashedPassword != $admin->getPassword()) {
-                return $this->render('AdminBundle:Admin:edit.html.twig', array(
-                    'formForFields' => $formForFields->createView(),
-                    'formForPassword' => $formChangePassword->createView(),
-                    'errors' => 'Invalid old password',
-                ));
-            }
-
-            $this->hashPassword($admin, $data['password']);
-
-            $repo = $this->getDoctrine()->getManager();
-            $repo->persist($admin);
-            $repo->flush();
-
+        if (null == $formForFields || null == $formChangePassword) {
             return $this->redirectToRoute('admins');
         }
 
         return $this->render('AdminBundle:Admin:edit.html.twig', array(
             'formForFields' => $formForFields->createView(),
             'formForPassword' => $formChangePassword->createView(),
-            'errors' => null,
         ));
+    }
+
+    private function getHandledChangeFieldsForm($admin, $request)
+    {
+        $form = $this->createForm(AdminEditFieldsForm::class, $admin);
+        $form->handleRequest($request);
+
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            return $form;
+        }
+
+        $repo = $this->getDoctrine()->getManager();
+        $repo->persist($admin);
+        $repo->flush();
+
+        return null;
+    }
+
+    private function getHandledPasswordForm($admin, $request)
+    {
+        $form = $this->createForm(AdminEditPasswordForm::class);
+        $form->handleRequest($request);
+
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            return $form;
+        }
+
+        $data = $form->getData();
+
+        $hashedPassword = $this->get('security.password_encoder')->encodePassword($admin, $data['oldPassword']);
+        if ($hashedPassword != $admin->getPassword()) {
+            $form->get('oldPassword')->addError(new FormError('Old password is not correct'));
+
+            return $form;
+        }
+
+        $this->hashPassword($admin, $data['password']);
+
+        $repo = $this->getDoctrine()->getManager();
+        $repo->persist($admin);
+        $repo->flush();
+
+        return null;
     }
 
     /**

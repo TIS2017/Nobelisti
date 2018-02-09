@@ -41,7 +41,7 @@ class MailingListController extends Controller
                                         $numItemsPerPage,
                                         $page
                                     );
-                $countPages = ceil( $repositoryAttendee
+                $countPages = ceil($repositoryAttendee
                                     ->getCountOfAttendeesFilteredByEvent(
                                         $searchedNameEmail,
                                         $searchedEvent,
@@ -62,7 +62,6 @@ class MailingListController extends Controller
                                         $searchedIsSubscribed
                                     ) / $numItemsPerPage));
             }
-
         } else {
             $mailingList = $repositoryAttendee->findBy(array(), array(), $numItemsPerPage, ($page - 1) * $numItemsPerPage);
             $countPages = ceil($repositoryAttendee->getSelectCountAllAttendees() / $numItemsPerPage);

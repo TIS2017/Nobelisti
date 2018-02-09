@@ -24,7 +24,7 @@ class WebTestController extends CustomTemplateController
 
         if (!$eventType) {
             throw $this->createNotFoundException(
-                'No event type found for slug '.$slug
+                'No event type found for slug '.$eventSlug
             );
         }
 
@@ -39,7 +39,7 @@ class WebTestController extends CustomTemplateController
         $context = [
             'event_type' => $eventType,
             'form' => $form->createView(),
-            'state' => $state
+            'state' => $state,
         ];
 
         $templateName = $eventType->getTemplate();
@@ -61,10 +61,10 @@ class WebTestController extends CustomTemplateController
      * @Route("/test/{eventTypeId}/languages", name="test_event_languages", requirements={"eventTypeId"="\d+"})
      * @Method("GET")
      */
-    public function testEventLanguagesAction($eventTypeId, Request $request) {
-        $eventType = $this->getDoctrine()->getRepository(EventType::class)->findOneBy(
-            ['id' => $eventTypeId]
-        );
+    public function testEventLanguagesAction($eventTypeId, Request $request)
+    {
+        $repo = $this->getDoctrine()->getManager();
+        $eventType = $repo->find(EventType::class, $eventTypeId);
 
         if (!$eventType) {
             throw $this->createNotFoundException(
@@ -81,10 +81,8 @@ class WebTestController extends CustomTemplateController
         $definedEventTypeLanguages = array_map($getNamesFromLanguage, $eventType->getLanguages()->toArray());
 
         $eventId = $request->query->get('eventId');
-        if ($eventId != null) {
-            $event = $this->getDoctrine()->getRepository(Event::class)->findOneBy(
-                ['id' => $eventId]
-            );
+        if (null != $eventId) {
+            $event = $repo->find(Event::class, $eventId);
 
             if (!$event) {
                 throw $this->createNotFoundException(
@@ -113,8 +111,7 @@ class WebTestController extends CustomTemplateController
             }
 
             return $this->redirectToRoute('events_edit', ['id' => $eventType->getId(), 'event_id' => $event->getId(), 'notFoundLanguages' => $notFoundLanguages]);
-        }
-        else {
+        } else {
             $notFoundLanguages = array();
             foreach ($definedEventTypeLanguages as $definedLanguage) {
                 if (!in_array($definedLanguage, $availableEventTypeLanguages)) {

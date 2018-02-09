@@ -196,14 +196,13 @@ class EventController extends Controller
             ['email' => $request->get(self::$modalInputOrganizers)]
         );
 
-        $event = $em->getRepository(Event::class)->findOneBy(['id' => $event_id]);
+        $event = $em->find(Event::class, $event_id);
 
         $eventOrganizer = new EventOrganizers();
         $eventOrganizer->setEvent($event);
         $eventOrganizer->setOrganizer($organizer);
 
-        $em->persist($eventOrganizer);
-        $em->flush();
+        $this->tryToAssign($em, $eventOrganizer, 'Organizer');
 
         return $this->redirectToRoute('events_edit', ['id' => $id, 'event_id' => $event_id]);
     }
@@ -222,16 +221,32 @@ class EventController extends Controller
             ['language' => $request->get(self::$modalInputLanguages)]
         );
 
-        $event = $em->getRepository(Event::class)->findOneBy(['id' => $event_id]);
+        $event = $em->find(Event::class, $event_id);
 
         $eventLanguage = new EventLanguages();
         $eventLanguage->setEvent($event);
         $eventLanguage->setLanguage($language);
 
-        $em->persist($eventLanguage);
-        $em->flush();
+        $this->tryToAssign($em, $eventLanguage, 'Language');
 
         return $this->redirectToRoute('events_edit', ['id' => $id, 'event_id' => $event_id]);
+    }
+
+    public function tryToAssign($em, $object, $text)
+    {
+        $validator = $this->get('validator');
+        $errors = $validator->validate($object);
+        if (0 == count($errors)) {
+            try {
+                $em->persist($object);
+                $em->flush();
+                $this->addFlash('success', $text.' assigned!');
+            } catch (\Doctrine\DBAL\DBALException $e) {
+                $this->addFlash('danger', $text.' could not be assigned!');
+            }
+        } else {
+            $this->addFlash('warning', $text.' already assigned!');
+        }
     }
 
     /**

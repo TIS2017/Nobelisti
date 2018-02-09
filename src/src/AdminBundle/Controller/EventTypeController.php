@@ -142,16 +142,32 @@ class EventTypeController extends Controller
             ['language' => $request->get(self::$modalInputLanguages)]
         );
 
-        $eventType = $em->getRepository(EventType::class)->findOneBy(['id' => $id]);
+        $eventType = $em->find(EventType::class, $id);
 
         $eventTypeLanguage = new EventTypeLanguages();
         $eventTypeLanguage->setEventType($eventType);
         $eventTypeLanguage->setLanguage($language);
 
-        $em->persist($eventTypeLanguage);
-        $em->flush();
+        $this->tryToAssign($em, $eventTypeLanguage, 'Language');
 
         return $this->redirectToRoute('event_types_edit', ['id' => $id]);
+    }
+
+    public function tryToAssign($em, $object, $text)
+    {
+        $validator = $this->get('validator');
+        $errors = $validator->validate($object);
+        if (0 == count($errors)) {
+            try {
+                $em->persist($object);
+                $em->flush();
+                $this->addFlash('success', $text.' assigned!');
+            } catch (\Doctrine\DBAL\DBALException $e) {
+                $this->addFlash('danger', $text.' could not be assigned!');
+            }
+        } else {
+            $this->addFlash('warning', $text.' already assigned!');
+        }
     }
 
     /**
