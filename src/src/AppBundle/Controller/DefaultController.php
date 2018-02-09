@@ -26,9 +26,7 @@ class DefaultController extends EmailController
         );
 
         if (!$eventType) {
-            throw $this->createNotFoundException(
-                'No event type found for slug '.$slug
-            );
+            throw $this->createNotFoundException('No event type found for slug '.$slug);
         }
 
         if ('DEFAULT' === $_locale) {
@@ -49,15 +47,7 @@ class DefaultController extends EmailController
         $date = new \DateTime('now');
         $registration->setConfirmed($date); // TODO migracia
 
-        $events = $em->getRepository(EventType::class)->findOneBy(array('slug' => $slug))->getEvents();
-        $eventOptions = [];
-        foreach($events as $event) {
-            $eventOptions[] = $event->getAddress();
-        }
-
-        $defaultData = array('first_name' => '', 'last_name' => '', 'email' => '', 'events' => $eventOptions);
-
-        $form = $this->createForm(RegistrationForm::class, $defaultData);
+        $form = $this->getEmptyRegistraionForm($eventType);
         $form->handleRequest($request);
 
         $context = [
@@ -82,7 +72,9 @@ class DefaultController extends EmailController
             if ($attendeeExists) {
                 // attendee already registered for event
                 // TODO not working
+                // todo: Viki: problem je v tom, ze view si uz vytvorila a teda sa tato chyba vo view neukaze.
                 $form->get('email')->addError(new FormError('Attendee already exists.'));
+                $context['form'] = $form->createView();
             } else {
                 $attendee->setFirstName($firstName);
                 $attendee->setlastName($lastName);
@@ -97,10 +89,23 @@ class DefaultController extends EmailController
 
                 $this->sendEmail($attendee, $context, $templateName, 'registration');
 
-                // todo: show success page or something
+                $this->addFlash('success', "You successfully signed up!");
+                $context['form'] = $this->getEmptyRegistraionForm($eventType)->createView();
             }
         }
 
         return $this->render($template, $context);
+    }
+
+    private function getEmptyRegistraionForm($eventType){
+        $events = $eventType->getEvents();
+        $eventOptions = [];
+        foreach($events as $event) {
+            $eventOptions[$event->getAddress()] = $event->getId();
+        }
+
+        $defaultData = array('first_name' => '', 'last_name' => '', 'email' => '', 'events' => $eventOptions);
+
+        return $this->createForm(RegistrationForm::class, $defaultData);
     }
 }

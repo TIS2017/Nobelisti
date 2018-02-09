@@ -20,7 +20,7 @@ class RegistrationForm extends AbstractType
             ->add('last_name', TextType::class)
             ->add('email', EmailType::class)
             ->add('event_choice', ChoiceType::class, array(
-                'choices' => $options['events'],
+                'choices' => $options['data']['events'],
             ))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setMethod('POST');
