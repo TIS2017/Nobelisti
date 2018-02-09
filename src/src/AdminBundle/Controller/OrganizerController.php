@@ -93,7 +93,7 @@ class OrganizerController extends Controller
      * @Route("/organizers/delete/{id}", name="organizers_delete", requirements={"id"="\d+"})
      * @Method("POST")
      */
-    public function deleteAction($id, Request $request)
+    public function deleteAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         $organizer = $em->find(Organizer::class, $id);
