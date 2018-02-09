@@ -4,11 +4,14 @@ namespace AppBundle\Controller;
 
 use AdminBundle\Entity\EventType;
 use AdminBundle\Entity\Attendee;
+use AdminBundle\Entity\Registration;
 use AppBundle\Form\RegistrationForm;
+use Symfony\Component\Form\FormError;
 use EmailBundle\Controller\EmailController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use \Datetime;
 
 class DefaultController extends EmailController
 {
@@ -35,9 +38,26 @@ class DefaultController extends EmailController
             // todo: check language is enabled for this $eventType
         }
 
-        $attendee = new Attendee();
+        $em = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm(RegistrationForm::class, $attendee);
+        $attendee = new Attendee();
+        $registration = new Registration();
+        $token = md5(time() . rand()); //TODO
+        $registration->setAttendee($attendee);
+        $registration->setConfirmationToken($token);
+        $registration->setCode(9); // TODO
+        $date = new \DateTime('now');
+        $registration->setConfirmed($date); // TODO migracia
+
+        $events = $em->getRepository(EventType::class)->findOneBy(array('slug' => $slug))->getEvents();
+        $eventOptions = [];
+        foreach($events as $event) {
+            $eventOptions[] = $event->getAddress();
+        }
+
+        $defaultData = array('first_name' => '', 'last_name' => '', 'email' => '', 'events' => $eventOptions);
+
+        $form = $this->createForm(RegistrationForm::class, $defaultData);
         $form->handleRequest($request);
 
         $context = [
@@ -53,11 +73,32 @@ class DefaultController extends EmailController
         $context['lang'] = $languageContext;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $context['attendee'] = $attendee;
+            $email = $form->getData()['email'];
+            $firstName = $form->getData()['first_name'];
+            $lastName = $form->getData()['last_name'];
 
-            $this->sendEmail($attendee, $context, $templateName, 'registration');
+            // TODO - porovnavat na attendee,event
+            $attendeeExists = $em->getRepository(Attendee::class)->findOneBy(array('email' => $email));
+            if ($attendeeExists) {
+                // attendee already registered for event
+                // TODO not working
+                $form->get('email')->addError(new FormError('Attendee already exists.'));
+            } else {
+                $attendee->setFirstName($firstName);
+                $attendee->setlastName($lastName);
+                $attendee->setEmail($email);
 
-            // todo: show success page or something
+                $context['attendee'] = $attendee;
+                $context['registration'] = $registration;
+
+                $em->persist($attendee);
+                $em->persist($registration);
+                $em->flush();
+
+                $this->sendEmail($attendee, $context, $templateName, 'registration');
+
+                // todo: show success page or something
+            }
         }
 
         return $this->render($template, $context);

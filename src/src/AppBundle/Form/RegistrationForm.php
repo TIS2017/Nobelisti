@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RegistrationForm extends AbstractType
@@ -18,14 +19,10 @@ class RegistrationForm extends AbstractType
             ->add('first_name', TextType::class)
             ->add('last_name', TextType::class)
             ->add('email', EmailType::class)
+            ->add('event_choice', ChoiceType::class, array(
+                'choices' => $options['events'],
+            ))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->setMethod('POST');
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => Attendee::class,
-        ));
     }
 }

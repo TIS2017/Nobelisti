@@ -93,6 +93,14 @@ class EventType extends BaseEntity
      */
     private $events;
 
+    /**
+     * Get events.
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
     public function __construct()
     {
         $this->events = new ArrayCollection();

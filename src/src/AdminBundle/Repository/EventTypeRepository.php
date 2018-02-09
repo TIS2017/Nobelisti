@@ -10,4 +10,14 @@ namespace AdminBundle\Repository;
  */
 class EventTypeRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getBySlug($slug)
+    {
+        $qb = $this->_em->createQueryBuilder('et');
+        $qb->select('et')
+            ->from('AdminBundle:EventType', 'et')
+            ->where('et.slug = :slug')
+            ->setParameter('slug', $slug);
+
+        return $qb->getQuery()->getResult();
+    }
 }
