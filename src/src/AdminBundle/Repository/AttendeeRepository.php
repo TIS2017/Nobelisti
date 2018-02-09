@@ -1,6 +1,9 @@
 <?php
 
 namespace AdminBundle\Repository;
+use AdminBundle\Entity\Attendee;
+use AdminBundle\Entity\Event;
+use AdminBundle\Entity\EventType;
 
 /**
  * AttendeeRepository.
@@ -87,11 +90,11 @@ class AttendeeRepository extends \Doctrine\ORM\EntityRepository
     private function getSearchByEventQuery($selectQuery, $nameEmail, $event, $isSubscribed)
     {
         $result = $selectQuery
-            ->innerJoin('AdminBundle:Attendee', 'a', 'WITH', 'a.id = r.attendeeId')
+            ->innerJoin(Attendee::class, 'a', 'WITH', 'a.id = r.attendee')
             ->where('a.email LIKE :name OR a.firstName LIKE :name OR a.lastName LIKE :name')
             ->setParameter('name', '%'.$nameEmail.'%')
-            ->innerJoin('AdminBundle:Event', 'e', 'WITH', 'e.id = r.eventDetailsId')
-            ->innerJoin('AdminBundle:EventType', 'et', 'WITH', 'et.id = e.eventTypeId')
+            ->innerJoin(Event::class, 'e', 'WITH', 'e.id = r.events')
+            ->innerJoin(EventType::class, 'et', 'WITH', 'et.id = e.eventType')
             ->andwhere('et.slug LIKE :event')
             ->setParameter('event', '%'.$event.'%');
         if (true == $isSubscribed) {
