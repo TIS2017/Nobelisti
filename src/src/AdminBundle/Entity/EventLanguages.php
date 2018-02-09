@@ -3,12 +3,17 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * EventLanguages.
  *
  * @ORM\Table(name="event_languages")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\EventLanguagesRepository")
+ * @UniqueEntity(
+ *     fields={"event", "language", "deleted"},
+ *     ignoreNull=false,
+ * )
  */
 class EventLanguages extends BaseEntity
 {
@@ -65,13 +70,13 @@ class EventLanguages extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="Event", inversedBy="languages")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", nullable=false)
      */
     private $event;
 
     /**
      * @ORM\ManyToOne(targetEntity="Language", inversedBy="events")
-     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="language_id", referencedColumnName="id", nullable=false)
      */
     private $language;
 }

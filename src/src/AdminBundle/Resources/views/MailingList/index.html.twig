@@ -48,10 +48,10 @@
                 <td>
                     {% for registration in attendee.registrations | slice (0,3) %}
                         {% if loop.index == 1 %}
-                            {{ registration.eventDetails.eventTypeId.slug }}
+                            {{ registration.events.eventType.slug }}
                         {% endif %}
                         {% if loop.index == 2 %}
-                            ,&nbsp;{{ registration.eventDetails.eventTypeId.slug }}
+                            ,&nbsp;{{ registration.events.eventType.slug }}
                         {% endif %}
                         {% if loop.index == 3 %}
                             &nbsp;<a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#showAllEvents{{ attendee.id }}">Show all</a>

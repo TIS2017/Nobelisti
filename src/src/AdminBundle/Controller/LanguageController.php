@@ -56,7 +56,7 @@ class LanguageController extends Controller
     public function editAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $language = $em->getRepository(Language::class)->findOneBy(array('id' => $id));
+        $language = $em->find(Language::class, $id);
 
         if (!$language) {
             throw $this->createNotFoundException(
@@ -82,10 +82,10 @@ class LanguageController extends Controller
      * @Route("/languages/delete/{id}", name="languages_delete", requirements={"id"="\d+"})
      * @Method("POST")
      */
-    public function deleteAction($id, Request $request)
+    public function deleteAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $language = $em->getRepository(Language::class)->findOneBy(array('id' => $id));
+        $language = $em->find(Language::class, $id);
 
         if (!$language) {
             throw $this->createNotFoundException(

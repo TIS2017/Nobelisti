@@ -24,7 +24,7 @@ class WebTestController extends CustomTemplateController
 
         if (!$eventType) {
             throw $this->createNotFoundException(
-                'No event type found for slug '.$slug
+                'No event type found for slug '.$eventSlug
             );
         }
 
@@ -63,9 +63,8 @@ class WebTestController extends CustomTemplateController
      */
     public function testEventLanguagesAction($eventTypeId, Request $request)
     {
-        $eventType = $this->getDoctrine()->getRepository(EventType::class)->findOneBy(
-            ['id' => $eventTypeId]
-        );
+        $repo = $this->getDoctrine()->getManager();
+        $eventType = $repo->find(EventType::class, $eventTypeId);
 
         if (!$eventType) {
             throw $this->createNotFoundException(
@@ -83,9 +82,7 @@ class WebTestController extends CustomTemplateController
 
         $eventId = $request->query->get('eventId');
         if (null != $eventId) {
-            $event = $this->getDoctrine()->getRepository(Event::class)->findOneBy(
-                ['id' => $eventId]
-            );
+            $event = $repo->find(Event::class, $eventId);
 
             if (!$event) {
                 throw $this->createNotFoundException(
