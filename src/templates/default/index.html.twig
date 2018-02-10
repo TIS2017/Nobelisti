@@ -1,5 +1,9 @@
 {% extends 'base.html.twig'|extendable(event_type) %}
 
+{% block head %}
+    {{ getCSS('default') }}
+{% endblock %}
+
 {% block content %}
     <h1>This is a default theme</h1>
 {% endblock %}

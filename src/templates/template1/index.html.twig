@@ -1,5 +1,10 @@
 {% extends 'base.html.twig'|extendable(event_type) %}
 
+{% block head %}
+    {{ getCSS('template1') }}
+    {{ getJS('template1', 'prefill') }}
+{% endblock %}
+
 {% block content %}
     <h1>{{ lang.header }}</h1>
     <p>{{ lang.description }}</p>
