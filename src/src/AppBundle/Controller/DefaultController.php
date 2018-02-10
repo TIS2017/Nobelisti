@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AdminBundle\Entity\Event;
 use AdminBundle\Entity\EventType;
 use AdminBundle\Entity\Attendee;
 use AdminBundle\Entity\Language;
@@ -75,7 +76,6 @@ class DefaultController extends EmailController
             'event_type' => $eventType,
             'form' => $form->createView(),
         ];
-
         $templateName = $eventType->getTemplate();
 
         $template = self::getTemplate($templateName, 'index.html.twig');
@@ -92,11 +92,22 @@ class DefaultController extends EmailController
             $attendeeExists = $em->getRepository(Attendee::class)->findOneBy(array('email' => $email));
             if ($attendeeExists) {
                 // attendee already registered for event
-                // TODO not working
                 // todo: Viki: problem je v tom, ze view si uz vytvorila a teda sa tato chyba vo view neukaze.
                 $form->get('email')->addError(new FormError('Attendee already exists.'));
                 $context['form'] = $form->createView();
             } else {
+
+                $event = $em->getRepository(Event::class)->find($form->getData()['event_choice']);
+                $registration->setEvents($event);
+
+                //todo check capacity
+                $countOfRegistratedPeople = $em->getRepository(Registration::class)->findBy(['events'=> $event]);
+
+                if ($event->getCapacity() <= $countOfRegistratedPeople) {
+                    $this->addFlash('error', "Sorry, capacity is full for this event.");
+                    return $this->render($template, $context);
+                }
+
                 $attendee->setFirstName($firstName);
                 $attendee->setlastName($lastName);
                 $attendee->setEmail($email);
