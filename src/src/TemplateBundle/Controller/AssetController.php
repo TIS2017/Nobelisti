@@ -15,9 +15,7 @@ class AssetController extends CustomTemplateController
      */
     public function getCssAction($templateName, $assetName, Request $request)
     {
-        if (empty($assetName)) {
-            $assetName = 'styles';
-        } elseif (false !== strpos($assetName, '..') || false !== strpos($assetName, '/')) {
+        if (!empty($assetName) && (false !== strpos($assetName, '..') || false !== strpos($assetName, '/'))) {
             throw new \Exception('Forbidden characters used as a asset name.');
         }
 
@@ -35,9 +33,7 @@ class AssetController extends CustomTemplateController
      */
     public function getJsAction($templateName, $assetName, Request $request)
     {
-        if (empty($assetName)) {
-            $assetName = 'script';
-        } elseif (false !== strpos($assetName, '..') || false !== strpos($assetName, '/')) {
+        if (!empty($assetName) && (false !== strpos($assetName, '..') || false !== strpos($assetName, '/'))) {
             throw new \Exception('Forbidden characters used as a asset name.');
         }
 

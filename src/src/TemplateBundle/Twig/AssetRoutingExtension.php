@@ -14,14 +14,14 @@ class AssetRoutingExtension extends RoutingExtension
         );
     }
 
-    public function getCSS($templateName, $assetName = 'styles')
+    public function getCSS($templateName, $assetName)
     {
         $cssPath = $this->getPath('get_css', array('templateName' => $templateName, 'assetName' => $assetName), true);
 
         return '<link href="'.$cssPath.'" rel="stylesheet" />';
     }
 
-    public function getJS($templateName, $assetName = 'script')
+    public function getJS($templateName, $assetName)
     {
         $jsPath = $this->getPath('get_js', array('templateName' => $templateName, 'assetName' => $assetName), true);
 
