@@ -17,6 +17,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class DefaultController extends EmailController
 {
     /**
+     * @Route("/", name="open_page")
+     */
+    public function openPageAction()
+    {
+        return $this->render('AppBundle::open_page.html.twig');
+ 
+    }
+
+    /**
      * @Route("/{slug}/{_locale}", name="frontend_index", defaults={"_locale": "DEFAULT"})
      * @Method({"GET", "POST"})
      */
@@ -57,7 +66,7 @@ class DefaultController extends EmailController
         $em = $this->getDoctrine()->getManager();
 
         $registration = new Registration();
-        $token = md5(time().rand()); //TODO
+        $token = md5(time().rand());
         $registration->setConfirmationToken($token);
         $registration->setCode(9); // TODO
         $registration->setLanguages($attendeeLanguage);
