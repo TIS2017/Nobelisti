@@ -56,10 +56,8 @@ class DefaultController extends EmailController
 
         $em = $this->getDoctrine()->getManager();
 
-        $attendee = new Attendee();
         $registration = new Registration();
         $token = md5(time().rand()); //TODO
-        $registration->setAttendee($attendee);
         $registration->setConfirmationToken($token);
         $registration->setCode(9); // TODO
         $registration->setLanguages($attendeeLanguage);
@@ -116,6 +114,7 @@ class DefaultController extends EmailController
             $attendee->setFirstName($firstName);
             $attendee->setlastName($lastName);
             $attendee->setLanguages($attendeeLanguage);
+            $registration->setAttendee($attendee);
 
             $context['attendee'] = $attendee;
             $context['registration'] = $registration;
