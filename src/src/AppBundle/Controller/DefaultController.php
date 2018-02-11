@@ -131,7 +131,7 @@ class DefaultController extends EmailController
 
             $this->sendEmail($attendee, $context, $templateName, 'registration');
 
-            $this->addFlash('success', "You successfully signed up!");
+            $this->addFlash('success', $context['lang']['registration_success']);
             $context['form'] = $this->getEmptyRegistraionForm($eventType)->createView();
         }
 
