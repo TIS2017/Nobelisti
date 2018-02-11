@@ -27,7 +27,7 @@ class DefaultController extends EmailController
         );
 
         if (!$eventType) {
-            throw $this->createNotFoundException('No event type found for slug '.$slug);
+            throw $this->createNotFoundException('No event type found for slug'.$slug);
         }
 
         if ('DEFAULT' === $_locale) { // select a default language or something
@@ -56,10 +56,8 @@ class DefaultController extends EmailController
 
         $em = $this->getDoctrine()->getManager();
 
-        $attendee = new Attendee();
         $registration = new Registration();
         $token = md5(time().rand()); //TODO
-        $registration->setAttendee($attendee);
         $registration->setConfirmationToken($token);
         $registration->setCode(9); // TODO
         $registration->setLanguages($attendeeLanguage);
@@ -83,44 +81,58 @@ class DefaultController extends EmailController
             $email = $form->getData()['email'];
             $firstName = $form->getData()['first_name'];
             $lastName = $form->getData()['last_name'];
+            $event = $em->getRepository(Event::class)->find($form->getData()['event_choice']);
 
-            // TODO - porovnavat na attendee,event
-            $attendeeExists = $em->getRepository(Attendee::class)->findOneBy(array('email' => $email));
-            if ($attendeeExists) {
-                // attendee already registered for event
-                // todo: Viki: problem je v tom, ze view si uz vytvorila a teda sa tato chyba vo view neukaze.
-                $form->get('email')->addError(new FormError('Attendee already exists.'));
-                $context['form'] = $form->createView();
-            } else {
-                $event = $em->getRepository(Event::class)->find($form->getData()['event_choice']);
-                $registration->setEvents($event);
-
-                //todo check capacity
-                $countOfRegistratedPeople = $em->getRepository(Registration::class)->findBy(['events' => $event]);
-
-                if ($event->getCapacity() <= $countOfRegistratedPeople) {
-                    $this->addFlash('error', 'Sorry, capacity is full for this event.');
-
+            $attendee = $em->getRepository(Attendee::class)->findOneBy(array('email' => $email));
+            if ($attendee) {
+                $attendeeRegistratedForEvent = $em->getRepository(Registration::class)->findOneBy(
+                                                        ['attendee'=> $attendee, 'events' => $event]);
+                if ($attendeeRegistratedForEvent) { // attendee already registered for event
+                    $form->get('email')->addError(new FormError($context['lang']['already_registered']));
+                    $context['form'] = $form->createView();
                     return $this->render($template, $context);
                 }
 
-                $attendee->setFirstName($firstName);
-                $attendee->setlastName($lastName);
-                $attendee->setEmail($email);
-                $attendee->setLanguages($attendeeLanguage);
-
-                $context['attendee'] = $attendee;
-                $context['registration'] = $registration;
-
-                $em->persist($attendee);
-                $em->persist($registration);
-                $em->flush();
-
-                $this->sendEmail($attendee, $context, $templateName, 'registration');
-
-                $this->addFlash('success', 'You successfully signed up!');
-                $context['form'] = $this->getEmptyRegistraionForm($eventType)->createView();
             }
+
+            $registration->setEvents($event);
+
+            //checking capacity
+            $registratedPeople = $em->getRepository(Registration::class)->findBy(['events'=> $event]);
+            if ($event->getCapacity() <= count($registratedPeople)) {
+                $this->addFlash('error', $context['lang']['capacity_full']);
+                return $this->render($template, $context);
+            }
+
+            //checking registration end
+            $registrationEnd = $event->getRegistrationEnd();
+            $now = new \DateTime('now');
+            if ($registrationEnd < $now) {
+                $this->addFlash('error', $context['lang']['registration_closed']);
+                return $this->render($template, $context);
+            }
+
+
+            if (!$attendee) {
+                $attendee = new Attendee();
+                $attendee->setEmail($email);
+            }
+            $attendee->setFirstName($firstName);
+            $attendee->setlastName($lastName);
+            $attendee->setLanguages($attendeeLanguage);
+            $registration->setAttendee($attendee);
+
+            $context['attendee'] = $attendee;
+            $context['registration'] = $registration;
+
+            $em->persist($attendee);
+            $em->persist($registration);
+            $em->flush();
+
+            $this->sendEmail($attendee, $context, $templateName, 'registration');
+
+            $this->addFlash('success', "You successfully signed up!");
+            $context['form'] = $this->getEmptyRegistraionForm($eventType)->createView();
         }
 
         return $this->render($template, $context);
