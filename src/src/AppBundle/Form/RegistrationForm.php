@@ -22,11 +22,11 @@ class RegistrationForm extends AbstractType
                 'choices' => $options['data']['events'],
             ))
             ->add('subscribed', CheckboxType::class, array(
-                'label'    => 'Subscribe to our newsletter?',
+                'label' => 'Subscribe to our newsletter?',
                 'required' => false,
             ))
             ->add('agree_with_conditions', CheckboxType::class, array(
-                    'label'    => 'Do you agree with processing your data?',
+                    'label' => 'Do you agree with processing your data?',
                     'required' => true,
             ))
             ->add('save', SubmitType::class, array('label' => 'Save'))

@@ -240,4 +240,11 @@ class Event extends BaseEntity
      * @ORM\OneToMany(targetEntity="Registration", mappedBy="events")
      */
     private $registrations;
+
+    public function didRegistrationStart()
+    {
+        $now = new \DateTime('now');
+
+        return $this->getRegistrationStart() < $now;
+    }
 }

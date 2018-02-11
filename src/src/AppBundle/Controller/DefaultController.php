@@ -87,21 +87,22 @@ class DefaultController extends EmailController
             $attendee = $em->getRepository(Attendee::class)->findOneBy(array('email' => $email));
             if ($attendee) {
                 $attendeeRegistratedForEvent = $em->getRepository(Registration::class)->findOneBy(
-                                                        ['attendee'=> $attendee, 'events' => $event]);
+                                                        ['attendee' => $attendee, 'events' => $event]);
                 if ($attendeeRegistratedForEvent) { // attendee already registered for event
                     $form->get('email')->addError(new FormError($context['lang']['already_registered']));
                     $context['form'] = $form->createView();
+
                     return $this->render($template, $context);
                 }
-
             }
 
             $registration->setEvents($event);
 
             //checking capacity
-            $registratedPeople = $em->getRepository(Registration::class)->findBy(['events'=> $event]);
+            $registratedPeople = $em->getRepository(Registration::class)->findBy(['events' => $event]);
             if ($event->getCapacity() <= count($registratedPeople)) {
                 $this->addFlash('error', $context['lang']['capacity_full']);
+
                 return $this->render($template, $context);
             }
 
@@ -110,14 +111,14 @@ class DefaultController extends EmailController
             $now = new \DateTime('now');
             if ($registrationEnd < $now) {
                 $this->addFlash('error', $context['lang']['registration_closed']);
+
                 return $this->render($template, $context);
             }
 
             //checking registration start
-            $registrationStart = $event->getRegistrationStart();
-            $now = new \DateTime('now');
-            if ($registrationStart > $now) {
+            if (!$event->didRegistrationStart()) {
                 $this->addFlash('error', $context['lang']['registration_not_opened_yet']);
+
                 return $this->render($template, $context);
             }
 
@@ -152,7 +153,10 @@ class DefaultController extends EmailController
         $events = $eventType->getEvents();
         $eventOptions = [];
         foreach ($events as $event) {
-            $eventOptions[$event->getAddress()] = $event->getId();
+            //filtering those events, which registration's already started
+            if ($event->didRegistrationStart()) {
+                $eventOptions[$event->getAddress()] = $event->getId();
+            }
         }
 
         $defaultData = array('first_name' => '', 'last_name' => '', 'email' => '', 'events' => $eventOptions);
