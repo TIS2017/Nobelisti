@@ -99,13 +99,19 @@ class DefaultController extends EmailController
 
             //checking capacity
             $registratedPeople = $em->getRepository(Registration::class)->findBy(['events'=> $event]);
-            $this->addFlash('info', count($registratedPeople));
             if ($event->getCapacity() <= count($registratedPeople)) {
                 $this->addFlash('error', "Sorry, capacity is full for this event.");
                 return $this->render($template, $context);
             }
 
             //checking registration end
+            $registrationEnd = $event->getRegistrationEnd();
+            $now = new \DateTime('now');
+            if ($registrationEnd < $now) {
+                $this->addFlash('error', "Sorry, registration for this event is already closed.");
+                return $this->render($template, $context);
+            }
+
 
             if (!$attendee) {
                 $attendee = new Attendee();
