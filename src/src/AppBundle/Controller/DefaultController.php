@@ -112,6 +112,13 @@ class DefaultController extends EmailController
                 return $this->render($template, $context);
             }
 
+            //checking registration start
+            $registrationStart = $event->getRegistrationStart();
+            $now = new \DateTime('now');
+            if ($registrationStart > $now) {
+                $this->addFlash('error', $context['lang']['registration_not_opened_yet']);
+                return $this->render($template, $context);
+            }
 
             if (!$attendee) {
                 $attendee = new Attendee();
