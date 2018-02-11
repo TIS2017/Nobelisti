@@ -22,7 +22,7 @@ class EmailController extends CustomTemplateController
         return $this->getArrayFromYaml($emailPath, $context);
     }
 
-    protected function sendEmail(Attendee $attendee, array $context, String $templateName, String $emailType)
+    public function sendEmail($attendee, array $context, String $templateName, String $emailType)
     {
         $plain = $this->renderToString($templateName, 'emails/'.$emailType.'.txt.twig', $context);
         $html = $this->renderToString($templateName, 'emails/'.$emailType.'.html.twig', $context);
