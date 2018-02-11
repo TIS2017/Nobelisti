@@ -16,6 +16,9 @@ class AssetRoutingExtension extends RoutingExtension
 
     public function getCSS($templateName, $assetName)
     {
+        if (!is_string($templateName)) {
+            $templateName = $templateName->getTemplate();
+        }
         $cssPath = $this->getPath('get_css', array('templateName' => $templateName, 'assetName' => $assetName), true);
 
         return '<link href="'.$cssPath.'" rel="stylesheet" />';
@@ -23,6 +26,9 @@ class AssetRoutingExtension extends RoutingExtension
 
     public function getJS($templateName, $assetName)
     {
+        if (!is_string($templateName)) {
+            $templateName = $templateName->getTemplate();
+        }
         $jsPath = $this->getPath('get_js', array('templateName' => $templateName, 'assetName' => $assetName), true);
 
         return '<script type="text/javascript" src="'.$jsPath.'"></script>';

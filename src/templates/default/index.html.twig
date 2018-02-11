@@ -1,7 +1,7 @@
 {% extends 'base.html.twig'|extendable(event_type) %}
 
 {% block head %}
-    {{ getCSS('default') }}
+    {{ getCSS(event_type, 'styles') }}
 {% endblock %}
 
 {% block content %}
