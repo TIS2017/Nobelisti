@@ -72,7 +72,7 @@ class EventTypeController extends Controller
 
         $languages = $eventType->getLanguages();
 
-        $form = $this->createForm(EventTypeForm::class, $eventType);
+        $form = $this->createForm(EventTypeForm::class, $eventType, ['read_only_slug' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

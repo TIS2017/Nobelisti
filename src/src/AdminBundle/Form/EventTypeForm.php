@@ -18,8 +18,8 @@ class EventTypeForm extends AbstractType
         $builder
             ->add('slug', TextType::class, array(
                 'attr' => array(
-                    'readonly' => true,
-                )
+                    'readonly' => $options['read_only_slug'],
+                ),
             ))
             ->add('template', ChoiceType::class, array(
                 'choices' => CustomTemplateController::getTemplateNamesForForm(),
@@ -32,6 +32,7 @@ class EventTypeForm extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => EventType::class,
+            'read_only_slug' => false,
         ));
     }
 }
