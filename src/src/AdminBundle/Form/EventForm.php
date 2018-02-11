@@ -23,6 +23,7 @@ class EventForm extends AbstractType
             ->add('date_time', DateTimeType::class)
             ->add('notification_threshold', IntegerType::class)
             ->add('capacity', NumberType::class)
+            ->add('registration_start', DateTimeType::class)
             ->add('registration_end', DateTimeType::class)
             ->add('template_override', ChoiceType::class, array(
                 'choices' => CustomTemplateController::getTemplateNamesForForm(),
