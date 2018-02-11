@@ -35,6 +35,7 @@ class EventType extends BaseEntity
      * @ORM\Column(name="slug", type="string", length=50)
      * @Assert\Regex("/^[a-zA-Z0-9\-]+$/", message="Slug can contain only alphanumerical characters and a hyphen")
      * @Assert\Regex("/^admin$/", match=false, message="Slug can not be admin")
+     * @Assert\Regex("/^confirmation/", match=false, message="Slug can not be confirmation")
      */
     private $slug;
 
