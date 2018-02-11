@@ -33,10 +33,10 @@ class UnsubscribeController extends EmailController
         $context['lang'] = $languageContext;
         $template = self::getTemplate($templateName, 'unsubscribe.html.twig');
 
-        if (1 == $attendee->getUnsubscribed()) {
+        if ($attendee->getUnsubscribed()) {
             $this->addFlash('warning', $context['lang']['already_unsubscribed']);
         } else {
-            $attendee->setUnsubscribed(1);
+            $attendee->setUnsubscribed(true);
             $em->persist($attendee);
             $em->flush();
 
