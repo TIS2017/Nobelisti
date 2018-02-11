@@ -4,7 +4,6 @@ namespace EmailBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 use AdminBundle\Entity\Event;
 use EmailBundle\Controller\EmailController;
@@ -29,8 +28,9 @@ class SendAttendeeReminderCommand extends ContainerAwareCommand
         }
     }
 
-    private function sendNotificationForEvent($event, $controller){
-        echo "For address ".$event->getAddress() ."\n";
+    private function sendNotificationForEvent($event, $controller)
+    {
+        echo 'For address '.$event->getAddress()."\n";
         echo "--------------------\n";
 
         $registrations = $event->getRegistrations();
@@ -38,15 +38,16 @@ class SendAttendeeReminderCommand extends ContainerAwareCommand
             $attendee = $registration->getAttendee();
             $context = $this->getContextForNotificationEmail($event, $attendee, $controller);
 
-            $controller->sendEmail($attendee, $context, $event->getTemplateOverride(), "reminder");
+            $controller->sendEmail($attendee, $context, $event->getTemplateOverride(), 'reminder');
 
-            echo "Sent to ".$attendee->getEmail()."\n";
+            echo 'Sent to '.$attendee->getEmail()."\n";
         }
 
         echo "\n";
     }
 
-    private function getContextForNotificationEmail($event, $attendee, $controller) {
+    private function getContextForNotificationEmail($event, $attendee, $controller)
+    {
         $context = [
             'event' => $event,
             'event_type' => $event->getEventType(),
