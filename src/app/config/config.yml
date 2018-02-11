@@ -70,6 +70,9 @@ doctrine:
                     softdeleteable:
                         class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
                         enabled: true
+                dql:
+                    numeric_functions:
+                        dayofyear: Oro\ORM\Query\AST\Functions\SimpleFunction
 
 # Swiftmailer Configuration
 swiftmailer:

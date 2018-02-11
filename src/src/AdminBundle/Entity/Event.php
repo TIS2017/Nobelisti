@@ -214,6 +214,14 @@ class Event extends BaseEntity
     private $languages;
 
     /**
+     * @return mixed
+     */
+    public function getRegistrations()
+    {
+        return $this->registrations;
+    }
+
+    /**
      * @ORM\OneToMany(targetEntity="Registration", mappedBy="events")
      */
     private $registrations;
