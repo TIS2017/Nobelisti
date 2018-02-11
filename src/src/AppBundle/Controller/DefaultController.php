@@ -82,6 +82,7 @@ class DefaultController extends EmailController
             $firstName = $form->getData()['first_name'];
             $lastName = $form->getData()['last_name'];
             $event = $em->getRepository(Event::class)->find($form->getData()['event_choice']);
+            $unsubscribed = !$form->getData()['subscribed'];
 
             $attendee = $em->getRepository(Attendee::class)->findOneBy(array('email' => $email));
             if ($attendee) {
@@ -127,6 +128,7 @@ class DefaultController extends EmailController
             $attendee->setFirstName($firstName);
             $attendee->setlastName($lastName);
             $attendee->setLanguages($attendeeLanguage);
+            $attendee->setUnsubscribed($unsubscribed);
             $registration->setAttendee($attendee);
 
             $context['attendee'] = $attendee;
