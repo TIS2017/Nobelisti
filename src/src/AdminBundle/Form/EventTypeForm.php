@@ -16,7 +16,11 @@ class EventTypeForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('slug', TextType::class)
+            ->add('slug', TextType::class, array(
+                'attr' => array(
+                    'readonly' => true,
+                )
+            ))
             ->add('template', ChoiceType::class, array(
                 'choices' => CustomTemplateController::getTemplateNamesForForm(),
             ))
