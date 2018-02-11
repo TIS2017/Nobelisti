@@ -14,7 +14,9 @@ class EventRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->_em->createQueryBuilder('e');
         $qb->select('e')
             ->from('AdminBundle:Event', 'e')
-            ->where('DATE_ADD(NOW(), INTERVAL e.notification_threshold DAYS >= e.date_time');
+            ->where('DAYOFYEAR(:current) = DAYOFYEAR(e.dateTime)')
+            ->setParameter('current', new \DateTime('+1 day'), \Doctrine\DBAL\Types\Type::DATETIME);
+            //TODO: Pouziva presne zadany +1, treba prerobit na notification_threshold
 
         return $qb->getQuery()->getResult();
     }

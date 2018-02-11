@@ -1,6 +1,6 @@
 <?php
 
-namespace AdminBundle\Command;
+namespace EmailBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use AdminBundle\Entity\Event;
 use EmailBundle\Controller\EmailController;
 
-class SendNotificationEmailsCommand extends ContainerAwareCommand
+class SendAttendeeReminderCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
@@ -36,7 +36,7 @@ class SendNotificationEmailsCommand extends ContainerAwareCommand
         $registrations = $event->getRegistrations();
         foreach ($registrations as $registration) {
             $attendee = $registration->getAttendee();
-            $context = $this->getContextForNotificationEmail($event, $attendee);
+            $context = $this->getContextForNotificationEmail($event, $attendee, $controller);
 
             $controller->sendEmail($attendee, $context, $event->getTemplateOverride(), "reminder");
 
@@ -46,17 +46,18 @@ class SendNotificationEmailsCommand extends ContainerAwareCommand
         echo "\n";
     }
 
-    private function getContextForNotificationEmail($event, $attendee) {
+    private function getContextForNotificationEmail($event, $attendee, $controller) {
         $context = [
             'event' => $event,
             'event_type' => $event->getEventType(),
-            'attendee' => $attendee,
         ];
 
         $languageCode = $attendee->getLanguages()->getCode();
-        $languageContext = EmailController::getLanguageFile($event-getTemplateOverride(), $languageCode, $context);
+        // Warning: file_get_contents(../templates/template1/languages/en_US.yaml.twig): failed to open stream: No such file or directory
+        $languageContext = $controller->getLanguageFile($event->getTemplateOverride(), $languageCode, $context);
 
         $context['lang'] = $languageContext;
+        $context['attendee'] = $attendee;
 
         return $context;
     }
