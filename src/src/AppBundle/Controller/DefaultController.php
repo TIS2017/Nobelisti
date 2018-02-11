@@ -90,6 +90,7 @@ class DefaultController extends EmailController
             $firstName = $form->getData()['first_name'];
             $lastName = $form->getData()['last_name'];
             $event = $em->getRepository(Event::class)->find($form->getData()['event_choice']);
+            $unsubscribed = !$form->getData()['subscribed'];
 
             $attendee = $em->getRepository(Attendee::class)->findOneBy(array('email' => $email));
             if ($attendee) {
@@ -122,6 +123,13 @@ class DefaultController extends EmailController
                 return $this->render($template, $context);
             }
 
+            //checking registration start
+            if (!$event->didRegistrationStart()) {
+                $this->addFlash('error', $context['lang']['registration_not_opened_yet']);
+
+                return $this->render($template, $context);
+            }
+
             if (!$attendee) {
                 $attendee = new Attendee();
                 $attendee->setEmail($email);
@@ -129,6 +137,7 @@ class DefaultController extends EmailController
             $attendee->setFirstName($firstName);
             $attendee->setlastName($lastName);
             $attendee->setLanguages($attendeeLanguage);
+            $attendee->setUnsubscribed($unsubscribed);
             $registration->setAttendee($attendee);
 
             $context['attendee'] = $attendee;
@@ -140,7 +149,7 @@ class DefaultController extends EmailController
 
             $this->sendEmail($attendee, $context, $templateName, 'registration');
 
-            $this->addFlash('success', 'You successfully signed up!');
+            $this->addFlash('success', $context['lang']['registration_success']);
             $context['form'] = $this->getEmptyRegistraionForm($eventType)->createView();
         }
 
@@ -152,7 +161,10 @@ class DefaultController extends EmailController
         $events = $eventType->getEvents();
         $eventOptions = [];
         foreach ($events as $event) {
-            $eventOptions[$event->getAddress()] = $event->getId();
+            //filtering those events, which registration's already started
+            if ($event->didRegistrationStart()) {
+                $eventOptions[$event->getAddress()] = $event->getId();
+            }
         }
 
         $defaultData = array('first_name' => '', 'last_name' => '', 'email' => '', 'events' => $eventOptions);

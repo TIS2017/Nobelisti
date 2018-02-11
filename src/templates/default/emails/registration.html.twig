@@ -5,3 +5,8 @@ you signed up!
 Please confirm your registration
 <a href="{{ absolute_url(path('confirm_registration', {'token': registration.confirmationToken})) }}">here</a>.
 </p>
+
+<p>
+You can unsubscribe from mailing list
+<a href="{{ absolute_url(path('unsubscribe_mailinglist', {'token': registration.confirmationToken})) }}">here</a>.
+</p>

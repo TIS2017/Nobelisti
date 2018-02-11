@@ -53,6 +53,29 @@ class Event extends BaseEntity
     private $registrationEnd;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="registration_start", type="datetime")
+     */
+    private $registrationStart;
+
+    /**
+     * @return mixed
+     */
+    public function getRegistrationStart()
+    {
+        return $this->registrationStart;
+    }
+
+    /**
+     * @param mixed $registrationStart
+     */
+    public function setRegistrationStart($registrationStart)
+    {
+        $this->registrationStart = $registrationStart;
+    }
+
+    /**
      * @ORM\Column(name="capacity", type="integer")
      */
     private $capacity;
@@ -214,7 +237,22 @@ class Event extends BaseEntity
     private $languages;
 
     /**
+     * @return mixed
+     */
+    public function getRegistrations()
+    {
+        return $this->registrations;
+    }
+
+    /**
      * @ORM\OneToMany(targetEntity="Registration", mappedBy="events")
      */
     private $registrations;
+
+    public function didRegistrationStart()
+    {
+        $now = new \DateTime('now');
+
+        return $this->getRegistrationStart() < $now;
+    }
 }
