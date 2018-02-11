@@ -7,6 +7,7 @@ use AdminBundle\Entity\EventType;
 use AdminBundle\Entity\EventTypeLanguages;
 use AdminBundle\Entity\Language;
 use AdminBundle\Form\EventTypeForm;
+use AdminBundle\Form\EmailTestForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -89,6 +90,8 @@ class EventTypeController extends Controller
             $testUrls[] = $this->generateUrl('test_event', array_merge(array('state' => 'registration_no_capacity'), $basicParameters));
         }
 
+        $emailTestForm = $this->createForm(EmailTestForm::class);
+
         $languageNames = array_map(function ($l) { return $l->getLanguage(); }, $languages->toArray());
 
         $repository = $this->getDoctrine()->getRepository(Event::class);
@@ -98,6 +101,7 @@ class EventTypeController extends Controller
         return $this->render('AdminBundle:EventType:edit.html.twig', array(
             'form' => $form->createView(),
             'testUrls' => $testUrls,
+            'emailTestForm' => $emailTestForm->createView(),
             'languages' => $languageNames,
             'notFoundLanguages' => $notFoundLanguages,
             'modal_input_languages' => self::$modalInputLanguages,

@@ -1,0 +1,3 @@
+Hi <strong>{{ attendee.firstName }}</strong>,<br>
+a new wonderful event is coming up at a location near you.<br>
+To sign up, click <a href="{{ absolute_url(path('frontend_index', {slug: event_type.getSlug, _locale: lang_code})) }}">here!</a>

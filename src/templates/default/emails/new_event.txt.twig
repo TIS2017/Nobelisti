@@ -1,0 +1,3 @@
+Hi {{ attendee.firstName }},
+a new wonderful event is coming up at a location near you.
+To sign up, go here: {{ absolute_url(path('frontend_index', {slug: event_type.slug, _locale: lang_code})) }}
