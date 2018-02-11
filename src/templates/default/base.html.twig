@@ -6,6 +6,11 @@
     <style>{% include 'css/styles.css'|extendable(event_type) %}</style>
 </head>
 <body>
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <em>{{ label }}</em>: {{ message }}<br>
+        {% endfor %}
+    {% endfor %}
     {% block content %}{% endblock %}
 </body>
 </html>

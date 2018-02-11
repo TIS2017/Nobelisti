@@ -1,2 +1,4 @@
 Hi {{ attendee.firstName }},
 you signed up!
+
+Please confirm your registration at {{ absolute_url(path('confirm_registration', {'token': registration.confirmationToken})) }} .

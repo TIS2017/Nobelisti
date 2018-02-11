@@ -37,10 +37,9 @@ class Registration extends BaseEntity
     private $code;
 
     /**
-     * @var int
+     * @var \DateTime
      *
-     * @ORM\Column(name="confirmed", type="datetime")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="confirmed", type="datetime", nullable=true)
      */
     private $confirmed;
 
@@ -107,11 +106,11 @@ class Registration extends BaseEntity
     /**
      * Set the value of confirmed.
      *
-     * @param int $confirmed
+     * @param \DateTime $confirmed
      *
      * @return self
      */
-    public function setConfirmed(int $confirmed)
+    public function setConfirmed(\DateTime $confirmed)
     {
         $this->confirmed = $confirmed;
 
@@ -121,7 +120,7 @@ class Registration extends BaseEntity
     /**
      * Get the value of confirmed.
      *
-     * @return int
+     * @return \DateTime
      */
     public function getConfirmed()
     {

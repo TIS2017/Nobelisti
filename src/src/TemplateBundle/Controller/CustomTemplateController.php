@@ -93,4 +93,9 @@ class CustomTemplateController extends Controller
 
         return $this->getArrayFromYaml($languagesPath, $context);
     }
+
+    public function existsLanguageFile($templateName, $language) {
+        $path = self::buildLanguagePath($templateName, $language);
+        return file_exists($path);
+    }
 }
