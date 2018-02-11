@@ -3,8 +3,16 @@ admin:
     type:     annotation
     prefix:   /admin
 
-app:
-    resource: '@AppBundle/Controller/'
+app_unsubscribe:
+    resource: "@AppBundle/Controller/UnsubscribeController.php"
+    type: annotation
+    
+app_confirm:
+    resource: "@AppBundle/Controller/ConfirmRegistrationController.php"
+    type: annotation
+
+app_default:
+    resource: "@AppBundle/Controller/DefaultController.php"
     type: annotation
 
 template:
