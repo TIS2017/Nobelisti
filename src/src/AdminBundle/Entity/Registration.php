@@ -210,4 +210,12 @@ class Registration extends BaseEntity
 
         return $this;
     }
+
+    public function canBeConfirmedNow()
+    {
+        $now = new \DateTime('now');
+        $diff = $now->getTimestamp() - $this->created->getTimestamp();
+
+        return $diff <= 60 * 60 * 24;
+    }
 }

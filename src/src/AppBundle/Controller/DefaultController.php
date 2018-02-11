@@ -13,7 +13,6 @@ use EmailBundle\Controller\EmailController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use \Datetime;
 
 class DefaultController extends EmailController
 {
@@ -42,32 +41,28 @@ class DefaultController extends EmailController
                 ['code' => $_locale]
             );
 
-            if ($attendeeLanguage == null) {
-                return $this->redirectToRoute('frontend_index', ['slug'=> $slug, '_locale' => 'en_US']);
+            if (null == $attendeeLanguage) {
+                return $this->redirectToRoute('frontend_index', ['slug' => $slug, '_locale' => 'en_US']);
             }
 
             $form = $this->getEmptyRegistraionForm($eventType);
             $form->handleRequest($request);
             $templateName = $eventType->getTemplate();
             // check language is enabled for this $eventType
-            if (! self::existsLanguageFile($templateName, $language)) {
-                return $this->redirectToRoute('frontend_index', ['slug'=> $slug, '_locale' => 'en_US']);
+            if (!self::existsLanguageFile($templateName, $language)) {
+                return $this->redirectToRoute('frontend_index', ['slug' => $slug, '_locale' => 'en_US']);
             }
-
-
         }
 
         $em = $this->getDoctrine()->getManager();
 
         $attendee = new Attendee();
         $registration = new Registration();
-        $token = md5(time() . rand()); //TODO
+        $token = md5(time().rand()); //TODO
         $registration->setAttendee($attendee);
         $registration->setConfirmationToken($token);
         $registration->setCode(9); // TODO
         $registration->setLanguages($attendeeLanguage);
-        $date = new \DateTime('now');
-        $registration->setConfirmed($date); // TODO migracia
 
         $form = $this->getEmptyRegistraionForm($eventType);
         $form->handleRequest($request);
@@ -97,15 +92,15 @@ class DefaultController extends EmailController
                 $form->get('email')->addError(new FormError('Attendee already exists.'));
                 $context['form'] = $form->createView();
             } else {
-
                 $event = $em->getRepository(Event::class)->find($form->getData()['event_choice']);
                 $registration->setEvents($event);
 
                 //todo check capacity
-                $countOfRegistratedPeople = $em->getRepository(Registration::class)->findBy(['events'=> $event]);
+                $countOfRegistratedPeople = $em->getRepository(Registration::class)->findBy(['events' => $event]);
 
                 if ($event->getCapacity() <= $countOfRegistratedPeople) {
-                    $this->addFlash('error', "Sorry, capacity is full for this event.");
+                    $this->addFlash('error', 'Sorry, capacity is full for this event.');
+
                     return $this->render($template, $context);
                 }
 
@@ -123,7 +118,7 @@ class DefaultController extends EmailController
 
                 $this->sendEmail($attendee, $context, $templateName, 'registration');
 
-                $this->addFlash('success', "You successfully signed up!");
+                $this->addFlash('success', 'You successfully signed up!');
                 $context['form'] = $this->getEmptyRegistraionForm($eventType)->createView();
             }
         }
@@ -131,10 +126,11 @@ class DefaultController extends EmailController
         return $this->render($template, $context);
     }
 
-    private function getEmptyRegistraionForm($eventType){
+    private function getEmptyRegistraionForm($eventType)
+    {
         $events = $eventType->getEvents();
         $eventOptions = [];
-        foreach($events as $event) {
+        foreach ($events as $event) {
             $eventOptions[$event->getAddress()] = $event->getId();
         }
 
