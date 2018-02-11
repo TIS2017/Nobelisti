@@ -1,2 +1,4 @@
 Hi {{ attendee.firstName }},
 don't forget you have an event coming up in less than {{ event.getNotificationThreshold }} days at {{ event.getAddress }}
+
+You can unsubscribe from mailing list {{ absolute_url(path('unsubscribe_mailinglist', {'token': registration.confirmationToken})) }} .

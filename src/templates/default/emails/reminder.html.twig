@@ -1,2 +1,7 @@
 Hi <strong>{{ attendee.firstName }}</strong>,<br>
 don't forget you have an event coming up in less than {{ event.getNotificationThreshold }} days at {{ event.getAddress }}
+
+<p>
+You can unsubscribe from mailing list
+<a href="{{ absolute_url(path('unsubscribe_mailinglist', {'token': registration.confirmationToken})) }}">here</a>.
+</p>
