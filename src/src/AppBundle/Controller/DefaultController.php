@@ -27,7 +27,7 @@ class DefaultController extends EmailController
         );
 
         if (!$eventType) {
-            throw $this->createNotFoundException('No event type found for slug '.$slug);
+            throw $this->createNotFoundException('No event type found for slug'.$slug);
         }
 
         if ('DEFAULT' === $_locale) { // select a default language or something
@@ -88,7 +88,7 @@ class DefaultController extends EmailController
                 $attendeeRegistratedForEvent = $em->getRepository(Registration::class)->findOneBy(
                                                         ['attendee'=> $attendee, 'events' => $event]);
                 if ($attendeeRegistratedForEvent) { // attendee already registered for event
-                    $form->get('email')->addError(new FormError('Attendee already registrated for that event.'));
+                    $form->get('email')->addError(new FormError($context['lang']['already_registered']));
                     $context['form'] = $form->createView();
                     return $this->render($template, $context);
                 }
@@ -100,7 +100,7 @@ class DefaultController extends EmailController
             //checking capacity
             $registratedPeople = $em->getRepository(Registration::class)->findBy(['events'=> $event]);
             if ($event->getCapacity() <= count($registratedPeople)) {
-                $this->addFlash('error', "Sorry, capacity is full for this event.");
+                $this->addFlash('error', $context['lang']['capacity_full']);
                 return $this->render($template, $context);
             }
 
@@ -108,7 +108,7 @@ class DefaultController extends EmailController
             $registrationEnd = $event->getRegistrationEnd();
             $now = new \DateTime('now');
             if ($registrationEnd < $now) {
-                $this->addFlash('error', "Sorry, registration for this event is already closed.");
+                $this->addFlash('error', $context['lang']['registration_closed']);
                 return $this->render($template, $context);
             }
 
