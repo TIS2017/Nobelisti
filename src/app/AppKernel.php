@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new AdminBundle\AdminBundle(),
             new EmailBundle\EmailBundle(),
             new TemplateBundle\TemplateBundle(),
+            new Evence\Bundle\SoftDeleteableExtensionBundle\EvenceSoftDeleteableExtensionBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

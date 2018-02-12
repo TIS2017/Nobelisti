@@ -38,7 +38,7 @@ class WebTestController extends CustomTemplateController
 
         $registration = new Registration();
         $registration->generateConfirmationToken();
-        $registration->setLanguages($lang);
+        $registration->setLanguage($lang);
 
         $form = $this->getEmptyRegistraionForm($eventType);
         $form->handleRequest($request);
@@ -62,7 +62,7 @@ class WebTestController extends CustomTemplateController
             $event = $em->getRepository(Event::class)->find($form->getData()['event_choice']);
             $unsubscribed = !$form->getData()['subscribed'];
 
-            $registration->setEvents($event);
+            $registration->setEvent($event);
 
             if ($state == 'registration_no_capacity') {
                 $this->addFlash('error', $context['lang']['capacity_full']);
@@ -86,7 +86,7 @@ class WebTestController extends CustomTemplateController
                 $attendee->setEmail($email);
                 $attendee->setFirstName($firstName);
                 $attendee->setlastName($lastName);
-                $attendee->setLanguages($lang);
+                $attendee->setLanguage($lang);
                 $attendee->setUnsubscribed($unsubscribed);
                 $registration->setAttendee($attendee);
                 $repositoryRegistration = $this->getDoctrine()->getRepository(Registration::class);

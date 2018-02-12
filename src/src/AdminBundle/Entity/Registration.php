@@ -5,6 +5,7 @@ namespace AdminBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Evence\Bundle\SoftDeleteableExtensionBundle\Mapping\Annotation as Evence;
 
 /**
  * Registration.
@@ -52,22 +53,25 @@ class Registration extends BaseEntity
     private $confirmationToken;
 
     /**
+     * @Evence\onSoftDelete(type="CASCADE")
      * @ORM\ManyToOne(targetEntity="Attendee", inversedBy="registrations")
-     * @ORM\JoinColumn(name="attendee_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="attendee_id", referencedColumnName="id", nullable=false)
      */
     private $attendee;
 
     /**
+     * @Evence\onSoftDelete(type="CASCADE")
      * @ORM\ManyToOne(targetEntity="Event", inversedBy="registrations")
-     * @ORM\JoinColumn(name="event_details_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", nullable=false)
      */
-    private $events;
+    private $event;
 
     /**
+     * @Evence\onSoftDelete(type="CASCADE")
      * @ORM\ManyToOne(targetEntity="Language", inversedBy="registrations")
-     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="language_id", referencedColumnName="id", nullable=false)
      */
-    private $languages;
+    private $language;
 
     /**
      * Get id.
@@ -184,9 +188,9 @@ class Registration extends BaseEntity
     /**
      * Get the value of eventDetails.
      */
-    public function getEvents()
+    public function getEvent()
     {
-        return $this->events;
+        return $this->event;
     }
 
     /**
@@ -194,9 +198,9 @@ class Registration extends BaseEntity
      *
      * @return self
      */
-    public function setEvents($events)
+    public function setEvent($event)
     {
-        $this->events = $events;
+        $this->event = $event;
 
         return $this;
     }
@@ -204,9 +208,9 @@ class Registration extends BaseEntity
     /**
      * Get the value of languages.
      */
-    public function getLanguages()
+    public function getLanguage()
     {
-        return $this->languages;
+        return $this->language;
     }
 
     /**
@@ -214,9 +218,9 @@ class Registration extends BaseEntity
      *
      * @return self
      */
-    public function setLanguages($languages)
+    public function setLanguage($language)
     {
-        $this->languages = $languages;
+        $this->language = $language;
 
         return $this;
     }

@@ -5,6 +5,7 @@ namespace AdminBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Evence\Bundle\SoftDeleteableExtensionBundle\Mapping\Annotation as Evence;
 
 /**
  * Attendee.
@@ -62,10 +63,11 @@ class Attendee extends BaseEntity
     private $email;
 
     /**
+     * @Evence\onSoftDelete(type="CASCADE")
      * @ORM\ManyToOne(targetEntity="Language", inversedBy="attendees")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
-    public $languages;
+    public $language;
 
     /**
      * @ORM\OneToMany(targetEntity="Registration", mappedBy="attendee")
@@ -165,9 +167,9 @@ class Attendee extends BaseEntity
     /**
      * Get the value of languages.
      */
-    public function getLanguages()
+    public function getLanguage()
     {
-        return $this->languages;
+        return $this->language;
     }
 
     /**
@@ -175,9 +177,9 @@ class Attendee extends BaseEntity
      *
      * @return self
      */
-    public function setLanguages($languages)
+    public function setLanguage($language)
     {
-        $this->languages = $languages;
+        $this->language = $language;
 
         return $this;
     }

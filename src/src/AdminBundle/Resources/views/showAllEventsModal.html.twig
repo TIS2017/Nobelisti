@@ -10,7 +10,7 @@
         <div class="modal-body">
             <div class="list-group">
                 {% for registration in modal_registrations %}
-                    <li class="list-group-item list-group-item-action">{{ registration.events.eventType.slug }}</li>
+                    <li class="list-group-item list-group-item-action">{{ registration.event.eventType.slug }}</li>
                 {% endfor %}
             </div>
         </div>

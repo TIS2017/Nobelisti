@@ -20,8 +20,8 @@ class ConfirmRegistrationController extends EmailController
             throw $this->createNotFoundException('Invalid registration token.');
         }
 
-        $language = $registration->getLanguages();
-        $eventType = $registration->getEvents()->getEventType();
+        $language = $registration->getLanguage();
+        $eventType = $registration->getEvent()->getEventType();
         $context = ['event_type' => $eventType];
         $templateName = $eventType->getTemplate();
 

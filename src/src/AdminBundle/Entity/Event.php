@@ -3,6 +3,7 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Evence\Bundle\SoftDeleteableExtensionBundle\Mapping\Annotation as Evence;
 
 /**
  * Event.
@@ -205,8 +206,9 @@ class Event extends BaseEntity
     }
 
     /**
+     * @Evence\onSoftDelete(type="CASCADE")
      * @ORM\ManyToOne(targetEntity="EventType", inversedBy="events")
-     * @ORM\JoinColumn(name="event_type_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="event_type_id", referencedColumnName="id", nullable=false)
      */
     private $eventType;
 
@@ -245,7 +247,7 @@ class Event extends BaseEntity
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="Registration", mappedBy="events")
+     * @ORM\OneToMany(targetEntity="Registration", mappedBy="event")
      */
     private $registrations;
 

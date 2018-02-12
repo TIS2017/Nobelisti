@@ -78,7 +78,7 @@ class EmailTestController extends EmailController
         $templateName = $event == null ? $eventType->getTemplate() : $event->getTemplateOverride();
         $eventId = $event == null ? null : $event->getId();
 
-        $languageCode = $attendee->getLanguages()->getCode();
+        $languageCode = $attendee->getLanguage()->getCode();
         $languageContext = self::getLanguageFile($templateName, $languageCode, $context);
 
         $context['attendee'] = $attendee;
@@ -106,7 +106,7 @@ class EmailTestController extends EmailController
         $attendee->setEmail($email);
         $attendee->setFirstName($firstName);
         $attendee->setLastName($lastName);
-        $attendee->setLanguages($language);
+        $attendee->setLanguage($language);
 
         return $attendee;
     }
