@@ -67,7 +67,6 @@ class DefaultController extends EmailController
         $registration = new Registration();
         $token = md5(time().rand());
         $registration->setConfirmationToken($token);
-        $registration->setCode(9); // TODO
         $registration->setLanguages($attendeeLanguage);
 
         $form = $this->getEmptyRegistraionForm($eventType);
@@ -139,6 +138,9 @@ class DefaultController extends EmailController
             $attendee->setLanguages($attendeeLanguage);
             $attendee->setUnsubscribed($unsubscribed);
             $registration->setAttendee($attendee);
+            $repositoryRegistration = $this->getDoctrine()->getRepository(Registration::class);
+            $code = $repositoryRegistration->generateCodeForEvent($event->getId());
+            $registration->setCode($code);
 
             $context['attendee'] = $attendee;
             $context['registration'] = $registration;

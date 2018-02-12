@@ -46,7 +46,7 @@ class Registration extends BaseEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="confirmation_token", type="string", length=50)
+     * @ORM\Column(name="confirmation_token", type="string", length=50, unique=true)
      * @Assert\NotBlank()
      */
     private $confirmationToken;
