@@ -1,5 +1,6 @@
 body {
     padding-top: 5rem;
+    padding-bottom: 3rem;
 }
 .starter-template {
     padding: 3rem 1.5rem;
@@ -52,4 +53,8 @@ form label {
 .modal-body{
     max-height: 60vh;
     overflow-y: auto;
+}
+
+.btn-primary {
+    margin-bottom: 8px;
 }
