@@ -38,7 +38,7 @@ class SendRegistrationOpenCommand extends ContainerAwareCommand
         foreach ($attendees as $attendee) {
             $context = $this->getContextForNotificationEmail($event, $attendee, $controller);
 
-            $controller->sendEmail($attendee, $context, $event->getTemplateOverride(), 'new_event');
+            $controller->sendEmail($attendee, $context, $event->getTemplateOverride(), 'new_event', $event->getId(), $event->getEventType()->getId());
 
             echo 'Sent to '.$attendee->getEmail()."\n";
         }
