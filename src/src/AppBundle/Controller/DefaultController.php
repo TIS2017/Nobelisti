@@ -17,6 +17,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class DefaultController extends EmailController
 {
     /**
+     * @Route("/", name="open_page")
+     */
+    public function openPageAction()
+    {
+        return $this->render('AppBundle::open_page.html.twig');
+    }
+
+    /**
      * @Route("/{slug}/{_locale}", name="frontend_index", defaults={"_locale": "DEFAULT"})
      * @Method({"GET", "POST"})
      */
