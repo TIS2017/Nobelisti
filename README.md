@@ -69,6 +69,8 @@ The following commands fro sending emails are available:
 
 Setting up CRON tasks has to be done manually, either using CRON externally or using the CRON package avialble here: https://github.com/Cron/Cron
 
+The commands **have** to be executed from the bin folder.
+
 To install and setup, just follow the provided instructions on the CRON github page.
 
 ## Running the tests
