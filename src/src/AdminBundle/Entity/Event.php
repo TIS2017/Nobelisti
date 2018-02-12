@@ -3,6 +3,7 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Evence\Bundle\SoftDeleteableExtensionBundle\Mapping\Annotation as Evence;
 
 /**
  * Event.
@@ -205,12 +206,14 @@ class Event extends BaseEntity
     }
 
     /**
+     * @Evence\onSoftDelete(type="CASCADE")
      * @ORM\ManyToOne(targetEntity="EventType", inversedBy="events")
-     * @ORM\JoinColumn(name="event_type_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="event_type_id", referencedColumnName="id", nullable=false)
      */
     private $eventType;
 
     /**
+     * --sem to nejde asi?
      * @ORM\OneToMany(targetEntity="EventOrganizers", mappedBy="event")
      */
     private $organizers;
@@ -232,6 +235,7 @@ class Event extends BaseEntity
     }
 
     /**
+     * --podla mna to sem tiez nejde
      * @ORM\OneToMany(targetEntity="EventLanguages", mappedBy="event")
      */
     private $languages;
@@ -245,7 +249,8 @@ class Event extends BaseEntity
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="Registration", mappedBy="events")
+     * --tuto to podla mna nejde, lebo ked zmazem registration, tak nebudem mazat event, nie?
+     * @ORM\OneToMany(targetEntity="Registration", mappedBy="event")
      */
     private $registrations;
 

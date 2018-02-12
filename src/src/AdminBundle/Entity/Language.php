@@ -5,6 +5,7 @@ namespace AdminBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Evence\Bundle\SoftDeleteableExtensionBundle\Mapping\Annotation as Evence;
 
 /**
  * Language.
@@ -152,7 +153,7 @@ class Language extends BaseEntity
     private $eventTypes;
 
     /**
-     * @ORM\OneToMany(targetEntity="Registration", mappedBy="languages")
+     * @ORM\OneToMany(targetEntity="Registration", mappedBy="language")
      */
     private $registrations;
 

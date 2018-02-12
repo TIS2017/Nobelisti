@@ -4,6 +4,7 @@ namespace AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Evence\Bundle\SoftDeleteableExtensionBundle\Mapping\Annotation as Evence;
 
 /**
  * EventLanguages.
@@ -69,12 +70,14 @@ class EventLanguages extends BaseEntity
     }
 
     /**
+     * @Evence\onSoftDelete(type="CASCADE")
      * @ORM\ManyToOne(targetEntity="Event", inversedBy="languages")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id", nullable=false)
      */
     private $event;
 
     /**
+     * @Evence\onSoftDelete(type="CASCADE")
      * @ORM\ManyToOne(targetEntity="Language", inversedBy="events")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id", nullable=false)
      */

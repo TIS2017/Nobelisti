@@ -4,6 +4,7 @@ namespace AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Evence\Bundle\SoftDeleteableExtensionBundle\Mapping\Annotation as Evence;
 
 /**
  * EventOrganizers.
@@ -37,6 +38,7 @@ class EventOrganizers extends BaseEntity
     }
 
     /**
+     * @Evence\onSoftDelete(type="CASCADE")
      * @ORM\ManyToOne(targetEntity="Event", inversedBy="organizers")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id", nullable=false)
      */
@@ -75,6 +77,7 @@ class EventOrganizers extends BaseEntity
     }
 
     /**
+     * @Evence\onSoftDelete(type="CASCADE")
      * @ORM\ManyToOne(targetEntity="Organizer", inversedBy="events")
      * @ORM\JoinColumn(name="organizer_id", referencedColumnName="id", nullable=false)
      */
