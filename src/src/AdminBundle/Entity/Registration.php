@@ -11,7 +11,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Table(name="registration")
  * @ORM\Entity(repositoryClass="AdminBundle\Repository\RegistrationRepository")
- * @UniqueEntity("confirmationToken")
  * @UniqueEntity(
  *     fields={"deleted", "confirmationToken"},
  *     errorPath="confirmationToken",
