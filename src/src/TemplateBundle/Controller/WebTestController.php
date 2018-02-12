@@ -5,6 +5,7 @@ namespace TemplateBundle\Controller;
 use AdminBundle\Entity\EventType;
 use AdminBundle\Entity\Event;
 use AdminBundle\Entity\Attendee;
+use AdminBundle\Entity\Registration;
 use AppBundle\Form\RegistrationForm;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -14,7 +15,7 @@ class WebTestController extends CustomTemplateController
 {
     /**
      * @Route("/test/{eventSlug}/web", name="test_event")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      */
     public function testEventAction($eventSlug, Request $request)
     {
@@ -33,25 +34,72 @@ class WebTestController extends CustomTemplateController
 
         $attendee = new Attendee();
 
-        $form = $this->createForm(RegistrationForm::class, $attendee);
+        $em = $this->getDoctrine()->getManager();
+
+        $registration = new Registration();
+        $registration->generateConfirmationToken();
+        $registration->setLanguages($lang);
+
+        $form = $this->getEmptyRegistraionForm($eventType);
         $form->handleRequest($request);
 
         $context = [
             'event_type' => $eventType,
             'form' => $form->createView(),
-            'state' => $state,
         ];
-
         $templateName = $eventType->getTemplate();
 
         $template = self::getTemplate($templateName, 'index.html.twig');
         $languageContext = self::getLanguageFile($templateName, $lang, $context);
 
         $context['lang'] = $languageContext;
+        $context['lang_code'] = $lang;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $context['attendee'] = $attendee;
-            // todo: show success page
+            $email = $form->getData()['email'];
+            $firstName = $form->getData()['first_name'];
+            $lastName = $form->getData()['last_name'];
+            $event = $em->getRepository(Event::class)->find($form->getData()['event_choice']);
+            $unsubscribed = !$form->getData()['subscribed'];
+
+            $registration->setEvents($event);
+
+            if ($state == 'registration_no_capacity') {
+                $this->addFlash('error', $context['lang']['capacity_full']);
+
+                return $this->render($template, $context);
+            }
+
+            if ($state == 'registration_finished') {
+                $this->addFlash('error', $context['lang']['registration_closed']);
+
+                return $this->render($template, $context);
+            }
+
+            if ($state == 'registration_not_started') {
+                $this->addFlash('error', $context['lang']['registration_not_opened_yet']);
+
+                return $this->render($template, $context);
+            }
+
+            if ($state == 'registration_open') {
+                $attendee->setEmail($email);
+                $attendee->setFirstName($firstName);
+                $attendee->setlastName($lastName);
+                $attendee->setLanguages($lang);
+                $attendee->setUnsubscribed($unsubscribed);
+                $registration->setAttendee($attendee);
+                $repositoryRegistration = $this->getDoctrine()->getRepository(Registration::class);
+                $code = $repositoryRegistration->generateCodeForEvent($event->getId());
+                $registration->setCode($code);
+
+                $context['attendee'] = $attendee;
+                $context['registration'] = $registration;
+
+                $this->addFlash('success', $context['lang']['registration_success']);
+                $context['form'] = $this->getEmptyRegistraionForm($eventType)->createView();
+
+            }
         }
 
         return $this->render($template, $context);
@@ -121,5 +169,18 @@ class WebTestController extends CustomTemplateController
 
             return $this->redirectToRoute('event_types_edit', ['id' => $eventType->getId(), 'notFoundLanguages' => $notFoundLanguages]);
         }
+    }
+
+    private function getEmptyRegistraionForm($eventType)
+    {
+        $events = $eventType->getEvents();
+        $eventOptions = [];
+        foreach ($events as $event) {
+            $eventOptions[$event->getAddress()] = $event->getId();
+        }
+
+        $defaultData = array('first_name' => '', 'last_name' => '', 'email' => '', 'events' => $eventOptions);
+
+        return $this->createForm(RegistrationForm::class, $defaultData);
     }
 }
