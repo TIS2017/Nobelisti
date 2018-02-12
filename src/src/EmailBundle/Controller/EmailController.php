@@ -21,15 +21,23 @@ class EmailController extends CustomTemplateController
         return $this->getArrayFromYaml($emailPath, $context);
     }
 
-    public function sendEmail($attendee, array $context, String $templateName, String $emailType)
+    public function sendEmail($attendee, array $context, String $templateName, String $emailType, $eventType, $event = null)
     {
         $plain = $this->renderToString($templateName, 'emails/'.$emailType.'.txt.twig', $context);
         $html = $this->renderToString($templateName, 'emails/'.$emailType.'.html.twig', $context);
         $meta = $this->getEmailMeta($templateName, 'emails/'.$emailType.'.yaml.twig', $context);
+        $email = $attendee->getEmail();
+        $encodedMeta = json_encode($meta);
+
+        $em = $this->getDoctrine()->getManager();
+        $isSent = $em->getRepository(EmailLog::class)->isEmailSent($templateName, $email, $emailType, $eventType, $event);
+        if ($isSent) {
+            return;
+        }
 
         $message = (new \Swift_Message($meta['subject']))
             ->setFrom($meta['email_from'])
-            ->setTo($attendee->getEmail())
+            ->setTo($email)
             ->setBody($html, 'text/html')
             ->addPart($plain, 'text/plain')
         ;
@@ -40,12 +48,13 @@ class EmailController extends CustomTemplateController
         $log->setTemplate($templateName);
         $log->setContentHtml($html);
         $log->setContentPlain($plain);
-        $log->setEmailAddress($attendee->getEmail());
-        $log->setEmailMeta(json_encode($meta));
+        $log->setEmailAddress($email);
+        $log->setEmailMeta($encodedMeta);
         $log->setEmailType($emailType);
         $log->setStatus($status);
+        $log->setEventType($eventType);
+        $log->setEvent($event);
 
-        $em = $this->getDoctrine()->getManager();
         $em->persist($log);
         $em->flush();
     }

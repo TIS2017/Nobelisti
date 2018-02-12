@@ -47,7 +47,7 @@ class SendDailyNotificationCommand extends ContainerAwareCommand
             $organizer = $eventOrganizer->getOrganizer();
             $context['organizer'] = $organizer;
 
-            $controller->sendEmail($organizer, $context, $event->getTemplateOverride(), 'daily_notification');
+            $controller->sendEmail($organizer, $context, $event->getTemplateOverride(), 'daily_notification', $event->getId(), $event->getEventType()->getId());
 
             echo 'Sent to '.$organizer->getEmail()."\n";
         }

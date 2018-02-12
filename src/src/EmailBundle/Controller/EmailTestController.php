@@ -72,10 +72,11 @@ class EmailTestController extends EmailController
     private function buildAndSendEmail($formData, $context, $type)
     {
         $attendee = self::createMockAttendee($formData);
+        $eventType = $context['event_type'];
+        $event = array_key_exists('event', $context) ? $context['event'] : null;
 
-        $templateName = array_key_exists('event', $context)
-            ? $context['event']->getTemplateOverride()
-            : $context['event_type']->getTemplate();
+        $templateName = $event == null ? $eventType->getTemplate() : $event->getTemplateOverride();
+        $eventId = $event == null ? null : $event->getId();
 
         $languageCode = $attendee->getLanguages()->getCode();
         $languageContext = self::getLanguageFile($templateName, $languageCode, $context);
@@ -83,8 +84,11 @@ class EmailTestController extends EmailController
         $context['attendee'] = $attendee;
         $context['lang'] = $languageContext;
         $context['lang_code'] = $languageCode;
+        $context['registration'] = array(
+            'confirmationToken' => 'test'
+        );
 
-        $this->sendEmail($attendee, $context, $templateName, $type);
+        $this->sendEmail($attendee, $context, $templateName, $type, $eventType->getId(), $eventId);
     }
 
     private function createMockAttendee($formData)

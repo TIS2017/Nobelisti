@@ -5,6 +5,7 @@ namespace EmailBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use AdminBundle\Entity\Attendee;
 use AdminBundle\Entity\Event;
 use EmailBundle\Controller\EmailController;
 
@@ -23,7 +24,7 @@ class SendRegistrationOpenCommand extends ContainerAwareCommand
 
         $em = $this->getContainer()->get('doctrine')->getManager();
         $events = $em->getRepository(Event::class)->getTodaysOpenEvents();
-        $attendees = $em->getRepository(Attendee:class)->getSubscribedAttendees();
+        $attendees = $em->getRepository(Attendee::class)->getSubscribedAttendees();
         foreach ($events as $event) {
             $this->sendNotificationForEvent($event, $attendees, $controller);
         }
@@ -38,7 +39,7 @@ class SendRegistrationOpenCommand extends ContainerAwareCommand
         foreach ($attendees as $attendee) {
             $context = $this->getContextForNotificationEmail($event, $attendee, $controller);
 
-            $controller->sendEmail($attendee, $context, $event->getTemplateOverride(), 'new_event');
+            $controller->sendEmail($attendee, $context, $event->getTemplateOverride(), 'new_event', $event->getId(), $event->getEventType()->getId());
 
             echo 'Sent to '.$attendee->getEmail()."\n";
         }

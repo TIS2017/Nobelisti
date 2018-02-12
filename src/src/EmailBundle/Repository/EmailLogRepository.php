@@ -2,6 +2,8 @@
 
 namespace EmailBundle\Repository;
 
+use EmailBundle\Entity\EmailLog;
+
 /**
  * EmailLogRepository.
  *
@@ -10,4 +12,28 @@ namespace EmailBundle\Repository;
  */
 class EmailLogRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function isEmailSent($templateName, $email, $emailType, $eventType, $event)
+    {
+        $qb = $this->_em->createQueryBuilder('el');
+        $qb->select('count(el.id)')
+            ->from(EmailLog::class, 'el')
+            ->where('el.emailAddress = :email')
+            ->andWhere('el.emailType = :emailType')
+            ->andWhere('el.eventType = :eventType')
+            ->andWhere('el.template = :template')
+            ->andWhere('el.status = 0')
+            ->setParameters(array(
+                'email' => $email,
+                'emailType' => $emailType,
+                'template' => $templateName,
+                'eventType' => $eventType
+            ));
+        if ($event != null) {
+            $qb->andWhere('el.event = :event')
+            ->setParameter('event', $event);
+        }
+
+        $result = $qb->getQuery()->getSingleScalarResult();
+        return $result > 0;
+    }
 }
