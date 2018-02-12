@@ -1,9 +1,10 @@
 {% extends 'base.html.twig'|extendable(event_type) %}
 
-{% block head %}
-    {{ getCSS(event_type, 'styles') }}
-{% endblock %}
-
 {% block content %}
-    <h1>This is a default theme</h1>
+    <h1>{{ lang.header }}</h1>
+    <p>{{ lang.description }}</p>
+    <hr>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
 {% endblock %}

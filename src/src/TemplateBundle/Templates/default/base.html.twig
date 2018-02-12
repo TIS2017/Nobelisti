@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Title{% endblock %}</title>
-    {% block head %}{% endblock %}
+    {{ getCSS(event_type, 'styles') }}
+    {{ getJS(event_type, 'prefill') }}
 </head>
 <body>
     {% for label, messages in app.flashes %}
