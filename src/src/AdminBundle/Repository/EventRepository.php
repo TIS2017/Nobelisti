@@ -10,11 +10,21 @@ namespace AdminBundle\Repository;
  */
 class EventRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getNearingEvents() {
+    public function getNearingEvents()
+    {
         $qb = $this->_em->createQueryBuilder('e');
         $qb->select('e')
             ->from('AdminBundle:Event', 'e')
-            ->where('DAYOFYEAR(DATE_ADD(CURRENT_DATE(), e.notificationThreshold, \'DAY\')) = DAYOFYEAR(e.dateTime)');
+            ->where('DATE(DATE_ADD(CURRENT_DATE(), e.notificationThreshold, \'DAY\')) = DATE(e.dateTime)');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getTodaysOpenEvents() {
+        $qb = $this->_em->createQueryBuilder('e');
+        $qb->select('e')
+            ->from('AdminBundle:Event', 'e')
+            ->where('DATE(CURRENT_DATE()) = DATE(e.registrationStart)');
 
         return $qb->getQuery()->getResult();
     }

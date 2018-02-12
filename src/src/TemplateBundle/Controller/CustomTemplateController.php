@@ -15,12 +15,12 @@ class CustomTemplateController extends Controller
 
     private static function buildTemplatePath($templateName)
     {
-        return '../templates/'.$templateName;
+        return '../src/TemplateBundle/Templates/'.$templateName;
     }
 
     private static function trimPath($templatePath)
     {
-        $prefix = '../templates';
+        $prefix = '../src/TemplateBundle/Templates';
         if (substr($templatePath, 0, strlen($prefix)) == $prefix) {
             $templatePath = substr($templatePath, strlen($prefix));
         }
@@ -67,7 +67,7 @@ class CustomTemplateController extends Controller
 
     private static function buildLanguagePath($templateName, $languageName)
     {
-        return '../templates/'.$templateName.'/languages/'.$languageName.'.yaml.twig';
+        return '../src/TemplateBundle/Templates/'.$templateName.'/languages/'.$languageName.'.yaml.twig';
     }
 
     public static function getLanguageNames($templateName)

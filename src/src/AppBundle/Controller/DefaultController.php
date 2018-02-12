@@ -65,8 +65,7 @@ class DefaultController extends EmailController
         $em = $this->getDoctrine()->getManager();
 
         $registration = new Registration();
-        $token = md5(time().rand());
-        $registration->setConfirmationToken($token);
+        $registration->generateConfirmationToken();
         $registration->setLanguages($attendeeLanguage);
 
         $form = $this->getEmptyRegistraionForm($eventType);
