@@ -21,7 +21,7 @@ class EmailController extends CustomTemplateController
         return $this->getArrayFromYaml($emailPath, $context);
     }
 
-    public function sendEmail($attendee, array $context, String $templateName, String $emailType)
+    public function sendEmail($attendee, array $context, String $templateName, String $emailType, $eventType, $event = null)
     {
         $plain = $this->renderToString($templateName, 'emails/'.$emailType.'.txt.twig', $context);
         $html = $this->renderToString($templateName, 'emails/'.$emailType.'.html.twig', $context);
@@ -30,28 +30,32 @@ class EmailController extends CustomTemplateController
         $encodedMeta = json_encode($meta);
 
         $em = $this->getDoctrine()->getManager();
-        $isSent = $em->getRepository(EmailLog::class)->isEmailSent($templateName, $html, $plain, $email, $encodedMeta, $emailType);
-        if (!$isSent) {
-            $message = (new \Swift_Message($meta['subject']))
-                ->setFrom($meta['email_from'])
-                ->setTo($email)
-                ->setBody($html, 'text/html')
-                ->addPart($plain, 'text/plain')
-            ;
-
-            $status = $this->get('mailer')->send($message);
-
-            $log = new EmailLog();
-            $log->setTemplate($templateName);
-            $log->setContentHtml($html);
-            $log->setContentPlain($plain);
-            $log->setEmailAddress($email);
-            $log->setEmailMeta($encodedMeta);
-            $log->setEmailType($emailType);
-            $log->setStatus($status);
-
-            $em->persist($log);
-            $em->flush();
+        $isSent = $em->getRepository(EmailLog::class)->isEmailSent($templateName, $email, $emailType, $eventType, $event);
+        if ($isSent) {
+            return;
         }
+
+        $message = (new \Swift_Message($meta['subject']))
+            ->setFrom($meta['email_from'])
+            ->setTo($email)
+            ->setBody($html, 'text/html')
+            ->addPart($plain, 'text/plain')
+        ;
+
+        $status = $this->get('mailer')->send($message);
+
+        $log = new EmailLog();
+        $log->setTemplate($templateName);
+        $log->setContentHtml($html);
+        $log->setContentPlain($plain);
+        $log->setEmailAddress($email);
+        $log->setEmailMeta($encodedMeta);
+        $log->setEmailType($emailType);
+        $log->setStatus($status);
+        $log->setEventType($eventType);
+        $log->setEvent($event);
+
+        $em->persist($log);
+        $em->flush();
     }
 }

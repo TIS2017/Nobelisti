@@ -72,6 +72,20 @@ class EmailLog extends BaseEntity
     private $status;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="event_type", type="integer", nullable=true)
+     */
+    private $eventType;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="event", type="integer", nullable=true)
+     */
+    private $event;
+
+    /**
      * Get id.
      *
      * @return int
@@ -247,5 +261,53 @@ class EmailLog extends BaseEntity
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set event
+     *
+     * @param int $event
+     *
+     * @return EmailLog
+     */
+    public function setEvent($event)
+    {
+        $this->event = $event;
+
+        return $this;
+    }
+
+    /**
+     * Get event.
+     *
+     * @return int
+     */
+    public function getEvent()
+    {
+        return $this->event;
+    }
+
+    /**
+     * Set event type
+     *
+     * @param int $eventType
+     *
+     * @return EmailLog
+     */
+    public function setEventType($eventType)
+    {
+        $this->eventType = $eventType;
+
+        return $this;
+    }
+
+    /**
+     * Get event type.
+     *
+     * @return int
+     */
+    public function getEventType()
+    {
+        return $this->eventType;
     }
 }

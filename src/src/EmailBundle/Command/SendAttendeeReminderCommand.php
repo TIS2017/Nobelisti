@@ -38,7 +38,7 @@ class SendAttendeeReminderCommand extends ContainerAwareCommand
             $attendee = $registration->getAttendee();
             $context = $this->getContextForNotificationEmail($event, $attendee, $controller);
 
-            $controller->sendEmail($attendee, $context, $event->getTemplateOverride(), 'reminder');
+            $controller->sendEmail($attendee, $context, $event->getTemplateOverride(), 'reminder', $event->getId(), $event->getEventType()->getId());
 
             echo 'Sent to '.$attendee->getEmail()."\n";
         }

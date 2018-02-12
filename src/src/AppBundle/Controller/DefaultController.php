@@ -146,7 +146,7 @@ class DefaultController extends EmailController
             $em->persist($registration);
             $em->flush();
 
-            $this->sendEmail($attendee, $context, $templateName, 'registration');
+            $this->sendEmail($attendee, $context, $templateName, 'registration', $eventType->getId(), $event->getId());
 
             $this->addFlash('success', $context['lang']['registration_success']);
             $context['form'] = $this->getEmptyRegistraionForm($eventType)->createView();
