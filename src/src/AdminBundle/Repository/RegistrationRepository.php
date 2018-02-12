@@ -2,6 +2,8 @@
 
 namespace AdminBundle\Repository;
 
+use AdminBundle\Entity\Registration;
+
 /**
  * RegistrationRepository.
  *
@@ -10,4 +12,13 @@ namespace AdminBundle\Repository;
  */
 class RegistrationRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function generateCodeForEvent($eventId) {
+        $qb = $this->_em->createQueryBuilder('r');
+        $qb->select('MAX(r.code)')
+            ->from(Registration::class, 'r')
+            ->where('r.events = :eventId')
+            ->setParameter('eventId', $eventId);
+
+        return $qb->getQuery()->getSingleScalarResult() + 1;
+    }
 }
