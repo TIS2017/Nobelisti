@@ -17,14 +17,14 @@ class EmailLogRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->_em->createQueryBuilder('el');
         $qb->select('count(el.id)')
             ->from(EmailLog::class, 'el')
-            ->where('el.emailAddress LIKE :email')
-            ->andWhere('el.emailType LIKE :type')
+            ->where('el.emailAddress = :email')
+            ->andWhere('el.emailType = :emailType')
             ->andWhere('el.eventType = :eventType')
-            ->andWhere('el.template LIKE :template')
+            ->andWhere('el.template = :template')
             ->andWhere('el.status = 0')
             ->setParameters(array(
                 'email' => $email,
-                'type' => $emailType,
+                'emailType' => $emailType,
                 'template' => $templateName,
                 'eventType' => $eventType
             ));
