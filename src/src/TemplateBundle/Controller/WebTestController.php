@@ -30,10 +30,9 @@ class WebTestController extends CustomTemplateController
 
         $state = $request->query->get('state');
         $lang = $request->query->get('lang');
-
-        $attendee = new Attendee();
-
-        $form = $this->createForm(RegistrationForm::class, $attendee);
+        $defaultData = array('first_name' => '', 'last_name' => '', 'email' => '', 'events' => []);
+        $form = $this->createForm(RegistrationForm::class, $defaultData);
+        
         $form->handleRequest($request);
 
         $context = [
@@ -43,14 +42,23 @@ class WebTestController extends CustomTemplateController
         ];
 
         $templateName = $eventType->getTemplate();
-
         $template = self::getTemplate($templateName, 'index.html.twig');
         $languageContext = self::getLanguageFile($templateName, $lang, $context);
 
         $context['lang'] = $languageContext;
 
+        if ($state == 'registration_not_started') {
+            $this->addFlash('error', $context['lang']['registration_not_opened_yet']);
+        } else if ($state == 'registration_finished') {
+            $this->addFlash('error', $context['lang']['registration_closed']);
+        } else if ($state == 'registration_no_capacity') {
+            $this->addFlash('error', $context['lang']['capacity_full']);
+        } else {
+            $this->addFlash('error', $context['lang']['unknown_state']);
+        }
+
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $context['attendee'] = $attendee;
             // todo: show success page
         }
 
