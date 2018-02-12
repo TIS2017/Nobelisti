@@ -18,7 +18,7 @@ class MailingListController extends Controller
      */
     public function indexAction($page, Request $request)
     {
-        $numItemsPerPage = 3;
+        $numItemsPerPage = 20;
         $countPages = 0;
         $mailingList = [];
         $em = $this->getDoctrine()->getManager();
