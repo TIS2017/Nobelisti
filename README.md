@@ -61,15 +61,15 @@ A CRON bundle was installed to help run CRON tasks in the production enviroment.
 docker-compose exec php bash
 php bin/console cron:create
 ```
-The following commands fro sending emails are available:
+The following commands for sending emails are available:
 - `email:delete:obsolete-registrations` - Deletes expired unclaimed registrations from the database, emptying space for other attendees.
 - `email:send:attendee-notification` - Sends reminders to all attendees that an upcoming event is nearing. Should be executed at least once a day.
 - `email:send:organizer-notification` - Sends information about registered users to organizers. Should be executed once a day.
 - `email:send:registration-open` - Sends notifications that a new event has become available for registration. Should be executed at least once a day.
 
-Setting up CRON tasks has to be done manually, either using CRON externally or using the CRON package avialble here: https://github.com/Cron/Cron
+Setting up CRON tasks has to be done manually, either using CRON externally or using the CRON package available here: https://github.com/Cron/Cron
 
-The commands **have** to be executed from the bin folder.
+The commands **have to** be executed from the bin folder.
 
 To install and setup, just follow the provided instructions on the CRON github page.
 
