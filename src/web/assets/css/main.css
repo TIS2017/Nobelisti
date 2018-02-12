@@ -53,3 +53,7 @@ form label {
     max-height: 60vh;
     overflow-y: auto;
 }
+
+.btn-primary {
+    margin-bottom: 8px;
+}

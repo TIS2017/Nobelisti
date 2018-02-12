@@ -11,42 +11,6 @@
         </div>
     </div>
     <div class="row">
-        <h3 class="col-md-12">Template Testing</h3>
-        <div class="col-md-6">
-            {% if notFoundLanguages %}
-                <p class="text-danger">The following languages were not found:</p>
-                <ul>
-                {% for language in notFoundLanguages %}
-                    <li>{{language}}</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-            <a class="btn btn-primary" href="{{ path('test_event_languages', {'eventTypeId':event_type_id, 'eventId': event_id}) }}">Test Languages</a>
-        </div>
-        <div class="col-md-3">
-            <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#testRegistrationEmail">Test registration email</a>
-            {% include "@AdminBundle/Resources/views/testEmailModal.html.twig"
-                with {
-                    modal_id: 'testRegistrationEmail',
-                    modal_title: 'Test Registration Email',
-                    form: registrationTestForm,
-                    action_path: path('test_registration_mail', {'eventId': event_id}),
-                }
-            %}
-        </div>
-        <div class="col-md-3">
-            <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#testReminderEmail">Test reminder email</a>
-            {% include "@AdminBundle/Resources/views/testEmailModal.html.twig"
-                with {
-                    modal_id: 'testReminderEmail',
-                    modal_title: 'Test Reminder Email',
-                    form: reminderTestForm,
-                    action_path: path('test_reminder_mail', {'eventId': event_id}),
-                }
-            %}
-        </div>
-    </div>
-    <div class="row">
         <div class="col-md-6" id="organizer">
             <a href="#" data-toggle="modal" data-target="#{{ 'assignOrganizerModal' ~ event_id }}"
                class='btn btn-primary'>Assign Organizer</a>
@@ -143,6 +107,44 @@
                     </tbody>
                 </table>
             {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <h3 class="col-md-12">Template Testing</h3>
+        <div class="col-md-12 d-flex flex-row">
+            <div class="p-2">
+                {% if notFoundLanguages %}
+                    <p class="text-danger">The following languages were not found:</p>
+                    <ul>
+                    {% for language in notFoundLanguages %}
+                        <li>{{language}}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+                <a class="btn btn-primary" href="{{ path('test_event_languages', {'eventTypeId':event_type_id, 'eventId': event_id}) }}">Test Languages</a>
+            </div>
+            <div class="p-2">
+                <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#testRegistrationEmail">Test registration email</a>
+                {% include "@AdminBundle/Resources/views/testEmailModal.html.twig"
+                    with {
+                        modal_id: 'testRegistrationEmail',
+                        modal_title: 'Test Registration Email',
+                        form: registrationTestForm,
+                        action_path: path('test_registration_mail', {'eventId': event_id}),
+                    }
+                %}
+            </div>
+            <div class="p-2">
+                <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#testReminderEmail">Test reminder email</a>
+                {% include "@AdminBundle/Resources/views/testEmailModal.html.twig"
+                    with {
+                        modal_id: 'testReminderEmail',
+                        modal_title: 'Test Reminder Email',
+                        form: reminderTestForm,
+                        action_path: path('test_reminder_mail', {'eventId': event_id}),
+                    }
+                %}
+            </div>
         </div>
     </div>
 {% endblock %}
