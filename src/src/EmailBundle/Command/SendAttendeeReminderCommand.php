@@ -54,7 +54,6 @@ class SendAttendeeReminderCommand extends ContainerAwareCommand
         ];
 
         $languageCode = $attendee->getLanguages()->getCode();
-        // Warning: file_get_contents(../templates/template1/languages/en_US.yaml.twig): failed to open stream: No such file or directory
         $languageContext = $controller->getLanguageFile($event->getTemplateOverride(), $languageCode, $context);
 
         $context['lang'] = $languageContext;
