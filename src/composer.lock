@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ee68c31cbb8bcfe5deccb94529f5d0e",
+    "content-hash": "012b01efe1068037e83a9c3c9381b0c2",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -105,6 +105,100 @@
                 "tls"
             ],
             "time": "2017-11-29T09:37:33+00:00"
+        },
+        {
+            "name": "cron/cron",
+            "version": "1.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Cron/Cron.git",
+                "reference": "9e4e736ce589b0a4e82c327f9e48516d8f4dc619"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Cron/Cron/zipball/9e4e736ce589b0a4e82c327f9e48516d8f4dc619",
+                "reference": "9e4e736ce589b0a4e82c327f9e48516d8f4dc619",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.5|^7.0",
+                "symfony/process": "^2.4|^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.7"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Cron\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dries De Peuter",
+                    "email": "dries@nousefreak.be"
+                }
+            ],
+            "description": "Cronjobs",
+            "time": "2017-08-31T05:05:07+00:00"
+        },
+        {
+            "name": "cron/cron-bundle",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Cron/Symfony-Bundle.git",
+                "reference": "71cdf2e37bacab069b4555228aa5a831c33db7da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Cron/Symfony-Bundle/zipball/71cdf2e37bacab069b4555228aa5a831c33db7da",
+                "reference": "71cdf2e37bacab069b4555228aa5a831c33db7da",
+                "shasum": ""
+            },
+            "require": {
+                "cron/cron": "^1.0.1",
+                "doctrine/doctrine-bundle": "^1.3",
+                "doctrine/orm": "^2.4",
+                "php": ">=5.5.0",
+                "symfony/framework-bundle": "^2.5|^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0",
+                "symfony/symfony": "^2.4|^3.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Cron\\CronBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dries De Peuter",
+                    "email": "dries@nousefreak.be"
+                }
+            ],
+            "description": "Symfony cron",
+            "time": "2018-01-25T07:47:34+00:00"
         },
         {
             "name": "doctrine/annotations",
