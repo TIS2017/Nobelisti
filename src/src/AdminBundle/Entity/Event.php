@@ -213,7 +213,6 @@ class Event extends BaseEntity
     private $eventType;
 
     /**
-     * --sem to nejde asi?
      * @ORM\OneToMany(targetEntity="EventOrganizers", mappedBy="event")
      */
     private $organizers;
@@ -235,7 +234,6 @@ class Event extends BaseEntity
     }
 
     /**
-     * --podla mna to sem tiez nejde
      * @ORM\OneToMany(targetEntity="EventLanguages", mappedBy="event")
      */
     private $languages;
@@ -249,7 +247,6 @@ class Event extends BaseEntity
     }
 
     /**
-     * --tuto to podla mna nejde, lebo ked zmazem registration, tak nebudem mazat event, nie?
      * @ORM\OneToMany(targetEntity="Registration", mappedBy="event")
      */
     private $registrations;

@@ -63,6 +63,7 @@ class Attendee extends BaseEntity
     private $email;
 
     /**
+     * @Evence\onSoftDelete(type="CASCADE")
      * @ORM\ManyToOne(targetEntity="Language", inversedBy="attendees")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
