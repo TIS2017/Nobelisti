@@ -198,7 +198,7 @@ class Registration extends BaseEntity
      *
      * @return self
      */
-    public function setEvents($event)
+    public function setEvent($event)
     {
         $this->event = $event;
 

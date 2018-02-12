@@ -37,7 +37,7 @@
                 <td>{{ attendee.firstName }}</td>
                 <td>{{ attendee.lastName }}</td>
                 <td>{{ attendee.email }}</td>
-                <td>{{ attendee.languages.language }}</td>
+                <td>{{ attendee.language.language }}</td>
                 <td>
                     {% if attendee.unsubscribed %}
                         No
@@ -51,7 +51,7 @@
                             {{ registration.event.eventType.slug }}
                         {% endif %}
                         {% if loop.index == 2 %}
-                            ,&nbsp;{{ registration.events.eventType.slug }}
+                            ,&nbsp;{{ registration.event.eventType.slug }}
                         {% endif %}
                         {% if loop.index == 3 %}
                             &nbsp;<a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#showAllEvents{{ attendee.id }}">Show all</a>

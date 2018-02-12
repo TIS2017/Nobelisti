@@ -161,7 +161,7 @@ class AddMockedDataCommand extends ContainerAwareCommand
             $attendee = new Attendee();
             $attendee->setFirstName($this->randomFirstName());
             $attendee->setLastName($this->randomLastName());
-            $attendee->setLanguages($this->getRandomObject($em, Language::class));
+            $attendee->setLanguage($this->getRandomObject($em, Language::class));
             $attendee->setUnsubscribed((bool) random_int(0, 1));
             $attendee->setEmail($this->makeEmail($attendee->getFirstName(), $attendee->getLastName()));
             $em->persist($attendee);
@@ -219,7 +219,7 @@ class AddMockedDataCommand extends ContainerAwareCommand
                 foreach ($attendees as $attendee) {
                     $registration = new Registration();
                     $registration->setAttendee($attendee);
-                    $registration->setEvents($event);
+                    $registration->setEvent($event);
                     $registration->setCode(random_int(1000, 5000));
                     $registration->generateConfirmationToken();
 
@@ -229,7 +229,7 @@ class AddMockedDataCommand extends ContainerAwareCommand
 
                     $eventLanguages = $em->getRepository(EventLanguages::class)->findBy(['event' => $event->getId()]);
                     shuffle($eventLanguages);
-                    $registration->setLanguages($eventLanguages[0]->getLanguage());
+                    $registration->setLanguage($eventLanguages[0]->getLanguage());
 
                     $em->persist($registration);
                 }

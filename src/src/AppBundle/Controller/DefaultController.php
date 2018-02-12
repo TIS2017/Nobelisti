@@ -66,7 +66,7 @@ class DefaultController extends EmailController
 
         $registration = new Registration();
         $registration->generateConfirmationToken();
-        $registration->setLanguages($attendeeLanguage);
+        $registration->setLanguage($attendeeLanguage);
 
         $form = $this->getEmptyRegistraionForm($eventType);
         $form->handleRequest($request);
@@ -93,7 +93,7 @@ class DefaultController extends EmailController
             $attendee = $em->getRepository(Attendee::class)->findOneBy(array('email' => $email));
             if ($attendee) {
                 $attendeeRegistratedForEvent = $em->getRepository(Registration::class)->findOneBy(
-                                                        ['attendee' => $attendee, 'events' => $event]);
+                                                        ['attendee' => $attendee, 'event' => $event]);
                 if ($attendeeRegistratedForEvent) { // attendee already registered for event
                     $form->get('email')->addError(new FormError($context['lang']['already_registered']));
                     $context['form'] = $form->createView();
@@ -102,10 +102,10 @@ class DefaultController extends EmailController
                 }
             }
 
-            $registration->setEvents($event);
+            $registration->setEvent($event);
 
             //checking capacity
-            $registratedPeople = $em->getRepository(Registration::class)->findBy(['events' => $event]);
+            $registratedPeople = $em->getRepository(Registration::class)->findBy(['event' => $event]);
             if ($event->getCapacity() <= count($registratedPeople)) {
                 $this->addFlash('error', $context['lang']['capacity_full']);
 
@@ -134,7 +134,7 @@ class DefaultController extends EmailController
             }
             $attendee->setFirstName($firstName);
             $attendee->setlastName($lastName);
-            $attendee->setLanguages($attendeeLanguage);
+            $attendee->setLanguage($attendeeLanguage);
             $attendee->setUnsubscribed($unsubscribed);
             $registration->setAttendee($attendee);
             $repositoryRegistration = $this->getDoctrine()->getRepository(Registration::class);
