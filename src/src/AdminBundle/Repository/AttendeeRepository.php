@@ -94,7 +94,7 @@ class AttendeeRepository extends \Doctrine\ORM\EntityRepository
             ->innerJoin(Attendee::class, 'a', 'WITH', 'a.id = r.attendee')
             ->where('a.email LIKE :name OR a.firstName LIKE :name OR a.lastName LIKE :name')
             ->setParameter('name', '%'.$nameEmail.'%')
-            ->innerJoin(Event::class, 'e', 'WITH', 'e.id = r.events')
+            ->innerJoin(Event::class, 'e', 'WITH', 'e.id = r.event')
             ->innerJoin(EventType::class, 'et', 'WITH', 'et.id = e.eventType')
             ->andwhere('et.slug LIKE :event')
             ->setParameter('event', '%'.$event.'%');

@@ -163,7 +163,7 @@ class DefaultController extends EmailController
         $eventOptions = [];
         foreach ($events as $event) {
             //filtering those events, which registration's already started
-            if ($event->didRegistrationStart()) {
+            if ($event->didRegistrationStart() && !$event->didRegistrationEnd()) {
                 $eventOptions[$event->getAddress()] = $event->getId();
             }
         }

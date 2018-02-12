@@ -16,7 +16,7 @@ class RegistrationRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->_em->createQueryBuilder('r');
         $qb->select('MAX(r.code)')
             ->from(Registration::class, 'r')
-            ->where('r.events = :eventId')
+            ->where('r.event = :eventId')
             ->setParameter('eventId', $eventId);
 
         return $qb->getQuery()->getSingleScalarResult() + 1;
