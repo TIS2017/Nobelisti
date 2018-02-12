@@ -97,14 +97,15 @@
             {% endif %}
         </div>
     </div>
+    <hr>
     <div class="row">
         <h3 class="col-md-12">Template Testing</h3>
         <div class="col-md-6">
-            {% for url in testUrls %}
-                <p>
-                    <a href="{{url}}">{{url}}</a><br>
-                </p>
-            {% endfor %}
+            <div class="list-group">
+                {% for url in testUrls %}
+                    <a href="{{ url.url }}" class="list-group-item list-group-item-action">{{ url.label}}</a>
+                {% endfor %}
+            </div>
         </div>
 
     <div class="col-md-6 d-flex flex-row">
