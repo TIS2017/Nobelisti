@@ -152,6 +152,16 @@ class Registration extends BaseEntity
     }
 
     /**
+     * Generate random confirmation token.
+     *
+     * @return self
+     */
+    public function generateConfirmationToken()
+    {
+        return $this->setConfirmationToken(md5(time().rand()));
+    }
+
+    /**
      * Get the value of attendee.
      */
     public function getAttendee()

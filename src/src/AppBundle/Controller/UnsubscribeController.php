@@ -26,7 +26,7 @@ class UnsubscribeController extends EmailController
         $event = $registration->getEvents();
         $context = [
             'event_type' => $eventType,
-            'event' => $event
+            'event' => $event,
         ];
         $templateName = $eventType->getTemplate();
         $languageContext = self::getLanguageFile($templateName, $language->getCode(), $context);

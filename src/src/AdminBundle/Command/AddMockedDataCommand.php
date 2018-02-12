@@ -5,9 +5,13 @@ namespace AdminBundle\Command;
 use AdminBundle\Entity\Admin;
 use AdminBundle\Entity\Attendee;
 use AdminBundle\Entity\Event;
+use AdminBundle\Entity\EventLanguages;
+use AdminBundle\Entity\EventOrganizers;
 use AdminBundle\Entity\EventType;
+use AdminBundle\Entity\EventTypeLanguages;
 use AdminBundle\Entity\Language;
 use AdminBundle\Entity\Organizer;
+use AdminBundle\Entity\Registration;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -69,6 +73,16 @@ class AddMockedDataCommand extends ContainerAwareCommand
         return $this->getRandomObject($em, Event::class);
     }
 
+    private function getRandomAttendee($em)
+    {
+        return $this->getRandomObject($em, Attendee::class);
+    }
+
+    private function getRandomOrganizer($em)
+    {
+        return $this->getRandomObject($em, Organizer::class);
+    }
+
     private function getRandomEventType($em)
     {
         return $this->getRandomObject($em, EventType::class);
@@ -94,18 +108,17 @@ class AddMockedDataCommand extends ContainerAwareCommand
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
 
-//        $this->createAdmins($em);
-//        $this->createLanguages($em);
-//        $this->createOrganizers($em);
-//        $this->createAttendees($em);
-//        $this->createEventTypes($em);
-//        $this->createEvents($em);
+        $this->createAdmins($em);
+        $this->createLanguages($em);
+        $this->createOrganizers($em);
+        $this->createAttendees($em);
+        $this->createEventTypes($em);
+        $this->createEvents($em);
+        $this->createRegistrations($em);
 
-        // todo: $this->createRegistrations($em);
-        // todo: $this->assignOrganizersToEvents($em);
-        // todo: $this->assignLanguagesToEvents($em);
-        // todo: $this->assignLanguagesToEventTypes($em);
-        // todo: $this->createRegistrations($em);
+        $this->assignOrganizersToEvents($em);
+        $this->assignLanguagesToEvents($em);
+        $this->assignLanguagesToEventTypes($em);
 
         $em->flush();
     }
@@ -180,6 +193,64 @@ class AddMockedDataCommand extends ContainerAwareCommand
             $event->setNotificationThreshold(random_int(1, 7));
 
             $em->persist($event);
+        }
+    }
+
+    private function createRegistrations($em)
+    {
+        for ($i = 0; $i < 300; ++$i) {
+            $registration = new Registration();
+            $registration->setLanguages($this->getRandomLanguage($em));
+            $registration->setAttendee($this->getRandomAttendee($em));
+            $registration->setEvents($this->getRandomEvent($em));
+
+            $registration->setCode(random_int(1000, 5000));
+            $registration->generateConfirmationToken();
+
+            if (0 != random_int(0, 5)) {
+                $registration->setConfirmed(new \DateTime());
+            }
+
+            $em->persist($registration);
+        }
+    }
+
+    private function assignOrganizersToEvents($em)
+    {
+        $events = $em->getRepository(Event::class)->findAll();
+        foreach ($events as $event) {
+            for ($i = 0; $i < random_int(1, 5); ++$i) {
+                $eo = new EventOrganizers();
+                $eo->setEvent($event);
+                $eo->setOrganizer($this->getRandomOrganizer($em));
+                $em->persist($eo);
+            }
+        }
+    }
+
+    private function assignLanguagesToEvents($em)
+    {
+        $events = $em->getRepository(Event::class)->findAll();
+        foreach ($events as $event) {
+            for ($i = 0; $i < random_int(1, 5); ++$i) {
+                $el = new EventLanguages();
+                $el->setEvent($event);
+                $el->setLanguage($this->getRandomLanguage($em));
+                $em->persist($el);
+            }
+        }
+    }
+
+    private function assignLanguagesToEventTypes($em)
+    {
+        $eventTypes = $em->getRepository(EventType::class)->findAll();
+        foreach ($eventTypes as $eventType) {
+            for ($i = 0; $i < random_int(1, 5); ++$i) {
+                $etl = new EventTypeLanguages();
+                $etl->setEventType($eventType);
+                $etl->setLanguage($this->getRandomLanguage($em));
+                $em->persist($etl);
+            }
         }
     }
 }

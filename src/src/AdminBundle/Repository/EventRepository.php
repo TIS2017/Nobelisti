@@ -10,7 +10,8 @@ namespace AdminBundle\Repository;
  */
 class EventRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getNearingEvents() {
+    public function getNearingEvents()
+    {
         $qb = $this->_em->createQueryBuilder('e');
         $qb->select('e')
             ->from('AdminBundle:Event', 'e')
