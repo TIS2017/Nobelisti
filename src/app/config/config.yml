@@ -72,7 +72,7 @@ doctrine:
                         enabled: true
                 dql:
                     numeric_functions:
-                        dayofyear: Oro\ORM\Query\AST\Functions\SimpleFunction
+                        date: Oro\ORM\Query\AST\Functions\SimpleFunction
 
 # Swiftmailer Configuration
 swiftmailer:
