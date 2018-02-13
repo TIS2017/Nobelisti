@@ -3,6 +3,7 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Event;
+use AdminBundle\Entity\EventLanguages;
 use AdminBundle\Entity\EventType;
 use AdminBundle\Entity\EventTypeLanguages;
 use AdminBundle\Entity\Language;
@@ -103,7 +104,18 @@ class EventTypeController extends Controller
             ];
         }
 
-        $emailTestForm = $this->createForm(EmailTestForm::class);
+        $optionsForEmailTestForm = $this->getDoctrine()->getRepository(EventTypeLanguages::class)->findBy(
+            ['eventType' => $id]
+        );
+
+        $data = [];
+        foreach ($optionsForEmailTestForm as $d) {
+            $data[$d->getLanguage()->getLanguage()] = $d->getLanguage()->getCode();
+        }
+
+        $emailTestForm = $this->createForm(EmailTestForm::class, $data);
+
+
 
         $languageNames = array_map(function ($l) { return $l->getLanguage(); }, $languages->toArray());
 
