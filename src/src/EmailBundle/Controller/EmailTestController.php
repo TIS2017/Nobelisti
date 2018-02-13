@@ -75,8 +75,8 @@ class EmailTestController extends EmailController
         $eventType = $context['event_type'];
         $event = array_key_exists('event', $context) ? $context['event'] : null;
 
-        $templateName = $event == null ? $eventType->getTemplate() : $event->getTemplateOverride();
-        $eventId = $event == null ? null : $event->getId();
+        $templateName = null == $event ? $eventType->getTemplate() : $event->getTemplateOverride();
+        $eventId = null == $event ? null : $event->getId();
 
         $languageCode = $attendee->getLanguage()->getCode();
         $languageContext = self::getLanguageFile($templateName, $languageCode, $context);
@@ -85,7 +85,7 @@ class EmailTestController extends EmailController
         $context['lang'] = $languageContext;
         $context['lang_code'] = $languageCode;
         $context['registration'] = array(
-            'confirmationToken' => 'test'
+            'confirmationToken' => 'test',
         );
 
         $this->sendEmail($attendee, $context, $templateName, $type, $eventType->getId(), $eventId);

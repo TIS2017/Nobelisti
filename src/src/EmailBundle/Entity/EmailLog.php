@@ -264,7 +264,7 @@ class EmailLog extends BaseEntity
     }
 
     /**
-     * Set event
+     * Set event.
      *
      * @param int $event
      *
@@ -288,7 +288,7 @@ class EmailLog extends BaseEntity
     }
 
     /**
-     * Set event type
+     * Set event type.
      *
      * @param int $eventType
      *
