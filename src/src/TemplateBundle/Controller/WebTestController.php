@@ -180,7 +180,7 @@ class WebTestController extends CustomTemplateController
         if(empty($notFoundLanguages)) {
             $this->addFlash('success', "All languages are set correctly.");
         } else {
-            $message = "The following messages are missing: " . join(", ", $notFoundLanguages);
+            $message = "The following languages are missing: " . join(", ", $notFoundLanguages);
             $this->addFlash('danger', $message);
         }
     }
