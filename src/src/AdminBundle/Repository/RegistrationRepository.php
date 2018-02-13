@@ -12,7 +12,8 @@ use AdminBundle\Entity\Registration;
  */
 class RegistrationRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function generateCodeForEvent($eventId) {
+    public function generateCodeForEvent($eventId)
+    {
         $qb = $this->_em->createQueryBuilder('r');
         $qb->select('MAX(r.code)')
             ->from(Registration::class, 'r')

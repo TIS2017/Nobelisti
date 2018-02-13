@@ -20,7 +20,8 @@ class EventRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getTodaysOpenEvents() {
+    public function getTodaysOpenEvents()
+    {
         $qb = $this->_em->createQueryBuilder('e');
         $qb->select('e')
             ->from('AdminBundle:Event', 'e')

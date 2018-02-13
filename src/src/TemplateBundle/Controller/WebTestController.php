@@ -64,25 +64,25 @@ class WebTestController extends CustomTemplateController
 
             $registration->setEvent($event);
 
-            if ($state == 'registration_no_capacity') {
+            if ('registration_no_capacity' == $state) {
                 $this->addFlash('error', $context['lang']['capacity_full']);
 
                 return $this->render($template, $context);
             }
 
-            if ($state == 'registration_finished') {
+            if ('registration_finished' == $state) {
                 $this->addFlash('error', $context['lang']['registration_closed']);
 
                 return $this->render($template, $context);
             }
 
-            if ($state == 'registration_not_started') {
+            if ('registration_not_started' == $state) {
                 $this->addFlash('error', $context['lang']['registration_not_opened_yet']);
 
                 return $this->render($template, $context);
             }
 
-            if ($state == 'registration_open') {
+            if ('registration_open' == $state) {
                 $attendee->setEmail($email);
                 $attendee->setFirstName($firstName);
                 $attendee->setlastName($lastName);
@@ -98,7 +98,6 @@ class WebTestController extends CustomTemplateController
 
                 $this->addFlash('success', $context['lang']['registration_success']);
                 $context['form'] = $this->getEmptyRegistraionForm($eventType)->createView();
-
             }
         }
 

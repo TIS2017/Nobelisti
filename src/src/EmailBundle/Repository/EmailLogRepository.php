@@ -26,14 +26,15 @@ class EmailLogRepository extends \Doctrine\ORM\EntityRepository
                 'email' => $email,
                 'emailType' => $emailType,
                 'template' => $templateName,
-                'eventType' => $eventType
+                'eventType' => $eventType,
             ));
-        if ($event != null) {
+        if (null != $event) {
             $qb->andWhere('el.event = :event')
             ->setParameter('event', $event);
         }
 
         $result = $qb->getQuery()->getSingleScalarResult();
+
         return $result > 0;
     }
 }
