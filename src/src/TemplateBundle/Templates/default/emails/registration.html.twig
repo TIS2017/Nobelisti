@@ -7,6 +7,10 @@ Please confirm your registration
 </p>
 
 <p>
+    Your registration number is {{ registration.code }}.
+</p>
+
+<p>
 You can unsubscribe from mailing list
 <a href="{{ absolute_url(path('unsubscribe_mailinglist', {'token': registration.confirmationToken})) }}">here</a>.
 </p>

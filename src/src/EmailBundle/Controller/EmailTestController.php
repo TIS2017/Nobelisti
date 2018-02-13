@@ -6,6 +6,7 @@ use AdminBundle\Entity\Attendee;
 use AdminBundle\Entity\Event;
 use AdminBundle\Entity\EventType;
 use AdminBundle\Entity\Language;
+use AdminBundle\Entity\Registration;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,6 @@ class EmailTestController extends EmailController
         $context = [
             'event_type' => $eventType,
         ];
-
 
         self::buildAndSendEmail($request->get('email_test_form'), $context, 'new_event');
 
@@ -72,9 +72,11 @@ class EmailTestController extends EmailController
 
     private function buildAndSendEmail($formData, $context, $type)
     {
-        $attendee = self::createMockAttendee($formData);
         $eventType = $context['event_type'];
         $event = array_key_exists('event', $context) ? $context['event'] : null;
+
+        $attendee = self::createMockAttendee($formData);
+        $registration = self::createMockRegistration($attendee, $event);
 
         $templateName = null == $event ? $eventType->getTemplate() : $event->getTemplateOverride();
         $eventId = null == $event ? null : $event->getId();
@@ -85,16 +87,14 @@ class EmailTestController extends EmailController
         $context['attendee'] = $attendee;
         $context['lang'] = $languageContext;
         $context['lang_code'] = $languageCode;
-        $context['registration'] = array(
-            'confirmationToken' => 'test', # todo: BUG: tu musi byt cely objekt Registration
-        );
+        $context['registration'] = $registration;
 
         $sent = $this->sendEmailNoCheck($attendee, $context, $templateName, $type, $eventType->getId(), $eventId);
 
-        if($sent) {
-            $this->addFlash("success", "The email was sent to your email address.");
+        if ($sent) {
+            $this->addFlash('success', 'The email was sent to your email address.');
         } else {
-            $this->addFlash("danger", "The email was not sent.");
+            $this->addFlash('danger', 'The email was not sent.');
         }
     }
 
@@ -116,5 +116,16 @@ class EmailTestController extends EmailController
         $attendee->setLanguage($language);
 
         return $attendee;
+    }
+
+    private function createMockRegistration(Attendee $attendee, Event $event)
+    {
+        $registration = new Registration();
+        $registration->setLanguage($attendee->getLanguage());
+        $registration->setCode('1234');
+        $registration->setEvent($event);
+        $registration->generateConfirmationToken();
+
+        return $registration;
     }
 }
