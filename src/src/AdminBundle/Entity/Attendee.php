@@ -165,7 +165,7 @@ class Attendee extends BaseEntity
     }
 
     /**
-     * Get the value of languages.
+     * Get the value of language.
      */
     public function getLanguage()
     {
@@ -173,7 +173,7 @@ class Attendee extends BaseEntity
     }
 
     /**
-     * Set the value of languageId.
+     * Set the value of language.
      *
      * @return self
      */
