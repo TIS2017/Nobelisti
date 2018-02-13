@@ -108,28 +108,41 @@
             </div>
         </div>
 
-    <div class="col-md-6 d-flex flex-row">
-        <div class="p-2">
-            <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#testNewEventEmail">Test new event email</a>
-            {% include "@AdminBundle/Resources/views/testEmailModal.html.twig"
-                with {
-                    modal_id: 'testNewEventEmail',
-                    modal_title: 'Test New Event Email',
-                    form: emailTestForm,
-                    action_path: path('test_new_event_mail', {'eventSlug': form.vars.value.slug}),
-                }
-            %}
-        </div>
-        <div class="p-2">
-            {% if notFoundLanguages %}
-                <p class="text-danger">The following languages were not found:</p>
-                <ul>
-                {% for language in notFoundLanguages %}
-                    <li>{{language}}</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-            <a class="btn btn-primary" href="{{ path('test_event_languages', {'eventTypeId':form.vars.value.id}) }}">Test languages</a>
-        </div>
+    <div class="row col-md-6 d-flex flex-row">
+            <div class="p-2 align-self-start">
+                <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#testNewEventEmail">Test new event email</a>
+                {% include "@AdminBundle/Resources/views/testEmailModal.html.twig"
+                    with {
+                        modal_id: 'testNewEventEmail',
+                        modal_title: 'Test New Event Email',
+                        form: emailTestForm,
+                        action_path: path('test_new_event_mail', {'eventSlug': form.vars.value.slug}),
+                    }
+                %}
+            </div>
+            <div class="p-2 align-self-start">
+                <a class="btn btn-primary" href="{{ path('test_event_languages', {'eventTypeId':form.vars.value.id}) }}">Test languages</a>
+            </div>
+            <div class="col-md-12 align-self-center">
+                {% if notFoundLanguages %}
+                    <div class="alert alert-danger" role="alert">
+                        <p class="text-danger">The following languages were not found:</p>
+                    </div>
+                    <ul class="list-group">
+                    {% for language in notFoundLanguages %}
+                        <li class="list-group-item">{{language}}</li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="alert alert-danger" role="alert">
+                        <p class="text-danger">The following languages were not found:</p>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item">language</li>
+                        <li class="list-group-item">language</li>
+                    </ul>
+                {% endif %}
+            </div>
+
     </div>
 {% endblock %}
