@@ -91,7 +91,12 @@ class EventController extends Controller
             return $this->redirectToRoute('event_types_edit', ['id' => $id]);
         }
 
-        $emailTestForm = $this->createForm(EmailTestForm::class);
+        $options = [];
+        foreach ($languages as $language) {
+            $options[$language->getLanguage()] = $language->getCode();
+        }
+
+        $emailTestForm = $this->createForm(EmailTestForm::class, $options);
 
         return $this->render('AdminBundle:Event:edit.html.twig', array(
             'form' => $form->createView(),

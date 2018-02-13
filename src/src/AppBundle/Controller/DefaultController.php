@@ -38,22 +38,42 @@ class DefaultController extends EmailController
             throw $this->createNotFoundException('No event type found for slug'.$slug);
         }
 
+        $templateName = $eventType->getTemplate();
+        $templateNotOpened = self::getTemplate($templateName, 'registration_not_opened.html.twig');
+        $context = [
+            'event_type' => $eventType,
+        ];
+
         if ('DEFAULT' === $_locale) { // select a default language or something
             $language = 'en_US';
             $attendeeLanguage = $this->getDoctrine()->getRepository(Language::class)->findOneBy(
                 ['code' => 'en_US']
             );
+
+            $template = self::getTemplate($templateName, 'index.html.twig');
+            $languageContext = self::getLanguageFile($templateName, $language, $context);
+            $context['lang'] = $languageContext;
+            $context['lang_code'] = $language;
         } else {
             $language = $_locale;
             $attendeeLanguage = $this->getDoctrine()->getRepository(Language::class)->findOneBy(
                 ['code' => $_locale]
             );
 
+            $template = self::getTemplate($templateName, 'index.html.twig');
+            $languageContext = self::getLanguageFile($templateName, $language, $context);
+            $context['lang'] = $languageContext;
+            $context['lang_code'] = $language;
+
             if (null == $attendeeLanguage) {
                 return $this->redirectToRoute('frontend_index', ['slug' => $slug, '_locale' => 'en_US']);
             }
 
             $form = $this->getEmptyRegistraionForm($eventType);
+            if (null == $form) {
+                return $this->render($templateNotOpened, $context);
+            }
+
             $form->handleRequest($request);
             $templateName = $eventType->getTemplate();
             // check language is enabled for this $eventType
@@ -69,19 +89,12 @@ class DefaultController extends EmailController
         $registration->setLanguage($attendeeLanguage);
 
         $form = $this->getEmptyRegistraionForm($eventType);
+        if (null == $form) {
+            return $this->render($templateNotOpened, $context);
+        }
+
         $form->handleRequest($request);
-
-        $context = [
-            'event_type' => $eventType,
-            'form' => $form->createView(),
-        ];
-        $templateName = $eventType->getTemplate();
-
-        $template = self::getTemplate($templateName, 'index.html.twig');
-        $languageContext = self::getLanguageFile($templateName, $language, $context);
-
-        $context['lang'] = $languageContext;
-        $context['lang_code'] = $language;
+        $context['form'] = $form->createView();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->getData()['email'];
@@ -166,6 +179,10 @@ class DefaultController extends EmailController
             if ($event->didRegistrationStart() && !$event->didRegistrationEnd()) {
                 $eventOptions[$event->getAddress()] = $event->getId();
             }
+        }
+
+        if (empty($eventOptions)) {
+            return null;
         }
 
         $defaultData = array('first_name' => '', 'last_name' => '', 'email' => '', 'events' => $eventOptions);
