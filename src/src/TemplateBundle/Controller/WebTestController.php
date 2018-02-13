@@ -48,8 +48,7 @@ class WebTestController extends CustomTemplateController
         $context['lang'] = $languageContext;
         $context['lang_code'] = $lang;
 
-        if($state == 'registration_open' || $state == 'registration_no_capacity') {
-
+        if ('registration_open' == $state || 'registration_no_capacity' == $state) {
             $form = $this->getEmptyRegistraionForm($eventType);
             $form->handleRequest($request);
 
@@ -89,9 +88,11 @@ class WebTestController extends CustomTemplateController
                     $context['form'] = $this->getEmptyRegistraionForm($eventType)->createView();
                 }
             }
+
             return $this->render($template, $context);
-        } else if ($state == 'registration_not_open') {
+        } elseif ('registration_not_open' == $state) {
             $template = self::getTemplate($templateName, 'registration_not_opened.html.twig');
+
             return $this->render($template, $context);
         }
 
