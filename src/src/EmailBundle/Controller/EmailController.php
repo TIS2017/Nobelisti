@@ -21,19 +21,13 @@ class EmailController extends CustomTemplateController
         return $this->getArrayFromYaml($emailPath, $context);
     }
 
-    public function sendEmail($attendee, array $context, String $templateName, String $emailType, $eventType, $event = null)
+    public function sendEmailNoCheck($attendee, array $context, String $templateName, String $emailType, $eventType, $event = null)
     {
         $plain = $this->renderToString($templateName, 'emails/'.$emailType.'.txt.twig', $context);
         $html = $this->renderToString($templateName, 'emails/'.$emailType.'.html.twig', $context);
         $meta = $this->getEmailMeta($templateName, 'emails/'.$emailType.'.yaml.twig', $context);
         $email = $attendee->getEmail();
         $encodedMeta = json_encode($meta);
-
-        $em = $this->getDoctrine()->getManager();
-        $isSent = $em->getRepository(EmailLog::class)->isEmailSent($templateName, $email, $emailType, $eventType, $event);
-        if ($isSent) {
-            return;
-        }
 
         $message = (new \Swift_Message($meta['subject']))
             ->setFrom($meta['email_from'])
@@ -55,7 +49,21 @@ class EmailController extends CustomTemplateController
         $log->setEventType($eventType);
         $log->setEvent($event);
 
+        $em = $this->getDoctrine()->getManager();
         $em->persist($log);
         $em->flush();
+    }
+
+    public function sendEmail($attendee, array $context, String $templateName, String $emailType, $eventType, $event = null)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $isSent = $em->getRepository(EmailLog::class)
+            ->isEmailSent($templateName, $attendee->getEmail(), $emailType, $eventType, $event);
+
+        if ($isSent) {
+            return;
+        }
+
+        $this->sendEmailNoCheck($attendee, $context, $templateName, $emailType, $eventType, $event);
     }
 }

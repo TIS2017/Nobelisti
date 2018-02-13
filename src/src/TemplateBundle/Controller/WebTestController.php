@@ -40,68 +40,63 @@ class WebTestController extends CustomTemplateController
         $registration->generateConfirmationToken();
         $registration->setLanguage($lang);
 
-        $form = $this->getEmptyRegistraionForm($eventType);
-        $form->handleRequest($request);
-
-        $context = [
-            'event_type' => $eventType,
-            'form' => $form->createView(),
-        ];
+        $context = ['event_type' => $eventType];
         $templateName = $eventType->getTemplate();
 
-        $template = self::getTemplate($templateName, 'index.html.twig');
         $languageContext = self::getLanguageFile($templateName, $lang, $context);
 
         $context['lang'] = $languageContext;
         $context['lang_code'] = $lang;
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $email = $form->getData()['email'];
-            $firstName = $form->getData()['first_name'];
-            $lastName = $form->getData()['last_name'];
-            $event = $em->getRepository(Event::class)->find($form->getData()['event_choice']);
-            $unsubscribed = !$form->getData()['subscribed'];
+        if ('registration_open' == $state || 'registration_no_capacity' == $state) {
+            $form = $this->getEmptyRegistraionForm($eventType);
+            $form->handleRequest($request);
 
-            $registration->setEvent($event);
+            $context['form'] = $form->createView();
+            $template = self::getTemplate($templateName, 'index.html.twig');
 
-            if ('registration_no_capacity' == $state) {
-                $this->addFlash('error', $context['lang']['capacity_full']);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $email = $form->getData()['email'];
+                $firstName = $form->getData()['first_name'];
+                $lastName = $form->getData()['last_name'];
+                $event = $em->getRepository(Event::class)->find($form->getData()['event_choice']);
+                $unsubscribed = !$form->getData()['subscribed'];
 
-                return $this->render($template, $context);
+                $registration->setEvent($event);
+
+                if ('registration_no_capacity' == $state) {
+                    $this->addFlash('error', $context['lang']['capacity_full']);
+
+                    return $this->render($template, $context);
+                }
+
+                if ('registration_open' == $state) {
+                    $attendee->setEmail($email);
+                    $attendee->setFirstName($firstName);
+                    $attendee->setlastName($lastName);
+                    $attendee->setLanguage($lang);
+                    $attendee->setUnsubscribed($unsubscribed);
+                    $registration->setAttendee($attendee);
+                    $repositoryRegistration = $this->getDoctrine()->getRepository(Registration::class);
+                    $code = $repositoryRegistration->generateCodeForEvent($event->getId());
+                    $registration->setCode($code);
+
+                    $context['attendee'] = $attendee;
+                    $context['registration'] = $registration;
+
+                    $this->addFlash('success', $context['lang']['registration_success']);
+                    $context['form'] = $this->getEmptyRegistraionForm($eventType)->createView();
+                }
             }
 
-            if ('registration_finished' == $state) {
-                $this->addFlash('error', $context['lang']['registration_closed']);
+            return $this->render($template, $context);
+        } elseif ('registration_not_open' == $state) {
+            $template = self::getTemplate($templateName, 'registration_not_opened.html.twig');
 
-                return $this->render($template, $context);
-            }
-
-            if ('registration_not_started' == $state) {
-                $this->addFlash('error', $context['lang']['registration_not_opened_yet']);
-
-                return $this->render($template, $context);
-            }
-
-            if ('registration_open' == $state) {
-                $attendee->setEmail($email);
-                $attendee->setFirstName($firstName);
-                $attendee->setlastName($lastName);
-                $attendee->setLanguage($lang);
-                $attendee->setUnsubscribed($unsubscribed);
-                $registration->setAttendee($attendee);
-                $repositoryRegistration = $this->getDoctrine()->getRepository(Registration::class);
-                $code = $repositoryRegistration->generateCodeForEvent($event->getId());
-                $registration->setCode($code);
-
-                $context['attendee'] = $attendee;
-                $context['registration'] = $registration;
-
-                $this->addFlash('success', $context['lang']['registration_success']);
-                $context['form'] = $this->getEmptyRegistraionForm($eventType)->createView();
-            }
+            return $this->render($template, $context);
         }
 
-        return $this->render($template, $context);
+        throw $this->createNotFoundException();
     }
 
     /**
@@ -176,10 +171,10 @@ class WebTestController extends CustomTemplateController
 
     private function showNotFoundLanguagesFlash($notFoundLanguages)
     {
-        if(empty($notFoundLanguages)) {
-            $this->addFlash('success', "All languages are set correctly.");
+        if (empty($notFoundLanguages)) {
+            $this->addFlash('success', 'All languages are set correctly.');
         } else {
-            $message = "The following languages are missing: " . join(", ", $notFoundLanguages);
+            $message = 'The following languages are missing: '.join(', ', $notFoundLanguages);
             $this->addFlash('danger', $message);
         }
     }

@@ -88,7 +88,7 @@ class EmailTestController extends EmailController
             'confirmationToken' => 'test',
         );
 
-        $this->sendEmail($attendee, $context, $templateName, $type, $eventType->getId(), $eventId);
+        $this->sendEmailNoCheck($attendee, $context, $templateName, $type, $eventType->getId(), $eventId);
     }
 
     private function createMockAttendee($formData)
