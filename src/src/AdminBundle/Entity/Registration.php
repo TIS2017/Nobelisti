@@ -62,7 +62,7 @@ class Registration extends BaseEntity
     /**
      * @Evence\onSoftDelete(type="CASCADE")
      * @ORM\ManyToOne(targetEntity="Event", inversedBy="registrations")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="event_details_id", referencedColumnName="id", nullable=false)
      */
     private $event;
 
