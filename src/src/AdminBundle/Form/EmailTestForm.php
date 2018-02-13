@@ -14,8 +14,8 @@ class EmailTestForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('first_name', TextType::class)
-            ->add('last_name', TextType::class)
+            ->add('first_name', TextType::class, ["data" => "John"])
+            ->add('last_name', TextType::class, ["data" => "Smith"])
             ->add('email', EmailType::class)
             ->add('language', ChoiceType::class, array(
                 'choices' => $options['data'],

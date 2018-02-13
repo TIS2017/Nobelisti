@@ -86,20 +86,16 @@ class EventTypeController extends Controller
             $languageCode = $language->getLanguage()->getCode();
             $basicParameters = array('eventSlug' => $eventType->getSlug(), 'lang' => $language->getLanguage()->getCode());
             $testUrls[] = [
-                'url' => $this->generateUrl('test_event', array_merge(array('state' => 'registration_not_started'), $basicParameters)),
-                'label' => $languageCode.' - Registraion not started',
+                'url' => $this->generateUrl('test_event', array_merge(array('state' => 'registration_not_open'), $basicParameters)),
+                'label' => $languageCode.' - Registraion is not open',
             ];
             $testUrls[] = [
                 'url' => $this->generateUrl('test_event', array_merge(array('state' => 'registration_open'), $basicParameters)),
-                'label' => $languageCode.' - Registraion open',
-            ];
-            $testUrls[] = [
-                'url' => $this->generateUrl('test_event', array_merge(array('state' => 'registration_finished'), $basicParameters)),
-                'label' => $languageCode.' - Registraion finished',
+                'label' => $languageCode.' - Registraion is open',
             ];
             $testUrls[] = [
                 'url' => $this->generateUrl('test_event', array_merge(array('state' => 'registration_no_capacity'), $basicParameters)),
-                'label' => $languageCode.' - Registraion no capacity',
+                'label' => $languageCode.' - Registraion - no capacity',
             ];
         }
 
