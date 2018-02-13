@@ -52,6 +52,8 @@ class EmailController extends CustomTemplateController
         $em = $this->getDoctrine()->getManager();
         $em->persist($log);
         $em->flush();
+
+        return !$status;
     }
 
     public function sendEmail($attendee, array $context, String $templateName, String $emailType, $eventType, $event = null)
@@ -61,9 +63,9 @@ class EmailController extends CustomTemplateController
             ->isEmailSent($templateName, $attendee->getEmail(), $emailType, $eventType, $event);
 
         if ($isSent) {
-            return;
+            return true;
         }
 
-        $this->sendEmailNoCheck($attendee, $context, $templateName, $emailType, $eventType, $event);
+        return $this->sendEmailNoCheck($attendee, $context, $templateName, $emailType, $eventType, $event);
     }
 }

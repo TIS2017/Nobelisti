@@ -26,6 +26,7 @@ class EmailTestController extends EmailController
             'event_type' => $eventType,
         ];
 
+
         self::buildAndSendEmail($request->get('email_test_form'), $context, 'new_event');
 
         return $this->redirectToRoute('event_types_edit', ['id' => $eventType->getId()]);
@@ -85,10 +86,16 @@ class EmailTestController extends EmailController
         $context['lang'] = $languageContext;
         $context['lang_code'] = $languageCode;
         $context['registration'] = array(
-            'confirmationToken' => 'test',
+            'confirmationToken' => 'test', # todo: BUG: tu musi byt cely objekt Registration
         );
 
-        $this->sendEmailNoCheck($attendee, $context, $templateName, $type, $eventType->getId(), $eventId);
+        $sent = $this->sendEmailNoCheck($attendee, $context, $templateName, $type, $eventType->getId(), $eventId);
+
+        if($sent) {
+            $this->addFlash("success", "The email was sent to your email address.");
+        } else {
+            $this->addFlash("danger", "The email was not sent.");
+        }
     }
 
     private function createMockAttendee($formData)
