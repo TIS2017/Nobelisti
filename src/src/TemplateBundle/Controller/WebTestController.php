@@ -157,7 +157,9 @@ class WebTestController extends CustomTemplateController
                 }
             }
 
-            return $this->redirectToRoute('events_edit', ['id' => $eventType->getId(), 'event_id' => $event->getId(), 'notFoundLanguages' => $notFoundLanguages]);
+            $this->showNotFoundLanguagesFlash($notFoundLanguages);
+
+            return $this->redirectToRoute('events_edit', ['id' => $eventType->getId(), 'event_id' => $event->getId()]);
         } else {
             $notFoundLanguages = array();
             foreach ($definedEventTypeLanguages as $definedLanguage) {
@@ -166,7 +168,19 @@ class WebTestController extends CustomTemplateController
                 }
             }
 
-            return $this->redirectToRoute('event_types_edit', ['id' => $eventType->getId(), 'notFoundLanguages' => $notFoundLanguages]);
+            $this->showNotFoundLanguagesFlash($notFoundLanguages);
+
+            return $this->redirectToRoute('event_types_edit', ['id' => $eventType->getId()]);
+        }
+    }
+
+    private function showNotFoundLanguagesFlash($notFoundLanguages)
+    {
+        if(empty($notFoundLanguages)) {
+            $this->addFlash('success', "All languages are set correctly.");
+        } else {
+            $message = "The following languages are missing: " . join(", ", $notFoundLanguages);
+            $this->addFlash('danger', $message);
         }
     }
 
