@@ -257,4 +257,11 @@ class Event extends BaseEntity
 
         return $this->getRegistrationStart() < $now;
     }
+
+    public function didRegistrationEnd()
+    {
+        $now = new \DateTime('now');
+
+        return $this->getRegistrationEnd() < $now;
+    }
 }
