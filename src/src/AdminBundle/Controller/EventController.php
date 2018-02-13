@@ -93,15 +93,12 @@ class EventController extends Controller
 
         $emailTestForm = $this->createForm(EmailTestForm::class);
 
-        $notFoundLanguages = $request->query->get('notFoundLanguages');
-
         return $this->render('AdminBundle:Event:edit.html.twig', array(
             'form' => $form->createView(),
             'organizers' => $organizers,
             'registrationTestForm' => $emailTestForm->createView(),
             'reminderTestForm' => $emailTestForm->createView(),
             'languages' => $languages,
-            'notFoundLanguages' => $notFoundLanguages,
             'event_type_id' => $id,
             'modal_input_organizers' => self::$modalInputOrganizers,
             'modal_input_languages' => self::$modalInputLanguages,

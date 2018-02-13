@@ -109,14 +109,12 @@ class EventTypeController extends Controller
 
         $repository = $this->getDoctrine()->getRepository(Event::class);
         $events = $repository->findBy(['eventType' => $id]);
-        $notFoundLanguages = $request->query->get('notFoundLanguages');
 
         return $this->render('AdminBundle:EventType:edit.html.twig', array(
             'form' => $form->createView(),
             'testUrls' => $testUrls,
             'emailTestForm' => $emailTestForm->createView(),
             'languages' => $languageNames,
-            'notFoundLanguages' => $notFoundLanguages,
             'modal_input_languages' => self::$modalInputLanguages,
             'event_type_id' => $id,
             'events' => $events,
