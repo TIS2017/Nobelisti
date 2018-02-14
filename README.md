@@ -45,8 +45,7 @@ We have a separate docker-composer file for production,
 to install the production requirements run
 
 ```
-docker-compose up --build -d -f docker-compose.prod.yml
-
+docker-compose -f docker-compose.prod.yml up --build -d
 ```
 
 If you do not want to use docker in production, the minimal requirements for this applications are
@@ -111,6 +110,6 @@ ClassNotFoundException
 2. Run `php bin/console doctrine:migrations:diff`
 3. Run `php bin/console doctrine:migrations:migrate`
 
-###How to create superuser?
+### How to create superuser?
 1. Connect to the virtual machine `docker-compose exec php bash`
 2. `php bin/console admin:create-superuser email@email.com password`
