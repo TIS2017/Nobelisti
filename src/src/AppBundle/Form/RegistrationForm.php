@@ -23,12 +23,14 @@ class RegistrationForm extends AbstractType
                     new NotBlank(),
                     new Length(array('max' => 100)),
                 ),
+                'label'=>$options['data']['lang']['first_name']
             ))
             ->add('last_name', TextType::class, array(
                 'constraints' => array(
                     new NotBlank(),
                     new Length(array('max' => 100)),
                 ),
+                'label'=>$options['data']['lang']['last_name']
             ))
             ->add('email', EmailType::class, array(
                 'constraints' => array(
@@ -36,19 +38,21 @@ class RegistrationForm extends AbstractType
                     new Length(array('max' => 100)),
                     new Email(),
                 ),
+                'label'=>$options['data']['lang']['email']
             ))
             ->add('event_choice', ChoiceType::class, array(
                 'choices' => $options['data']['events'],
+                'label' => $options['data']['lang']['event_choice']
             ))
             ->add('subscribed', CheckboxType::class, array(
-                'label' => 'Subscribe to our newsletter?',
+                'label' => $options['data']['lang']['subscribed'],
                 'required' => false,
             ))
             ->add('agree_with_conditions', CheckboxType::class, array(
-                    'label' => 'Do you agree with processing your data?',
+                    'label' => $options['data']['lang']['conditions_agreement'],
                     'required' => true,
             ))
-            ->add('save', SubmitType::class, array('label' => 'Save'))
+            ->add('save', SubmitType::class, array('label' => $options['data']['lang']['register_button']))
             ->setMethod('POST');
     }
 }
