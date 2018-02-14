@@ -57,6 +57,7 @@ class SendAttendeeReminderCommand extends ContainerAwareCommand
         $languageContext = $controller->getLanguageFile($event->getTemplateOverride(), $languageCode, $context);
 
         $context['lang'] = $languageContext;
+        $context['lang_code'] = $languageCode;
         $context['attendee'] = $attendee;
 
         return $context;

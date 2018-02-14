@@ -124,7 +124,7 @@ class AttendeeRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->_em->createQueryBuilder('a');
         $qb->select('a')
             ->from('AdminBundle:Attendee', 'a')
-            ->where('unsubscribed = false');
+            ->where('a.unsubscribed = false');
 
         return $qb->getQuery()->getResult();
     }
