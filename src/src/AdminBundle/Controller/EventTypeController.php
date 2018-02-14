@@ -12,6 +12,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
 
 class EventTypeController extends Controller
 {
@@ -212,6 +215,28 @@ class EventTypeController extends Controller
             $em->remove($eventLanguage);
             $em->flush();
         }
+
+        return $this->redirectToRoute('event_types_edit', ['id' => $id]);
+    }
+
+    /**
+     * @Route("event_type/edit/{id}/send_new_event_email",
+     *      name="event_types_send_new_event_email",
+     *      requirements={"id"="\d+"}
+     * )
+     * @Method("GET")
+     */
+    public function sendNewEventEmail($id, Request $request)
+    {
+        $application = new Application($this->get('kernel'));
+        $application->setAutoExit(false);
+
+        $input = new ArrayInput(array(
+           'command' => 'email:send:registration-open',
+           'event_type_id' => $id,
+        ));
+        $output = new NullOutput();
+        $application->run($input, $output);
 
         return $this->redirectToRoute('event_types_edit', ['id' => $id]);
     }

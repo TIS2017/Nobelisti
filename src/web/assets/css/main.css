@@ -58,3 +58,7 @@ form label {
 .btn-primary {
     margin-bottom: 8px;
 }
+
+.pull-right {
+    float: right;
+}

@@ -183,4 +183,12 @@ class Attendee extends BaseEntity
 
         return $this;
     }
+
+    /**
+     * Get all registrations.
+     */
+    public function getRegistrations()
+    {
+        return $this->registrations;
+    }
 }

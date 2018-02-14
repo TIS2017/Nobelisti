@@ -13,6 +13,7 @@
     <div class="row">
         <div class="col-md-6">
             <a class='btn btn-primary' href="{{ path('events_add', {'id':form.vars.value.id}) }}">Add new Event</a>
+            <a class="btn btn-success pull-right" href="{{ path('event_types_send_new_event_email', {'id':form.vars.value.id}) }}">Send New Event E-mail</a>
             {% if events | length == 0 %}
                 <div><p>No Event found.</p></div>
             {% else %}
