@@ -118,7 +118,7 @@ class EmailTestController extends EmailController
         return $attendee;
     }
 
-    private function createMockRegistration(Attendee $attendee, Event $event)
+    private function createMockRegistration(Attendee $attendee, ?Event $event)
     {
         $registration = new Registration();
         $registration->setLanguage($attendee->getLanguage());

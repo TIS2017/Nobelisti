@@ -56,8 +56,12 @@ class DefaultController extends EmailController
             $context['lang_code'] = $language;
         } else {
             $language = $_locale;
+            if (!self::existsLanguageFile($templateName, $language)) {
+                $language = 'en_US';
+            }
+
             $attendeeLanguage = $this->getDoctrine()->getRepository(Language::class)->findOneBy(
-                ['code' => $_locale]
+                ['code' => $language]
             );
 
             $template = self::getTemplate($templateName, 'index.html.twig');
@@ -69,7 +73,7 @@ class DefaultController extends EmailController
                 return $this->redirectToRoute('frontend_index', ['slug' => $slug, '_locale' => 'en_US']);
             }
 
-            $form = $this->getEmptyRegistraionForm($eventType);
+            $form = $this->getEmptyRegistraionForm($eventType, $context['lang']);
             if (null == $form) {
                 return $this->render($templateNotOpened, $context);
             }
@@ -88,7 +92,7 @@ class DefaultController extends EmailController
         $registration->generateConfirmationToken();
         $registration->setLanguage($attendeeLanguage);
 
-        $form = $this->getEmptyRegistraionForm($eventType);
+        $form = $this->getEmptyRegistraionForm($eventType, $context['lang']);
         if (null == $form) {
             return $this->render($templateNotOpened, $context);
         }
@@ -164,13 +168,13 @@ class DefaultController extends EmailController
             $this->sendEmail($attendee, $context, $templateName, 'registration', $eventType->getId(), $event->getId());
 
             $this->addFlash('success', $context['lang']['registration_success']);
-            $context['form'] = $this->getEmptyRegistraionForm($eventType)->createView();
+            $context['form'] = $this->getEmptyRegistraionForm($eventType, $context['lang'])->createView();
         }
 
         return $this->render($template, $context);
     }
 
-    private function getEmptyRegistraionForm($eventType)
+    private function getEmptyRegistraionForm($eventType, $contextLang)
     {
         $events = $eventType->getEvents();
         $eventOptions = [];
@@ -185,7 +189,13 @@ class DefaultController extends EmailController
             return null;
         }
 
-        $defaultData = array('first_name' => '', 'last_name' => '', 'email' => '', 'events' => $eventOptions);
+        $defaultData = array(
+            'first_name' => '',
+            'last_name' => '',
+            'email' => '',
+            'events' => $eventOptions,
+            'lang' => $contextLang,
+        );
 
         return $this->createForm(RegistrationForm::class, $defaultData);
     }
