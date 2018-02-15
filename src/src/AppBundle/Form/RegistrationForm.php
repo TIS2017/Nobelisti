@@ -17,20 +17,21 @@ class RegistrationForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $labels = $options['data']['lang'];
         $builder
             ->add('first_name', TextType::class, array(
                 'constraints' => array(
                     new NotBlank(),
                     new Length(array('max' => 100)),
                 ),
-                'label'=>$options['data']['lang']['first_name']
+                'label'=> $labels['first_name']
             ))
             ->add('last_name', TextType::class, array(
                 'constraints' => array(
                     new NotBlank(),
                     new Length(array('max' => 100)),
                 ),
-                'label'=>$options['data']['lang']['last_name']
+                'label'=> $labels['last_name']
             ))
             ->add('email', EmailType::class, array(
                 'constraints' => array(
@@ -38,21 +39,21 @@ class RegistrationForm extends AbstractType
                     new Length(array('max' => 100)),
                     new Email(),
                 ),
-                'label'=>$options['data']['lang']['email']
+                'label'=> $labels['email']
             ))
             ->add('event_choice', ChoiceType::class, array(
                 'choices' => $options['data']['events'],
-                'label' => $options['data']['lang']['event_choice']
+                'label' => $labels['event_choice']
             ))
             ->add('subscribed', CheckboxType::class, array(
-                'label' => $options['data']['lang']['subscribed'],
+                'label' => $labels['subscribed'],
                 'required' => false,
             ))
             ->add('agree_with_conditions', CheckboxType::class, array(
-                    'label' => $options['data']['lang']['conditions_agreement'],
+                    'label' => $labels['conditions_agreement'],
                     'required' => true,
             ))
-            ->add('save', SubmitType::class, array('label' => $options['data']['lang']['register_button']))
+            ->add('save', SubmitType::class, array('label' => $labels['register_button']))
             ->setMethod('POST');
     }
 }
