@@ -45,7 +45,9 @@ class SendDailyNotificationCommand extends ContainerAwareCommand
         $context = $this->getContextForNotificationEmail($event, $controller);
         foreach ($event->getOrganizers() as $eventOrganizer) {
             $organizer = $eventOrganizer->getOrganizer();
+            $confirmedRegistrations =
             $context['organizer'] = $organizer;
+            $context['confirmed_registrations_count'] = count($confirmedRegistrations);
 
             $controller->sendEmail($organizer, $context, $event->getTemplateOverride(), 'daily_notification', $event->getId(), $event->getEventType()->getId());
 

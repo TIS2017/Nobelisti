@@ -49,7 +49,7 @@ class WebTestController extends CustomTemplateController
         $context['lang_code'] = $lang;
 
         if ('registration_open' == $state || 'registration_no_capacity' == $state) {
-            $form = $this->getEmptyRegistraionForm($eventType);
+            $form = $this->getEmptyRegistraionForm($eventType, $context['lang']);
             $form->handleRequest($request);
 
             $context['form'] = $form->createView();
@@ -85,7 +85,7 @@ class WebTestController extends CustomTemplateController
                     $context['registration'] = $registration;
 
                     $this->addFlash('success', $context['lang']['registration_success']);
-                    $context['form'] = $this->getEmptyRegistraionForm($eventType)->createView();
+                    $context['form'] = $this->getEmptyRegistraionForm($eventType, $context['lang'])->createView();
                 }
             }
 
@@ -179,7 +179,7 @@ class WebTestController extends CustomTemplateController
         }
     }
 
-    private function getEmptyRegistraionForm($eventType)
+    private function getEmptyRegistraionForm($eventType, $contextLang)
     {
         $events = $eventType->getEvents();
         $eventOptions = [];
@@ -187,7 +187,13 @@ class WebTestController extends CustomTemplateController
             $eventOptions[$event->getAddress()] = $event->getId();
         }
 
-        $defaultData = array('first_name' => '', 'last_name' => '', 'email' => '', 'events' => $eventOptions);
+        $defaultData = array(
+            'first_name' => '',
+            'last_name' => '',
+            'email' => '',
+            'events' => $eventOptions,
+            'lang' => $contextLang
+        );
 
         return $this->createForm(RegistrationForm::class, $defaultData);
     }

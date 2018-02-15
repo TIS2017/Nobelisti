@@ -168,13 +168,12 @@ class DefaultController extends EmailController
             $this->sendEmail($attendee, $context, $templateName, 'registration', $eventType->getId(), $event->getId());
 
             $this->addFlash('success', $context['lang']['registration_success']);
-            $context['form'] = $this->getEmptyRegistraionForm($eventType)->createView();
+            $context['form'] = $this->getEmptyRegistraionForm($eventType, $context['lang'])->createView();
         }
 
         return $this->render($template, $context);
     }
 
-    //todo skontrolovat, kde este pouzivat getEMptyRegistrationFrom, kvoli $context
     private function getEmptyRegistraionForm($eventType, $contextLang)
     {
         $events = $eventType->getEvents();
