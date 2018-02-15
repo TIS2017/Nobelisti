@@ -3,6 +3,7 @@
 namespace EmailBundle\Command;
 
 use AdminBundle\Entity\EventType;
+use AdminBundle\Entity\Registration;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -45,9 +46,15 @@ class SendDailyNotificationCommand extends ContainerAwareCommand
         $context = $this->getContextForNotificationEmail($event, $controller);
         foreach ($event->getOrganizers() as $eventOrganizer) {
             $organizer = $eventOrganizer->getOrganizer();
-            $confirmedRegistrations =
+            $em = $this->getContainer()->get('doctrine')->getManager();
+            $notConfirmedRegistrations = $em->getRepository(Registration::class)->findBy(
+                ['event'=> $event, 'confirmed' => null]
+            );
+            $allRegistrations = $em->getRepository(Registration::class)->findBy(
+                ['event'=> $event]
+            );
             $context['organizer'] = $organizer;
-            $context['confirmed_registrations_count'] = count($confirmedRegistrations);
+            $context['confirmed_registrations_count'] = count($allRegistrations) - count($notConfirmedRegistrations);
 
             $controller->sendEmail($organizer, $context, $event->getTemplateOverride(), 'daily_notification', $event->getId(), $event->getEventType()->getId());
 
